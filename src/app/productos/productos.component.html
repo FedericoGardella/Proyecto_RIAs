@@ -1,0 +1,23 @@
+<h1 class="title">Lista de Productos</h1>
+<div class="table-container">
+  <table class="table is-striped is-hoverable is-fullwidth">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Imagen</th>
+        <th>Precio</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let producto of productos">
+        <td>{{ producto?.id }}</td>
+        <td>{{ producto?.nombre }}</td>
+        <td>{{ producto?.descripcion }}</td>
+        <td><img [src]="producto?.imagen" alt="Imagen de {{ producto?.nombre }}" style="max-width: 100px;"></td>
+        <td>{{ producto?.precio | currency }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
