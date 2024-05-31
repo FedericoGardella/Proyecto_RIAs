@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 import { Producto } from '../model/producto';
 
 @Injectable({
@@ -9,9 +10,24 @@ import { Producto } from '../model/producto';
 export class ProductoService {
   private apiUrl = 'http://localhost:3000/productos';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   get(): Observable<Producto[]> {
-    return this.http.get<Producto[]>(this.apiUrl);
+
+      const token = localStorage.getItem('authToken');
+
+
+    if (!token) {
+      return new Observable<Producto[]>(observer => {
+        observer.error('No token found in localStorage');
+      });
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<Producto[]>(this.apiUrl, { headers });
   }
 }

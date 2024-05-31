@@ -7,7 +7,7 @@ import { ProductoService } from './services/producto.service';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, RouterModule, HttpClientModule],
-  providers: [HttpClient,ProductoService],
+  providers: [HttpClient, ProductoService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
