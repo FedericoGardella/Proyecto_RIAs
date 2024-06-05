@@ -1,0 +1,22 @@
+<p>productos-editar works!</p>
+
+<h1>Editar Producto</h1>
+<form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+    <label for="nombre">Nombre</label>
+    <input id="nombre" formControlName="nombre" type="text" />
+    <div *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched">Nombre es requerido.</div>
+
+    <label for="descripcion">Descripción</label>
+    <input id="descripcion" formControlName="descripcion" type="text" />
+    <div *ngIf="productoForm.get('descripcion')?.invalid && productoForm.get('descripcion')?.touched">Descripción es requerida.</div>
+
+    <label for="imagen">Imagen</label>
+    <input id="imagen" formControlName="imagen" type="text" />
+    <div *ngIf="productoForm.get('imagen')?.invalid && productoForm.get('imagen')?.touched">Imagen es requerida.</div>
+
+    <label for="precio">Precio</label>
+    <input id="precio" formControlName="precio" type="number" />
+    <div *ngIf="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched">Precio es requerido y debe ser un valor positivo.</div>
+
+    <button type="submit" [disabled]="productoForm.invalid">Actualizar Producto</button>
+</form>

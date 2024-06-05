@@ -30,4 +30,32 @@ export class ProductoService {
 
     return this.http.get<Producto[]>(this.apiUrl, { headers });
   }
+
+  // Obtener un producto por id
+  getProductoById(id: number): Observable<Producto> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<Producto>(`${this.apiUrl}/${id}`, { headers });
+  }
+
+  // Agregar un nuevo producto
+  add(producto: Producto): Observable<Producto> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post<Producto>(this.apiUrl, producto, { headers });
+  }
+
+  // Editar un producto
+  edit(producto: Producto): Observable<Producto> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put<Producto>(`${this.apiUrl}/${producto.id}`, producto, { headers });
+  }
+
+  // Eliminar un producto
+  delete(id: number): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(`${this.apiUrl}/${id}`, { headers });
+  }
 }

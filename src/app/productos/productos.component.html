@@ -8,6 +8,7 @@
         <th>Descripción</th>
         <th>Imagen</th>
         <th>Precio</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -17,6 +18,9 @@
         <td>{{ producto?.descripcion }}</td>
         <td><img [src]="producto?.imagen" alt="Imagen de {{ producto?.nombre }}" style="max-width: 100px;"></td>
         <td>{{ producto?.precio | currency }}</td>
+        <td>
+          <a [routerLink]="['/productos/edit', producto?.id]" class="button is-info">Editar</a>
+          <button (click)="deleteProducto(producto?.id!)" class="button is-danger">Eliminar</button>
       </tr>
     </tbody>
   </table>

@@ -1,0 +1,53 @@
+<h1 class="title">Registro de Usuario</h1>
+<div class="box">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+                <input class="input" type="email" formControlName="email">
+            </div>
+            <p class="help is-danger" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                El email es obligatorio y debe ser válido
+            </p>
+        </div>
+        <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+                <input class="input" type="password" formControlName="password">
+            </div>
+            <p class="help is-danger" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                La contraseña es obligatoria y debe tener al menos 6 caracteres
+            </p>
+        </div>
+        <div class="field">
+            <label class="label">Rol</label>
+            <div class="control">
+                <div class="select">
+                <select formControlName="role">
+                    <option value="">Seleccione un rol</option>
+                    <option value="admin">Admin</option>
+                    <option value="panadero">Panadero</option>
+                    <option value="cliente">Cliente</option>
+                </select>
+                </div>
+            </div>
+            <p class="help is-danger" *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched">
+                El rol es obligatorio
+            </p>
+        </div>
+        <div class="field">
+            <label class="label">Teléfono</label>
+            <div class="control">
+                <input class="input" type="text" formControlName="telefono">
+            </div>
+            <p class="help is-danger" *ngIf="registerForm.get('telefono')?.invalid && registerForm.get('telefono')?.touched">
+                El teléfono es obligatorio y debe contener solo números
+            </p>
+        </div>
+        <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-link" type="submit" [disabled]="registerForm.invalid">Registrar</button>
+        </div>
+        </div>
+    </form>
+</div>
