@@ -1,0 +1,31 @@
+<h1>Añadir Producto</h1>
+<form [formGroup]="productoForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <label for="nombre">Nombre</label>
+    <input id="nombre" formControlName="nombre" type="text" />
+    <div *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched">
+        <div *ngIf="productoForm.get('nombre')?.errors?.['required']">Nombre es requerido.</div>
+        <div *ngIf="productoForm.get('nombre')?.errors?.['minlength']">Nombre debe tener al menos 5 caracteres.</div>
+        <div *ngIf="productoForm.get('nombre')?.errors?.['maxlength']">Nombre no puede exceder los 30 caracteres.</div>
+        <div *ngIf="productoForm.get('nombre')?.errors?.['uniqueName']">Nombre ya está en uso.</div>
+    </div>
+
+    <label for="descripcion">Descripción</label>
+    <input id="descripcion" formControlName="descripcion" type="text" />
+    <div *ngIf="productoForm.get('descripcion')?.invalid && productoForm.get('descripcion')?.touched">
+        <div *ngIf="productoForm.get('descripcion')?.errors?.['required']">Descripción es requerida.</div>
+        <div *ngIf="productoForm.get('descripcion')?.errors?.['minlength']">Descripción debe tener al menos 10 caracteres.</div>
+        <div *ngIf="productoForm.get('descripcion')?.errors?.['maxlength']">Descripción no puede exceder los 150 caracteres.</div>
+    </div>
+
+    <label for="imagen">Imagen</label>
+    <input id="imagen" (change)="onFileSelected($event)" type="file" />
+    <div *ngIf="productoForm.get('imagen')?.invalid && productoForm.get('imagen')?.touched">
+        <div *ngIf="productoForm.get('imagen')?.errors?.['required']">Imagen es requerida.</div>
+    </div>
+
+    <label for="precio">Precio</label>
+    <input id="precio" formControlName="precio" type="number" />
+    <div *ngIf="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched">Precio es requerido y debe ser un valor positivo.</div>
+
+    <button type="submit" [disabled]="productoForm.invalid">Añadir Producto</button>
+</form>
