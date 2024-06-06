@@ -1,0 +1,36 @@
+<h1 class="title">Lista de Ordenes</h1>
+<div class="table-container">
+  <table class="table is-striped is-hoverable is-fullwidth">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Productos</th>
+        <th>Fecha</th>
+        <th>Cobro</th>
+        <th>Estado</th>
+        <th>-</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let orden of ordenes">
+        <td>{{ orden?.id }}</td>
+        <td>{{ orden?.productos }}</td>
+        <td>{{ orden?.fecha }}</td>
+        <td>{{ orden?.cobro | currency }}</td>
+        <td>
+          <div class="buttons">
+            <button class="button is-small"
+                    [ngClass]="{'is-primary': orden.estado === 'Pendiente'}"
+                    (click)="editOrden(orden, 'Pendiente')">Pendiente</button>
+            <button class="button is-small"
+                    [ngClass]="{'is-primary': orden.estado === 'En Preparacion'}"
+                    (click)="editOrden(orden, 'En Preparacion')">En Preparación</button>
+            <button class="button is-small"
+                    [ngClass]="{'is-primary': orden.estado === 'Listo'}"
+                    (click)="editOrden(orden, 'Listo')">Listo</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

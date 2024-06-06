@@ -2,6 +2,9 @@
     <div *ngIf="authService.isLoggedIn()">
         <p>Email: {{ authService.getEmail() }}</p>
         <p>Role: {{ authService.getRole() }}</p>
+        <form (ngSubmit)="logout()">
+            <button class="button is-danger" type="submit">Logout</button>
+        </form>
     </div>
     <div *ngIf="!authService.isLoggedIn()">
         <div class="columns is-centered">

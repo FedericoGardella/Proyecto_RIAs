@@ -31,6 +31,11 @@ export class LoginComponent {
       }, error => {
         console.error('Login failed', error);
       });
+  } 
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
   
 }
