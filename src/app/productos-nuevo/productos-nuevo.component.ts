@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ProductoService } from '../services/producto.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Route, Router } from '@angular/router';
 import { Producto } from '../model/producto';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-productos-nuevo',
@@ -25,11 +26,23 @@ export class ProductosNuevoComponent implements OnInit{
   ) {
 
     this.productoForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]],
+      nombre: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(30)], [this.uniqueNameValidator()]],
       descripcion: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(150)]],
       imagen: ['', [Validators.required]],
       precio: ['', [Validators.required, Validators.min(0.01)]],
     });
+  }
+
+  // Chequear si el nombre es unico
+  uniqueNameValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return this.productoService.get().pipe(
+        map((productos) => {
+          const producto = productos.find((p) => p.nombre === control.value);
+          return producto ? { uniqueName: true } : null;
+        })
+      );
+    };
   }
 
   ngOnInit(): void {

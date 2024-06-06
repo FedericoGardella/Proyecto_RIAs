@@ -6,6 +6,7 @@
         <div *ngIf="productoForm.get('nombre')?.errors?.['required']">Nombre es requerido.</div>
         <div *ngIf="productoForm.get('nombre')?.errors?.['minlength']">Nombre debe tener al menos 5 caracteres.</div>
         <div *ngIf="productoForm.get('nombre')?.errors?.['maxlength']">Nombre no puede exceder los 30 caracteres.</div>
+        <div *ngIf="productoForm.get('nombre')?.errors?.['uniqueName']">Nombre ya está en uso.</div>
     </div>
 
     <label for="descripcion">Descripción</label>
