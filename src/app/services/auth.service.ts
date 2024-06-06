@@ -10,7 +10,7 @@ export class AuthService {
   private email: string | null = null;
   private role: string | null = null;
 
-  constructor(private http: HttpClient) {} // Inject the HttpClient module here
+  constructor(private http: HttpClient) {}
 
   private apiUrl = 'http://localhost:3000/usuarios';
 
@@ -22,6 +22,7 @@ export class AuthService {
   logout() {
     this.email = null;
     this.role = null;
+    localStorage.removeItem('authToken');
   }
 
   getEmail(): string | null {
@@ -33,7 +34,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.email && !!this.role;
+    return !!this.email && !!this.role && !!localStorage.getItem('authToken');
   }
 
   register(usuario: Usuario): Observable<Usuario> {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductoService } from '../services/producto.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Route, Router } from '@angular/router';
@@ -25,12 +25,11 @@ export class ProductosNuevoComponent implements OnInit{
   ) {
 
     this.productoForm = this.fb.group({
-      nombre: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]],
+      nombre: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]],
+      descripcion: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(150)]],
       imagen: ['', [Validators.required]],
-      precio: ['', [Validators.required]],
+      precio: ['', [Validators.required, Validators.min(0.01)]],
     });
-
   }
 
   ngOnInit(): void {
