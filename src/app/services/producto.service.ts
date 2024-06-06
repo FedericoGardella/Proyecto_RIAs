@@ -39,7 +39,7 @@ export class ProductoService {
   }
 
   // Agregar un nuevo producto
-  add(producto: Producto): Observable<Producto> {
+  add(producto: FormData): Observable<Producto> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.post<Producto>(this.apiUrl, producto, { headers });

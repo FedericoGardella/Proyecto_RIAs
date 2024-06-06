@@ -1,5 +1,5 @@
 <h1>Añadir Producto</h1>
-<form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="productoForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
     <label for="nombre">Nombre</label>
     <input id="nombre" formControlName="nombre" type="text" />
     <div *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched">
@@ -18,8 +18,10 @@
     </div>
 
     <label for="imagen">Imagen</label>
-    <input id="imagen" formControlName="imagen" type="text" />
-    <div *ngIf="productoForm.get('imagen')?.invalid && productoForm.get('imagen')?.touched">Imagen es requerida.</div>
+    <input id="imagen" (change)="onFileSelected($event)" type="file" />
+    <div *ngIf="productoForm.get('imagen')?.invalid && productoForm.get('imagen')?.touched">
+        <div *ngIf="productoForm.get('imagen')?.errors?.['required']">Imagen es requerida.</div>
+    </div>
 
     <label for="precio">Precio</label>
     <input id="precio" formControlName="precio" type="number" />

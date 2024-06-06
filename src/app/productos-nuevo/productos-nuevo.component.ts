@@ -18,6 +18,7 @@ import { Observable, map } from 'rxjs';
 export class ProductosNuevoComponent implements OnInit{
 
   productoForm: FormGroup;
+  selectedFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -45,10 +46,16 @@ export class ProductosNuevoComponent implements OnInit{
     };
   }
 
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0];
+    this.productoForm.patchValue({ imagen: this.selectedFile?.name });
+    console.log('Archivo seleccionado:', this.selectedFile);
+  }
+
   ngOnInit(): void {
   }
 
-  onSubmit(): void {
+  /* onSubmit(): void {
     if (this.productoForm.valid) {
       this.productoService.add(this.productoForm.value).subscribe({
         next: () => {
@@ -58,6 +65,32 @@ export class ProductosNuevoComponent implements OnInit{
           console.error('Error al añadir producto', error);
         }
       });
+    }
+  } */
+
+  onSubmit(): void {
+    if (this.productoForm.valid && this.selectedFile) {
+      const formData = new FormData();
+      formData.append('nombre', this.productoForm.get('nombre')?.value);
+      formData.append('descripcion', this.productoForm.get('descripcion')?.value);
+      formData.append('imagen', this.selectedFile);
+      formData.append('precio', this.productoForm.get('precio')?.value);
+
+      console.log('Formulario válido, enviando datos...');
+
+      this.productoService.add(formData).subscribe({
+        next: () => {
+          alert('Producto añadido exitosamente');
+          this.router.navigate(['/productos']);
+        },
+        error: (error) => {
+          console.error('Error al añadir el producto', error);
+          alert('Hubo un error al añadir el producto');
+        }
+      });
+    }
+    else {
+      console.log('Formulario inválido o archivo no seleccionado'); // Añadir esta línea para verificar el estado del formulario
     }
   }
 
