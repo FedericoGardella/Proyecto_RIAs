@@ -46,10 +46,10 @@ export class ProductoService {
   }
 
   // Editar un producto
-  edit(producto: Producto): Observable<Producto> {
+  edit(id: number, producto: FormData): Observable<Producto> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.put<Producto>(`${this.apiUrl}/${producto.id}`, producto, { headers });
+    return this.http.put<Producto>(`${this.apiUrl}/${id}`, producto, { headers });
   }
 
   // Eliminar un producto
