@@ -90,7 +90,7 @@ export class ProductosNuevoComponent implements OnInit{
       });
     }
     else {
-      console.log('Formulario inválido o archivo no seleccionado'); // Añadir esta línea para verificar el estado del formulario
+      console.log('Formulario inválido o archivo no seleccionado');
     }
   }
 
