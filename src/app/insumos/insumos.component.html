@@ -1,0 +1,26 @@
+<h1>Lista de Insumos</h1>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Unidad</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let insumo of insumos">
+      <td>{{ insumo.id }}</td>
+      <td>{{ insumo.nombre }}</td>
+      <td>{{ insumo.unidad }}</td>
+      <td>
+        <a [routerLink]="['/insumos/update', insumo?.id]" class="button is-info">Editar</a>
+        <button (click)="deleteInsumo(insumo?.id!)" class="button is-danger">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Botón para ir a agregar insumo -->
+<a [routerLink]="['add/']">Agregar Insumo</a>
+

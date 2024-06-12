@@ -109,7 +109,7 @@ export class ProductosEditarComponent implements OnInit{
           //mostrar datos en consola
           console.log('Datos del producto:', formData);          
   
-          this.productoService.edit(this.productoId, formData).subscribe({
+          this.productoService.update(this.productoId, formData).subscribe({
               next: (data) => {
                   console.log('Producto actualizado', data);
                   alert('Producto actualizado');

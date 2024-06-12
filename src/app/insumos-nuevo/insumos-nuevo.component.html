@@ -1,0 +1,22 @@
+<h1>Añadir insumo</h1>
+
+<form [formGroup]="insumoForm" (ngSubmit)="onSubmit()">
+    <label for="nombre">Nombre</label>
+    <input class="m-2" id="nombre" formControlName="nombre" type="text" />
+    <div *ngIf="insumoForm.get('nombre')?.invalid && insumoForm.get('nombre')?.touched">
+        <div *ngIf="insumoForm.get('nombre')?.errors?.['required']">El nombre es requerido</div>
+        <div *ngIf="insumoForm.get('nombre')?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</div>
+        <div *ngIf="insumoForm.get('nombre')?.errors?.['maxlength']">El nombre no puede exceder los 30 caracteres</div>
+        <div *ngIf="insumoForm.get('nombre')?.errors?.['uniqueName']">El nombre ya está en uso</div>
+    </div>
+
+    <label for="unidad">Unidad</label>
+    <input class="m-2" id="unidad" formControlName="unidad" type="text" />
+    <div *ngIf="insumoForm.get('unidad')?.invalid && insumoForm.get('unidad')?.touched">
+        <div *ngIf="insumoForm.get('unidad')?.errors?.['required']">La unidad es requerida</div>
+        <div *ngIf="insumoForm.get('unidad')?.errors?.['minlength']">La unidad debe tener al menos 2 caracteres</div>
+        <div *ngIf="insumoForm.get('unidad')?.errors?.['maxlength']">La unidad no puede exceder los 10 caracteres</div>
+    </div>
+
+    <button type="submit" [disabled]="insumoForm.invalid">Añadir insumo</button>
+</form>

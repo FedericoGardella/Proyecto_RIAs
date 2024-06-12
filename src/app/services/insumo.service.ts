@@ -1,58 +1,51 @@
-import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { isPlatformBrowser } from '@angular/common';
-import { Producto } from '../model/producto';
+import { Insumo } from '../model/insumo';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductoService {
-  private apiUrl = 'http://localhost:3000/productos';
+export class InsumoService {
+
+  private apiUrl = 'http://localhost:3000/insumos';
 
   constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-  get(): Observable<Producto[]> {
-
-      const token = localStorage.getItem('authToken');
-
+  get(): Observable<Insumo[]> {
+    const token = localStorage.getItem('authToken');
 
     if (!token) {
-      return new Observable<Producto[]>(observer => {
+      return new Observable<Insumo[]>(observer => {
         observer.error('No token found in localStorage');
       });
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    return this.http.get<Producto[]>(this.apiUrl, { headers });
+    return this.http.get<Insumo[]>(this.apiUrl, { headers });
   }
 
-  // Obtener un producto por id
-  getProductoById(id: number): Observable<Producto> {
+  getInsumoById(id: number): Observable<Insumo> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<Producto>(`${this.apiUrl}/${id}`, { headers });
+    return this.http.get<Insumo>(`${this.apiUrl}/${id}`, { headers });
   }
 
-  // Agregar un nuevo producto
-  add(producto: FormData): Observable<Producto> {
+  add(insumo: Insumo): Observable<Insumo> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post<Producto>(this.apiUrl, producto, { headers });
+    return this.http.post<Insumo>(this.apiUrl, insumo, { headers });
   }
 
-  // Editar un producto
-  update(id: number, producto: FormData): Observable<Producto> {
+  update(id: number, insumo: Insumo): Observable<Insumo> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.put<Producto>(`${this.apiUrl}/${id}`, producto, { headers });
+    return this.http.put<Insumo>(`${this.apiUrl}/${id}`, insumo, { headers });
   }
 
-  // Eliminar un producto
   delete(id: number): Observable<any> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);

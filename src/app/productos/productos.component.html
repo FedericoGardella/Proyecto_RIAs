@@ -19,7 +19,7 @@
         <td><img [src]="producto?.imagen" alt="Imagen de {{ producto?.nombre }}" style="max-width: 100px;"></td>
         <td>{{ producto?.precio | currency }}</td>
         <td>
-          <a [routerLink]="['/productos/edit', producto?.id]" class="button is-info">Editar</a>
+          <a [routerLink]="['/productos/update', producto?.id]" class="button is-info">Editar</a>
           <button (click)="deleteProducto(producto?.id!)" class="button is-danger">Eliminar</button>
       </tr>
     </tbody>
