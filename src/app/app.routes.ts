@@ -8,11 +8,13 @@ import { OrdenesComponent } from './ordenes/ordenes.component';
 import { InsumosComponent } from './insumos/insumos.component';
 import { InsumosNuevoComponent } from './insumos-nuevo/insumos-nuevo.component';
 import { InsumosEditarComponent } from './insumos-editar/insumos-editar.component';
+import { OrdenesNuevoComponent } from './ordenes-nuevo/ordenes-nuevo.component';
 
 export const routes: Routes = [
     { path: 'productos', component: ProductosComponent },
     { path: 'productos/add', component: ProductosNuevoComponent},
     { path: 'productos/update/:id', component: ProductosEditarComponent},
+    { path: 'ordenes/add', component: OrdenesNuevoComponent},
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'ordenes', component: OrdenesComponent },

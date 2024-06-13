@@ -16,18 +16,8 @@ export class ProductoService {
   ) {}
 
   get(): Observable<Producto[]> {
-
-      const token = localStorage.getItem('authToken');
-
-
-    if (!token) {
-      return new Observable<Producto[]>(observer => {
-        observer.error('No token found in localStorage');
-      });
-    }
-
+    const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
     return this.http.get<Producto[]>(this.apiUrl, { headers });
   }
 

@@ -33,7 +33,8 @@ export class OrdenesComponent implements OnInit{
   }
 
   editOrden(orden: Orden, estado : string): void {
-    this.ordenesService.edit(orden, estado).subscribe({
+    orden.estado = estado;
+    this.ordenesService.edit(orden).subscribe({
       next: () => {
         this.loadOrdenes(); // Recargar la lista de ordenes
       },

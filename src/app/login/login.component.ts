@@ -23,14 +23,8 @@ export class LoginComponent {
   constructor(private http: HttpClient, private router: Router, public authService: AuthService) {}
 
   login() {
-    this.http.post<{ token : string, role : string, nombre : string }>('http://localhost:3000/usuarios/login', { email: this.email, password: this.password })
-      .subscribe(response => {
-        this.authService.login(response.nombre, response.role);
-        localStorage.setItem('authToken', response.token);
-        this.router.navigate(['/productos']);
-      }, error => {
-        console.error('Login failed', error);
-      });
+    this.authService.login(this.email, this.password);
+    this.router.navigate(['/login']);
   } 
 
   logout() {

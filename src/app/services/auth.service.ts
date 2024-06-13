@@ -14,9 +14,18 @@ export class AuthService {
 
   private apiUrl = 'http://localhost:3000/usuarios';
 
-  login(email: string, role: string) {
-    this.email = email;
-    this.role = role;
+  login(email: string, password: string) {
+    this.http.post<{ token: string, role: string, nombre: string }>(this.apiUrl + '/login', { email, password })
+      .subscribe({
+        next: (response) => {
+          this.email = email;
+          this.role = response.role;
+          localStorage.setItem('authToken', response.token);
+        },
+        error: (error) => {
+          console.error('Login failed', error);
+        }
+      });
   }
 
   logout() {
