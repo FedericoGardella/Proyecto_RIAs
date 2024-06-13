@@ -5,10 +5,12 @@ import { ProductosNuevoComponent } from './productos-nuevo/productos-nuevo.compo
 import { ProductosEditarComponent } from './productos-editar/productos-editar.component';
 import { RegisterComponent } from './register/register.component';
 import { OrdenesComponent } from './ordenes/ordenes.component';
+import { OrdenesNuevoComponent } from './ordenes-nuevo/ordenes-nuevo.component';
 
 export const routes: Routes = [
     { path: 'productos', component: ProductosComponent },
     { path: 'productos/add', component: ProductosNuevoComponent},
+    { path: 'ordenes/add', component: OrdenesNuevoComponent},
     { path: 'productos/edit/:id', component: ProductosEditarComponent},
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },

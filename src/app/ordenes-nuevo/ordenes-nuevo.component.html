@@ -1,0 +1,39 @@
+<h1 class="title">Añadir Orden</h1>
+<form [formGroup]="ordenForm" (ngSubmit)="onSubmit()">
+
+  <div class="field">
+    <label class="label" for="productos">Productos</label>
+    <div class="control">
+      <div class="select is-multiple">
+        <select id="productos" formControlName="productos" multiple>
+          <option *ngFor="let producto of productos" [value]="producto.id">{{ producto.nombre }}</option>
+        </select>
+      </div>
+    </div>
+    <p class="help is-danger" *ngIf="ordenForm.get('productos')?.invalid && ordenForm.get('productos')?.touched">
+      Productos es requerido.
+    </p>
+  </div>
+
+  <div class="field">
+    <label class="label" for="fecha">Fecha</label>
+    <div class="control">
+      <input id="fecha" formControlName="fecha" type="date" class="input" />
+    </div>
+    <p class="help is-danger" *ngIf="ordenForm.get('fecha')?.invalid && ordenForm.get('fecha')?.touched">
+      Fecha es requerida.
+    </p>
+  </div>
+
+  <div class="field">
+    <label class="label">Cobro Total: {{ cobro | currency }}</label>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <button type="submit" class="button is-primary" [disabled]="ordenForm.invalid">Añadir Orden</button>
+    </div>
+  </div>
+
+</form>
+
