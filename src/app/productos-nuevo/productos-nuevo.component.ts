@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ProductoService } from '../services/producto.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Route, Router } from '@angular/router';
@@ -7,6 +7,8 @@ import { Producto } from '../model/producto';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Observable, map } from 'rxjs';
+import { Insumo } from '../model/insumo';
+import { InsumoService } from '../services/insumo.service';
 
 @Component({
   selector: 'app-productos-nuevo',
@@ -19,10 +21,13 @@ export class ProductosNuevoComponent implements OnInit{
 
   productoForm: FormGroup;
   selectedFile: File | null = null;
+  insumos: Insumo[] = [];
+  selectedInsumos: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     private productoService: ProductoService,
+    private insumoService: InsumoService,
     private router: Router
   ) {
 
@@ -31,6 +36,7 @@ export class ProductosNuevoComponent implements OnInit{
       descripcion: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(150)]],
       imagen: ['', [Validators.required]],
       precio: ['', [Validators.required, Validators.min(0.01)]],
+      insumos: this.fb.array([])
     });
   }
 
@@ -53,20 +59,45 @@ export class ProductosNuevoComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.loadInsumos();
   }
 
-  /* onSubmit(): void {
-    if (this.productoForm.valid) {
-      this.productoService.add(this.productoForm.value).subscribe({
-        next: () => {
-          this.router.navigate(['/productos']);
-        },
-        error: (error) => {
-          console.error('Error al añadir producto', error);
-        }
-      });
-    }
+  loadInsumos(): void {
+    this.insumoService.get().subscribe((insumos) => {
+      this.insumos = insumos;
+    });
+  }
+
+  get insumosControls() {
+    return (this.productoForm.get('insumos') as FormArray).controls;
+  }
+
+  /* addInsumo(): void {
+    const insumoForm = this.fb.group({
+      insumoId: ['', [Validators.required]],
+      cantidad: ['', [Validators.required, Validators.min(0.01)]]
+    });
+    this.insumosControls.push(insumoForm);
   } */
+
+  /* addInsumo(insumo: Insumo, cantidad: number): void {
+    const insumoData = {insumoId: insumo.id, cantidad};
+    this.selectedInsumos.push(insumoData);
+  } */
+
+  addInsumo(): void {
+    const insumosArray = this.productoForm.get('insumos') as FormArray;
+    insumosArray.push(this.fb.group({
+      insumoId: ['', Validators.required],
+      cantidad: ['', [Validators.required, Validators.min(0.01)]]
+    }));
+  }
+
+  removeInsumo(index: number): void {
+    //(this.productoForm.get('insumos') as FormArray).removeAt(index);
+    const insumosArray = this.productoForm.get('insumos') as FormArray;
+    insumosArray.removeAt(index);
+  }
 
   onSubmit(): void {
     if (this.productoForm.valid && this.selectedFile) {
@@ -75,6 +106,11 @@ export class ProductosNuevoComponent implements OnInit{
       formData.append('descripcion', this.productoForm.get('descripcion')?.value);
       formData.append('imagen', this.selectedFile);
       formData.append('precio', this.productoForm.get('precio')?.value);
+      const insumos = this.productoForm.get('insumos')?.value || [];
+        insumos.forEach((insumo: any, index: number) => {
+            formData.append(`insumos[${index}][insumoId]`, insumo.insumoId);
+            formData.append(`insumos[${index}][cantidad]`, insumo.cantidad);
+        });
 
       console.log('Formulario válido, enviando datos...');
 
@@ -93,5 +129,4 @@ export class ProductosNuevoComponent implements OnInit{
       console.log('Formulario inválido o archivo no seleccionado');
     }
   }
-
 }

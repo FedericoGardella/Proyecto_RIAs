@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
 })
 export class ProductosComponent implements OnInit {
   public productos: Producto[] = [];
-  public displayedColumns: string[] = ['id', 'nombre', 'descripcion', 'imagen', 'precio'];
+  public displayedColumns: string[] = ['id', 'nombre', 'descripcion', 'imagen', 'precio', 'insumos'];
   router: any;
 
   constructor(private productosService: ProductoService) {}
@@ -25,6 +25,7 @@ export class ProductosComponent implements OnInit {
 
   loadProductos(): void {
     this.productosService.get().subscribe((productos) => {
+      console.log('Productos recibidos:', productos);
       this.productos = productos;
     });
   }
