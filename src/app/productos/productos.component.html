@@ -8,6 +8,7 @@
         <th>Descripción</th>
         <th>Imagen</th>
         <th>Precio</th>
+        <th>Insumos</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -18,6 +19,12 @@
         <td>{{ producto?.descripcion }}</td>
         <td><img [src]="producto?.imagen" alt="Imagen de {{ producto?.nombre }}" style="max-width: 100px;"></td>
         <td>{{ producto?.precio | currency }}</td>
+        <td>
+          <ul>
+            <li *ngFor="let insumo of producto?.insumos">
+              {{ insumo.insumo.nombre }}: {{ insumo.cantidad }} {{ insumo.insumo.unidad }}
+            </li>
+          </ul>
         <td>
           <a [routerLink]="['/productos/update', producto?.id]" class="button is-info">Editar</a>
           <button (click)="deleteProducto(producto?.id!)" class="button is-danger">Eliminar</button>

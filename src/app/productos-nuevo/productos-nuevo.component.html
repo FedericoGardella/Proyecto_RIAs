@@ -27,5 +27,30 @@
     <input id="precio" formControlName="precio" type="number" />
     <div *ngIf="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched">Precio es requerido y debe ser un valor positivo.</div>
 
+    <!-- Insumos del producto -->
+    <div formArrayName="insumos">
+      <div *ngFor="let insumo of insumosControls; let i = index" [formGroupName]="i" class="box">
+        <div class="field">
+          <label class="label">Insumo</label>
+          <div class="control">
+            <div class="select">
+              <select formControlName="insumoId">
+                <option *ngFor="let insumo of insumos" [value]="insumo.id">{{ insumo.nombre }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Cantidad</label>
+          <div class="control">
+            <input class="input" type="number" formControlName="cantidad" placeholder="Cantidad del insumo">
+          </div>
+        </div>
+        <button type="button" class="button is-danger" (click)="removeInsumo(i)">Eliminar Insumo</button>
+      </div>
+    </div>
+    <button type="button" class="button is-primary" (click)="addInsumo()">Añadir Insumo</button>
+
+
     <button type="submit" [disabled]="productoForm.invalid">Añadir Producto</button>
 </form>
