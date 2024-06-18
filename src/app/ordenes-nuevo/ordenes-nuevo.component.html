@@ -6,7 +6,7 @@
     <div class="control">
       <div class="select is-multiple">
         <select id="productos" formControlName="productos" multiple>
-          <option *ngFor="let producto of productos" [value]="producto.id">{{ producto.nombre }}</option>
+          <option *ngFor="let producto of productos" [value]="producto.id -1">{{ producto.nombre }}</option>
         </select>
       </div>
     </div>
