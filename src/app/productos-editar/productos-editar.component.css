@@ -33,3 +33,13 @@
   .btn-add:hover {
     background-color: #388e3c; /* Color verde más oscuro al pasar el mouse */
   }
+
+  .cantidad-unidad-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .cantidad-unidad-container input {
+    margin-right: 8px; /* Ajusta el espacio entre el input y el div según sea necesario */
+  }
+  

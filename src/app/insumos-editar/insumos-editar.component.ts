@@ -17,6 +17,7 @@ export class InsumosEditarComponent implements OnInit{
 
   insumoForm: FormGroup;
   insumoId: number;
+  unidades = ['Kg', 'Lt'];
 
   constructor(
     private fb: FormBuilder,
@@ -27,7 +28,7 @@ export class InsumosEditarComponent implements OnInit{
     this.insumoId = +this.route.snapshot.params['id'];
     this.insumoForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)], [this.uniqueNameValidator()]],
-      unidad: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      unidad: ['', [Validators.required]],
     });
   }
 
@@ -71,5 +72,4 @@ export class InsumosEditarComponent implements OnInit{
       });
     }
   }
-
 }

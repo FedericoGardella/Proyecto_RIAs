@@ -132,13 +132,6 @@ export class ProductosEditarComponent implements OnInit{
   }
 
   getInsumoNombre(insumoId: number): string {
-    //Asegurarse de que el insumo es un número
-    if (isNaN(insumoId)) {
-      console.log('Insumo no es un número:', insumoId);
-    }
-    else {
-      console.log('Insumo es un número:', insumoId);
-    }
 
     const insumo = this.insumos.find(i => i.id === insumoId);
 
@@ -158,6 +151,11 @@ export class ProductosEditarComponent implements OnInit{
       console.log('Insumo no encontrado:', insumoId);
     }
     return insumo ? insumo.nombre : 'Insumo no encontrado';
+  }
+
+  getInsumoUnidad(insumoId: number): string {
+    const insumo = this.insumos.find(i => i.id === insumoId);
+    return insumo ? insumo.unidad : 'Insumo no encontrado';
   }
   
   onSubmit(): void {

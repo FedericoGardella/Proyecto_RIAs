@@ -77,7 +77,12 @@ export class ProductosNuevoComponent implements OnInit{
   getInsumoNombre(insumoId: number): string {
     const insumo = this.insumos.find(i => i.id === insumoId);
     return insumo ? insumo.nombre : 'Insumo no encontrado';
-  }  
+  }
+
+  getInsumoUnidad(insumoId: number): string {
+    const insumo = this.insumos.find(i => i.id === insumoId);
+    return insumo ? insumo.unidad : 'Insumo no encontrado';
+  }
 
   addInsumo(insumoId: number): void {
     const selectedInsumo = this.insumos.find(insumo => insumo.id === insumoId);
