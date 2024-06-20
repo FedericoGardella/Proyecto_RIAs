@@ -2,7 +2,7 @@
 <form [formGroup]="productoForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
     <label for="nombre">Nombre</label>
     <input id="nombre" formControlName="nombre" type="text" />
-    <div *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched">
+    <div *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched && productoForm.get('nombre')?.errors">
         <div *ngIf="productoForm.get('nombre')?.errors?.['required']">Nombre es requerido.</div>
         <div *ngIf="productoForm.get('nombre')?.errors?.['minlength']">Nombre debe tener al menos 5 caracteres.</div>
         <div *ngIf="productoForm.get('nombre')?.errors?.['maxlength']">Nombre no puede exceder los 30 caracteres.</div>
@@ -27,16 +27,28 @@
     <input id="precio" formControlName="precio" type="number" />
     <div *ngIf="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched">Precio es requerido y debe ser un valor positivo.</div>
 
+    <!-- Lista de insumos disponibles para seleccionar -->
+    <div class="field">
+      <label class="label">Seleccionar Insumo</label>
+      <div class="control">
+        <div class="select">
+          <select #insumoSelect>
+            <option *ngFor="let insumo of availableInsumos" [value]="insumo.id">{{ insumo.nombre }}</option>
+          </select>
+        </div>
+      </div>
+      <button type="button" class="button is-primary" (click)="addInsumo(+insumoSelect.value)">Añadir Insumo</button>
+    </div>
+
     <!-- Insumos del producto -->
     <div formArrayName="insumos">
       <div *ngFor="let insumo of insumosControls; let i = index" [formGroupName]="i" class="box">
         <div class="field">
           <label class="label">Insumo</label>
           <div class="control">
-            <div class="select">
-              <select formControlName="insumoId">
-                <option *ngFor="let insumo of insumos" [value]="insumo.id">{{ insumo.nombre }}</option>
-              </select>
+            <div class="input">
+              <div>{{ getInsumoNombre(insumo?.get('insumoId')?.value) }}</div>
+              <input type="hidden" formControlName="insumoId">
             </div>
           </div>
         </div>
@@ -49,7 +61,8 @@
         <button type="button" class="button is-danger" (click)="removeInsumo(i)">Eliminar Insumo</button>
       </div>
     </div>
-    <button type="button" class="button is-primary" (click)="addInsumo()">Añadir Insumo</button>
+
+
 
 
     <button type="submit" [disabled]="productoForm.invalid">Añadir Producto</button>

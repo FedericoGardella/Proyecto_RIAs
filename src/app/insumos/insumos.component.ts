@@ -25,6 +25,7 @@ export class InsumosComponent implements OnInit {
   loadInsumos(): void {
     this.insumoService.get().subscribe((insumos) => {
       this.insumos = insumos;
+      console.log('Insumos cargados', insumos);
     });
   }
 
