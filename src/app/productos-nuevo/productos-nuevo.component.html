@@ -2,7 +2,7 @@
 <form [formGroup]="productoForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
     <label for="nombre">Nombre</label>
     <input id="nombre" formControlName="nombre" type="text" />
-    <div *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched">
+    <div *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched && productoForm.get('nombre')?.errors">
         <div *ngIf="productoForm.get('nombre')?.errors?.['required']">Nombre es requerido.</div>
         <div *ngIf="productoForm.get('nombre')?.errors?.['minlength']">Nombre debe tener al menos 5 caracteres.</div>
         <div *ngIf="productoForm.get('nombre')?.errors?.['maxlength']">Nombre no puede exceder los 30 caracteres.</div>
@@ -30,27 +30,34 @@
     <!-- Insumos del producto -->
     <div formArrayName="insumos">
       <div *ngFor="let insumo of insumosControls; let i = index" [formGroupName]="i" class="box">
-        <div class="field">
+        <div>
           <label class="label">Insumo</label>
           <div class="control">
-            <div class="select">
-              <select formControlName="insumoId">
-                <option *ngFor="let insumo of insumos" [value]="insumo.id">{{ insumo.nombre }}</option>
-              </select>
+            <div class="input">
+              <div>{{ getInsumoNombre(insumo?.get('insumoId')?.value) }}</div>
+              <input type="hidden" formControlName="insumoId">
             </div>
           </div>
         </div>
         <div class="field">
           <label class="label">Cantidad</label>
-          <div class="control">
+          <div class="cantidad-unidad-container">
             <input class="input" type="number" formControlName="cantidad" placeholder="Cantidad del insumo">
+            <div>{{ getInsumoUnidad(insumo?.get('insumoId')?.value) }}</div>
           </div>
         </div>
         <button type="button" class="button is-danger" (click)="removeInsumo(i)">Eliminar Insumo</button>
       </div>
     </div>
-    <button type="button" class="button is-primary" (click)="addInsumo()">Añadir Insumo</button>
 
+    <!-- Añadir Insumo -->
+    <div>
+      <label>Añadir Insumo:</label>
+      <select #insumoSelect>
+        <option *ngFor="let insumo of availableInsumos" [value]="insumo.id">{{ insumo.nombre }}</option>
+      </select>
+      <button type="button" class="btn-add" (click)="addInsumo(+insumoSelect.value)">Añadir Insumo</button>
+    </div>
 
     <button type="submit" [disabled]="productoForm.invalid">Añadir Producto</button>
 </form>

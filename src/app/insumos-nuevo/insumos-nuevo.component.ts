@@ -17,6 +17,7 @@ import { Observable, map } from 'rxjs';
 export class InsumosNuevoComponent implements OnInit{
 
   insumoForm: FormGroup;
+  unidades = ['Kg', 'Lt'];
 
   constructor(
     private fb: FormBuilder,
@@ -26,7 +27,7 @@ export class InsumosNuevoComponent implements OnInit{
 
     this.insumoForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)], [this.uniqueNameValidator()]],
-      unidad: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      unidad: ['', [Validators.required]],
     });
   }
 

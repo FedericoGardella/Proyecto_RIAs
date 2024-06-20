@@ -11,11 +11,11 @@
     </div>
 
     <label for="unidad">Unidad</label>
-    <input class="m-2" id="unidad" formControlName="unidad" type="text" />
+    <select class="m-2" id="unidad" formControlName="unidad">
+        <option *ngFor="let unidad of unidades" [value]="unidad">{{ unidad }}</option>
+    </select>
     <div *ngIf="insumoForm.get('unidad')?.invalid && insumoForm.get('unidad')?.touched">
         <div *ngIf="insumoForm.get('unidad')?.errors?.['required']">La unidad es requerida</div>
-        <div *ngIf="insumoForm.get('unidad')?.errors?.['minlength']">La unidad debe tener al menos 2 caracteres</div>
-        <div *ngIf="insumoForm.get('unidad')?.errors?.['maxlength']">La unidad no puede exceder los 10 caracteres</div>
     </div>
 
     <button type="submit" [disabled]="insumoForm.invalid">Añadir insumo</button>

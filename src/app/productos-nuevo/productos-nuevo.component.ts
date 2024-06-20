@@ -23,6 +23,7 @@ export class ProductosNuevoComponent implements OnInit{
   selectedFile: File | null = null;
   insumos: Insumo[] = [];
   selectedInsumos: any[] = [];
+  availableInsumos: Insumo[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -65,6 +66,7 @@ export class ProductosNuevoComponent implements OnInit{
   loadInsumos(): void {
     this.insumoService.get().subscribe((insumos) => {
       this.insumos = insumos;
+      this.updateAvailableInsumos();
     });
   }
 
@@ -72,31 +74,38 @@ export class ProductosNuevoComponent implements OnInit{
     return (this.productoForm.get('insumos') as FormArray).controls;
   }
 
-  /* addInsumo(): void {
-    const insumoForm = this.fb.group({
-      insumoId: ['', [Validators.required]],
-      cantidad: ['', [Validators.required, Validators.min(0.01)]]
-    });
-    this.insumosControls.push(insumoForm);
-  } */
+  getInsumoNombre(insumoId: number): string {
+    const insumo = this.insumos.find(i => i.id === insumoId);
+    return insumo ? insumo.nombre : 'Insumo no encontrado';
+  }
 
-  /* addInsumo(insumo: Insumo, cantidad: number): void {
-    const insumoData = {insumoId: insumo.id, cantidad};
-    this.selectedInsumos.push(insumoData);
-  } */
+  getInsumoUnidad(insumoId: number): string {
+    const insumo = this.insumos.find(i => i.id === insumoId);
+    return insumo ? insumo.unidad : 'Insumo no encontrado';
+  }
 
-  addInsumo(): void {
-    const insumosArray = this.productoForm.get('insumos') as FormArray;
-    insumosArray.push(this.fb.group({
-      insumoId: ['', Validators.required],
-      cantidad: ['', [Validators.required, Validators.min(0.01)]]
-    }));
+  addInsumo(insumoId: number): void {
+    const selectedInsumo = this.insumos.find(insumo => insumo.id === insumoId);
+    if (selectedInsumo) {
+      const insumosArray = this.productoForm.get('insumos') as FormArray;
+      insumosArray.push(this.fb.group({
+        insumoId: [insumoId, Validators.required],
+        cantidad: ['', [Validators.required, Validators.min(0.01)]]
+      }));
+      this.updateAvailableInsumos();
+    }
   }
 
   removeInsumo(index: number): void {
     //(this.productoForm.get('insumos') as FormArray).removeAt(index);
     const insumosArray = this.productoForm.get('insumos') as FormArray;
     insumosArray.removeAt(index);
+    this.updateAvailableInsumos();
+  }
+
+  updateAvailableInsumos(): void {
+    const selectedInsumoIds = this.insumosControls.map(control => control.get('insumoId')?.value);
+    this.availableInsumos = this.insumos.filter(insumo => !selectedInsumoIds.includes(insumo.id));
   }
 
   onSubmit(): void {

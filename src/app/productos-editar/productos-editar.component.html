@@ -29,27 +29,28 @@
 
     <!-- Insumos del producto -->
     <div formArrayName="insumos">
-        <div *ngFor="let insumo of insumosControls; let i = index" [formGroupName]="i" class="box">
-          <div class="field">
-            <label class="label">Insumo</label>
-            <div class="control">
-              <div class="select">
-                <select formControlName="insumoId">
-                  <option *ngFor="let insumo of insumos" [value]="insumo.id">{{ insumo.nombre }}</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label">Cantidad</label>
-            <div class="control">
-              <input class="input" type="number" formControlName="cantidad" placeholder="Cantidad del insumo">
-            </div>
-          </div>
-          <button type="button" class="button is-danger" (click)="removeInsumo(i)">Eliminar Insumo</button>
+      <div *ngFor="let insumo of insumosControls; let i = index" [formGroupName]="i" class="box">
+        <div>
+          <label>Insumo:</label>
+          <div>{{ getInsumoNombre(insumo.get('insumoId')?.value) }}</div>
         </div>
+        <div>
+          <label>Cantidad:</label>
+          <div class="cantidad-unidad-container">
+            <input formControlName="cantidad" type="number" placeholder="Cantidad del insumo" />
+            <div>{{ getInsumoUnidad(insumo.get('insumoId')?.value) }}</div>
+          </div>
+        </div>
+        <button type="button" (click)="removeInsumo(i)" class="btn-remove">Eliminar Insumo</button>
       </div>
-      <button type="button" class="button is-primary" (click)="addInsumo()">Añadir Insumo</button>
+    </div>
+    <div>
+      <label>Añadir Insumo:</label>
+      <select #insumoSelect>
+        <option *ngFor="let insumo of availableInsumos" [value]="insumo.id">{{ insumo.nombre }}</option>
+      </select>
+      <button type="button" (click)="addInsumo(+insumoSelect.value)" class="btn-add">Añadir Insumo</button>
+    </div>
 
     <button type="submit" [disabled]="productoForm.invalid">Actualizar Producto</button>
 </form>

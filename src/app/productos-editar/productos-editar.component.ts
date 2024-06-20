@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Observable, map } from 'rxjs';
 import { InsumoService } from '../services/insumo.service';
 import { Insumo } from '../model/insumo';
+import e from 'express';
 
 @Component({
   selector: 'app-productos-editar',
@@ -53,8 +54,18 @@ export class ProductosEditarComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.loadInsumos();
-    this.loadProducto();
+    this.loadInsumos().subscribe(() => {
+      this.loadProducto();
+    });
+  }
+
+  loadInsumos(): Observable<Insumo[]> {
+    return this.insumoService.get().pipe(map((insumos) => {
+      this.insumos = insumos;
+      //this.updateAvailableInsumos();
+      console.log('Insumos cargados', insumos);
+      return insumos;
+    }));
   }
 
   loadProducto(): void {
@@ -63,27 +74,22 @@ export class ProductosEditarComponent implements OnInit{
         this.productoForm.patchValue(data);
         this.setInsumos(data.insumos);
         console.log('Producto cargado', data);
+        this.updateAvailableInsumos();
       },
       error: (error) => {
         console.error('Error al cargar producto', error);
       }
     });
   }
-  
-  loadInsumos(): void {
-    this.insumoService.get().subscribe((insumos) => {
-      this.insumos = insumos;
-      this.updateAvailableInsumos();
-    });
-  }
 
   setInsumos(insumos: any[]): void {
     const insumosFGs = insumos.map(insumo => this.fb.group({
-      insumoId: [insumo.id || insumo.insumo.id, Validators.required],
+      insumoId: [+insumo.id, Validators.required],
       cantidad: [insumo.cantidad, Validators.required]
     }));
     const insumoFormArray = this.fb.array(insumosFGs);
     this.productoForm.setControl('insumos', insumoFormArray);
+    //this.updateAvailableInsumos();
   }
 
   get insumosControls(): AbstractControl[] {
@@ -91,8 +97,17 @@ export class ProductosEditarComponent implements OnInit{
   }
 
   updateAvailableInsumos(): void {
-    const selectedInsumoIds = this.insumosControls.map(control => control.get('insumoId')?.value);
+    // Obtener los IDs de los insumos ya seleccionados
+    const selectedInsumoIds = this.insumosControls.map(control => +control.get('insumoId')?.value);
+
+    // Filtrar los insumos disponibles
     this.availableInsumos = this.insumos.filter(insumo => !selectedInsumoIds.includes(insumo.id));
+
+    //mostrar los insumos agregados en consola
+    console.log('Insumos agregados:', selectedInsumoIds);
+
+    //mostrar los insumos disponibles en consola
+    console.log('Insumos disponibles:', this.availableInsumos);
   }
 
   onFileSelected(event: any): void {
@@ -101,21 +116,46 @@ export class ProductosEditarComponent implements OnInit{
     console.log('Archivo seleccionado:', this.selectedFile);
   }
 
-  addInsumo(): void {
-    (this.productoForm.get('insumos') as FormArray).push(this.fb.group({
-      insumoId: ['', Validators.required],
+  addInsumo(insumoId: number): void {
+    const insumosArray = this.productoForm.get('insumos') as FormArray;
+    insumosArray.push(this.fb.group({
+      insumoId: [insumoId, Validators.required],
       cantidad: ['', Validators.required]
     }));
     this.updateAvailableInsumos();
   }
 
   removeInsumo(index: number): void {
-    (this.productoForm.get('insumos') as FormArray).removeAt(index);
+    const insumosArray = this.productoForm.get('insumos') as FormArray;
+    insumosArray.removeAt(index);
     this.updateAvailableInsumos();
   }
 
-  isInsumoSelected(insumoId: number): boolean {
-    return this.insumosControls.some(control => control.get('insumoId')?.value === insumoId);
+  getInsumoNombre(insumoId: number): string {
+
+    const insumo = this.insumos.find(i => i.id === insumoId);
+
+    //mostrar todos los insumos en consola
+    console.log('Insumos:', this.insumos);
+
+    //mostrar solo el nombre de los insumos en consola
+    console.log('Nombre de los insumos:', this.insumos.map(i => i.nombre));
+
+    //mostrar insumos disponibles en consola
+    console.log('Insumos disponibles:', this.availableInsumos);
+
+    if (insumo) {
+      console.log('Insumo encontrado:', insumo);
+    }
+    else {
+      console.log('Insumo no encontrado:', insumoId);
+    }
+    return insumo ? insumo.nombre : 'Insumo no encontrado';
+  }
+
+  getInsumoUnidad(insumoId: number): string {
+    const insumo = this.insumos.find(i => i.id === insumoId);
+    return insumo ? insumo.unidad : 'Insumo no encontrado';
   }
   
   onSubmit(): void {
@@ -161,5 +201,4 @@ export class ProductosEditarComponent implements OnInit{
       console.log('Formulario inválido');
     }
   }
-
 }
