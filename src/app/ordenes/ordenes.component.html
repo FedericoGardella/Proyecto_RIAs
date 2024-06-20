@@ -14,7 +14,7 @@
     <tbody>
       <tr *ngFor="let orden of ordenes">
         <td>{{ orden?.id }}</td>
-        <td>{{ orden?.productos }}</td>
+        <td><pre>{{ orden?.productos | formatProductos }}</pre></td>
         <td>{{ orden?.fecha }}</td>
         <td>{{ orden?.cobro | currency }}</td>
         <td>

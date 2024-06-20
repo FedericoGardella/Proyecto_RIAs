@@ -11,8 +11,7 @@ export class ProductoService {
   private apiUrl = 'http://localhost:3000/productos';
 
   constructor(
-    private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private http: HttpClient
   ) {}
 
   get(): Observable<Producto[]> {

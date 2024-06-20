@@ -34,7 +34,7 @@ export class AuthService {
     localStorage.removeItem('authToken');
   }
 
-  getEmail(): string | null {
+  public getEmail(): string | null {
     return this.email;
   }
 

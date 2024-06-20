@@ -4,12 +4,14 @@ import { OrdenService } from '../services/orden.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { ProductoService } from '../services/producto.service';
+import { FormatProductosPipe } from '../format-productos.pipe';
 
 
 @Component({
   selector: 'app-ordenes',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, FormatProductosPipe],
   templateUrl: './ordenes.component.html',
   styleUrl: './ordenes.component.css'
 })
@@ -20,7 +22,10 @@ export class OrdenesComponent implements OnInit{
   public displayedColumns: string[] = ['id', 'productos', 'fecha', 'cobro', 'estado'];
   router: any;
 
-  constructor(private ordenesService: OrdenService) {}
+  constructor(
+    private ordenesService: OrdenService,
+    private productoService: ProductoService,
+  ) {}
 
   ngOnInit(): void {
     this.loadOrdenes();

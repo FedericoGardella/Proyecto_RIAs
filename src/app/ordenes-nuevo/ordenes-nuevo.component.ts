@@ -1,125 +1,93 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { OrdenService } from '../services/orden.service';
 import { ProductoService } from '../services/producto.service';
 import { Router } from '@angular/router';
 import { Producto } from '../model/producto';
+import { Orden } from '../model/orden';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import Choices from 'choices.js';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-ordenes-nuevo',
   standalone: true,
-  imports: [ReactiveFormsModule, HttpClientModule, CommonModule],
   templateUrl: './ordenes-nuevo.component.html',
-  styleUrls: ['./ordenes-nuevo.component.css']
+  styleUrls: ['./ordenes-nuevo.component.scss'],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule]
 })
-export class OrdenesNuevoComponent implements OnInit, AfterViewInit {
-
-  ordenForm: FormGroup;
+export class OrdenesNuevoComponent implements OnInit {
   productos: Producto[] = [];
-  cobro: number = 0;
-  choices: any;
+  ordenForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
-    private ordenService: OrdenService,
     private productoService: ProductoService,
+    private ordenService: OrdenService,
+    private authService: AuthService,
+    private fb: FormBuilder,
     private router: Router
   ) {
     this.ordenForm = this.fb.group({
-      productos: [[], [Validators.required]], 
-      fecha: ['', [Validators.required]],
-    });
-
-    this.ordenForm.get('productos')?.valueChanges.subscribe(selectedProductIds => {
-      const ids = selectedProductIds.map((id: any) => (parseInt(id, 10)));
-      console.log('Productos seleccionados:', ids);
-      this.calcularCobro(ids);
+      fecha: ['', Validators.required],
+      productos: this.fb.array([])
     });
   }
 
-  ngOnInit(): void {
-    this.cargarProductos();
-  }
-
-  ngAfterViewInit(): void {
-    this.initializeChoices();
-  }
-
-  cargarProductos(): void {
-    this.productoService.get().subscribe({
-      next: (productos) => {
-        console.log('Productos cargados:', productos);
-        this.productos = productos;
-        this.updateChoices();
-      },
-      error: (error) => {
-        console.error('Error al cargar los productos', error);
-      }
+  ngOnInit() {
+    this.productoService.get().subscribe((data: Producto[]) => {
+      this.productos = data;
+      this.addProductControls();
     });
   }
 
-  initializeChoices(): void {
-    const element = document.getElementById('productos');
-    if (element) {
-      this.choices = new Choices(element, {
-        removeItemButton: true,
-        noResultsText: 'No hay resultados',
-        noChoicesText: 'No hay opciones disponibles',
-        itemSelectText: 'Elegir',
-        placeholderValue: 'Selecciona productos',
-        allowHTML: true
-      });
-    }
+  addProductControls() {
+    const control = <FormArray>this.ordenForm.controls['productos'];
+    this.productos.forEach((producto) => {
+      control.push(this.fb.group({
+        id: [producto.id],
+        nombre: [producto.nombre],
+        cantidad: [0, [Validators.min(0)]]
+      }));
+    });
   }
 
-  updateChoices(): void {
-    if (this.choices) {
-      this.choices.clearStore();
-      this.productos.forEach(producto => {
-        this.choices.setChoices([{ value: producto.id.toString(), label: producto.nombre, selected: false, disabled: false }], 'value', 'label', false);
-        console.log('Producto añadido a Choices:', { id: producto.id, nombre: producto.nombre });
-      });
-    }
-    console.log('Estado actual de Choices:', this.choices._currentState);
-    console.log('Opciones actuales de Choices:', this.choices._currentState.choices);
+  get productosFormArray() {
+    return <FormArray>this.ordenForm.get('productos');
   }
 
-  calcularCobro(selectedProductIds: number[]): void {
-    console.log('Productos para calcular cobro:', selectedProductIds);
-    this.cobro = selectedProductIds
-      .map(id => this.productos.find(producto => producto.id === id)?.precio || 0)
-      .reduce((total, precio) => total + precio, 0);
-    console.log('Cobro calculado:', this.cobro);
-  }
-
-  onSubmit(): void {
+  onSubmit() {
     if (this.ordenForm.valid) {
-      const nuevaOrden = {
-        productos: this.ordenForm.get('productos')?.value,
+      const emailCliente = this.authService.getEmail();
+      if (!emailCliente) {
+        console.error('Email del cliente es null o undefined');
+        return;
+      }
+
+      const productosConCantidad = this.ordenForm.value.productos.filter((p: any) => p.cantidad > 0);
+
+      const nuevaOrden: Orden = {
+        id: 0,
+        productos: productosConCantidad.map((p: any) => ({
+          id: p.id,
+          cantidad: p.cantidad
+        })),
         fecha: this.ordenForm.get('fecha')?.value,
-        cobro: this.cobro,
+        cobro: this.calculateCobro(productosConCantidad),
         estado: 'Pendiente',
+        cliente: emailCliente,
       };
-  
-      console.log('Formulario válido, enviando datos...');
-  
-      this.ordenService.add(nuevaOrden).subscribe({
-        next: () => {
-          alert('Orden añadida exitosamente');
-          this.router.navigate(['/ordenes']);
-        },
-        error: (error) => {
-          console.error('Error al añadir la orden', error);
-          alert('Hubo un error al añadir la orden');
-        }
+
+      this.ordenService.add(nuevaOrden).subscribe(response => {
+        this.router.navigate(['/ordenes']);
       });
-    } else {
-      console.log('Formulario inválido');
     }
   }
-  
+
+  calculateCobro(productos: { id: string, cantidad: number }[]): number {
+    return productos.reduce((total, producto) => {
+      const productoInfo = this.productos.find(p => p.id === +producto.id);
+      return total + (productoInfo ? productoInfo.precio * producto.cantidad : 0);
+    }, 0);
+  }
 }

@@ -1,39 +1,48 @@
-<h1 class="title">Añadir Orden</h1>
-<form [formGroup]="ordenForm" (ngSubmit)="onSubmit()">
-
-  <div class="field">
-    <label class="label" for="productos">Productos</label>
-    <div class="control">
-      <div class="select is-multiple">
-        <select id="productos" formControlName="productos" multiple>
-          <option *ngFor="let producto of productos" [value]="producto.id -1">{{ producto.nombre }}</option>
-        </select>
+<div class="container">
+  <form [formGroup]="ordenForm" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label class="label" for="fecha">Fecha</label>
+      <div class="control">
+        <input id="fecha" formControlName="fecha" type="date" class="input" />
+      </div>
+      <p class="help is-danger" *ngIf="ordenForm.get('fecha')?.invalid && ordenForm.get('fecha')?.touched">
+        Fecha es requerida.
+      </p>
+    </div>
+    <div formArrayName="productos" class="columns is-multiline">
+      <div class="column is-one-quarter" *ngFor="let producto of productosFormArray.controls; let i = index" [formGroupName]="i">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <img [src]="productos[i].imagen" alt="{{ productos[i].nombre }}">
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <p class="title is-4">{{ productos[i].nombre }}</p>
+                <p class="subtitle is-6">{{ productos[i].descripcion }}</p>
+              </div>
+            </div>
+            <div class="content">
+              <p>Precio: {{ productos[i].precio | currency }}</p>
+              <div class="field">
+                <label class="label">Cantidad</label>
+                <div class="control">
+                  <input class="input" type="number" formControlName="cantidad">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <p class="help is-danger" *ngIf="ordenForm.get('productos')?.invalid && ordenForm.get('productos')?.touched">
-      Productos es requerido.
-    </p>
-  </div>
-
-  <div class="field">
-    <label class="label" for="fecha">Fecha</label>
-    <div class="control">
-      <input id="fecha" formControlName="fecha" type="date" class="input" />
+    <div class="field">
+      <div class="control">
+        <button class="button is-primary" type="submit">Crear Orden</button>
+      </div>
     </div>
-    <p class="help is-danger" *ngIf="ordenForm.get('fecha')?.invalid && ordenForm.get('fecha')?.touched">
-      Fecha es requerida.
-    </p>
-  </div>
+  </form>
+</div>
 
-  <div class="field">
-    <label class="label">Cobro Total: {{ cobro | currency }}</label>
-  </div>
-
-  <div class="field">
-    <div class="control">
-      <button type="submit" class="button is-primary" [disabled]="ordenForm.invalid">Añadir Orden</button>
-    </div>
-  </div>
-
-</form>
 
