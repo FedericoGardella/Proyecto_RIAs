@@ -135,21 +135,18 @@ export class ProductosEditarComponent implements OnInit{
 
     const insumo = this.insumos.find(i => i.id === insumoId);
 
-    //mostrar todos los insumos en consola
+   /*  //mostrar todos los insumos en consola
     console.log('Insumos:', this.insumos);
-
     //mostrar solo el nombre de los insumos en consola
     console.log('Nombre de los insumos:', this.insumos.map(i => i.nombre));
-
     //mostrar insumos disponibles en consola
     console.log('Insumos disponibles:', this.availableInsumos);
-
     if (insumo) {
       console.log('Insumo encontrado:', insumo);
     }
     else {
       console.log('Insumo no encontrado:', insumoId);
-    }
+    } */
     return insumo ? insumo.nombre : 'Insumo no encontrado';
   }
 
