@@ -1,50 +1,34 @@
-import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { isPlatformBrowser } from '@angular/common';
 import { Producto } from '../model/producto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductoService {
+
   private apiUrl = 'http://localhost:3000/productos';
 
-  constructor(
-    private http: HttpClient
-  ) {}
+  constructor(private http: HttpClient) { }
 
   get(): Observable<Producto[]> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<Producto[]>(this.apiUrl, { headers });
+    return this.http.get<Producto[]>(this.apiUrl);
   }
 
-  // Obtener un producto por id
   getProductoById(id: number): Observable<Producto> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<Producto>(`${this.apiUrl}/${id}`, { headers });
+    return this.http.get<Producto>(`${this.apiUrl}/${id}`);
   }
 
-  // Agregar un nuevo producto
   add(producto: FormData): Observable<Producto> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post<Producto>(this.apiUrl, producto, { headers });
+    return this.http.post<Producto>(this.apiUrl, producto);
   }
 
-  // Editar un producto
   update(id: number, producto: FormData): Observable<Producto> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.put<Producto>(`${this.apiUrl}/${id}`, producto, { headers });
+    return this.http.put<Producto>(`${this.apiUrl}/${id}`, producto);
   }
 
-  // Eliminar un producto
   delete(id: number): Observable<any> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.delete(`${this.apiUrl}/${id}`, { headers });
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
