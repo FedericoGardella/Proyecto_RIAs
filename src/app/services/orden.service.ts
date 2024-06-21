@@ -16,6 +16,10 @@ export class OrdenService {
     return this.http.get<Orden[]>(this.apiUrl);
   }
 
+  getOrdenById(id: number): Observable<Orden> {
+    return this.http.get<Orden>(`${this.apiUrl}/${id}`);
+  }
+
   add(orden: any): Observable<Orden> {
     return this.http.post<Orden>(this.apiUrl, orden);
   }

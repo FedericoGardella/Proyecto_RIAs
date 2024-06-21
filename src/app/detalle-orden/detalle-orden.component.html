@@ -1,0 +1,22 @@
+<section class="section">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-half is-offset-one-quarter">
+          <h1 class="title">Detalle de la Orden</h1>
+          <div class="box" *ngIf="data">
+            <div class="content">
+            <p><strong>Cliente:</strong> {{ data.cliente }}</p>
+            <p><strong>Fecha:</strong> {{ data.fecha }}</p>
+            <p><strong>Cobro:</strong> ${{ data.cobro }}</p>
+            <p><strong>Estado:</strong> {{ data.estado }}</p>
+            <h2 class="subtitle">Productos:</h2>
+                <pre>{{ data.productos | formatProductos | async }}</pre>
+            <h2 class="subtitle">Insumos Totales:</h2>
+                <pre>{{ insumos | json | formatInsumos | async }}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
