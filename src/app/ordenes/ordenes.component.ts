@@ -3,8 +3,7 @@ import { Orden } from '../model/orden';
 import { OrdenService } from '../services/orden.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { ProductoService } from '../services/producto.service';
+import { Router, RouterModule } from '@angular/router';
 import { FormatProductosPipe } from '../format-productos.pipe';
 
 
@@ -20,11 +19,11 @@ export class OrdenesComponent implements OnInit{
 
   public ordenes: Orden[] = [];
   public displayedColumns: string[] = ['id', 'productos', 'fecha', 'cobro', 'estado'];
-  router: any;
+
 
   constructor(
     private ordenesService: OrdenService,
-    private productoService: ProductoService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -36,6 +35,10 @@ export class OrdenesComponent implements OnInit{
       this.ordenes = ordenes;
     });
   }
+
+  verOrden(orden: Orden): void {
+    this.router.navigate(['/ordenes', orden.id]);
+  }  
 
   editOrden(orden: Orden, estado : string): void {
     orden.estado = estado;
