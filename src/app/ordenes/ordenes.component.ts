@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { FormatProductosPipe } from '../format-productos.pipe';
+import e from 'express';
 
 
 @Component({
@@ -19,7 +20,12 @@ export class OrdenesComponent implements OnInit{
 
   public ordenes: Orden[] = [];
   public displayedColumns: string[] = ['id', 'productos', 'fecha', 'cobro', 'estado'];
-
+  currentPage: number = 1;
+  itemsPerPage: number = 4;
+  totalPages: number = 1;
+  sortField: string = 'none';
+  sortDirection: 'asc' | 'desc' = 'asc';
+  filterEstado: string = 'todos';
 
   constructor(
     private ordenesService: OrdenService,
@@ -33,8 +39,68 @@ export class OrdenesComponent implements OnInit{
   loadOrdenes(): void {
     this.ordenesService.get().subscribe((ordenes) => {
       this.ordenes = ordenes;
+      //this.totalPages = Math.ceil(this.ordenes.length / this.itemsPerPage);
+      this.sortAndPaginateOrdenes();
     });
   }
+
+  get paginatedOrdenes(): Orden[] {
+    const filteredOrdenes = this.ordenes.filter(orden => this.filterEstado === 'todos' || orden.estado === this.filterEstado);
+    this.totalPages = Math.ceil(filteredOrdenes.length / this.itemsPerPage);
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return filteredOrdenes.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  onPageNumberClick(event: Event, page: number): void {
+    event.preventDefault();
+    this.goToPage(page);
+  }
+
+  onSortOptionChange(event: Event): void {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    const [field, direction] = selectedValue.split('-');
+    if (field && direction) {
+      this.sortField = field;
+      this.sortDirection = direction as 'asc' | 'desc';
+      this.sortAndPaginateOrdenes();
+    } else {
+      this.loadOrdenes();
+    }
+  }
+
+  onFilterEstadoChange(event: Event): void {
+    this.filterEstado = (event.target as HTMLSelectElement).value;
+    this.sortAndPaginateOrdenes();
+  }
+
+  sortAndPaginateOrdenes(): void {
+    this.ordenes.sort((a, b) => {
+      const fechaA = new Date(a.fecha).getTime();
+      const fechaB = new Date(b.fecha).getTime();
+      
+      if (fechaA !== fechaB) {
+        return this.sortDirection === 'asc' ? fechaA - fechaB : fechaB - fechaA;
+      }
+  
+      const estadoOrder: { [key: string]: number } = {
+        'Pendiente': 1,
+        'En Preparacion': 2,
+        'Listo': 3
+      };
+  
+      return estadoOrder[a.estado] - estadoOrder[b.estado];
+    });
+  
+    this.totalPages = Math.ceil(this.ordenes.length / this.itemsPerPage);
+    this.goToPage(1);
+  }
+
 
   verOrden(orden: Orden): void {
     this.router.navigate(['/ordenes', orden.id]);

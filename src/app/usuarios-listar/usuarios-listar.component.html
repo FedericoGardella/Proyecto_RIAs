@@ -1,0 +1,41 @@
+<h1 class="title">Lista de Usuarios</h1>
+<div class="table-container">
+  <table class="table is-striped is-hoverable is-fullwidth">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Tipo</th>
+        <th>Teléfono</th>
+        <th>Cambiar rol</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let usuario of usuarios">
+        <td>{{ usuario.id }}</td>
+        <td>{{ usuario.email }}</td>
+        <td>{{ usuario.startingRole }}</td>        
+        <td>{{ usuario.telefono }}</td>
+        <td>
+            <div class="field has-addons">
+                <div class="control">
+                  <div class="select">
+                    <select [(ngModel)]="usuario.role" [disabled]="usuario.email === emailUsuario">
+                      <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="control">
+                    <button 
+                    class="button is-primary" 
+                    (click)="updateRole(usuario.id, usuario.role)"
+                    [disabled]="usuario.email === emailUsuario">
+                    Actualizar Rol
+                  </button>
+                </div>
+            </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

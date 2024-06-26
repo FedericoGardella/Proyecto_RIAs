@@ -15,6 +15,11 @@ import { RouterModule } from '@angular/router';
 export class InsumosComponent implements OnInit {
 
   public insumos: Insumo[] = [];
+  filteredInsumos: Insumo[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 2;
+  totalPages: number = 1;
+  searchTerm: string = '';
   
   constructor(private insumoService: InsumoService) {}
 
@@ -26,7 +31,32 @@ export class InsumosComponent implements OnInit {
     this.insumoService.get().subscribe((insumos) => {
       this.insumos = insumos;
       console.log('Insumos cargados', insumos);
+      this.filterInsumos();
     });
+  }
+
+  filterInsumos(): void {
+    this.filteredInsumos = this.insumos.filter(insumo =>
+      insumo.nombre.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+    this.totalPages = Math.ceil(this.filteredInsumos.length / this.itemsPerPage);
+    this.goToPage(1);
+  }
+
+  get paginatedInsumos(): Insumo[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredInsumos.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  onPageNumberClick(event: Event, page: number): void {
+    event.preventDefault();
+    this.goToPage(page);
   }
 
   deleteInsumo(id: number): void {

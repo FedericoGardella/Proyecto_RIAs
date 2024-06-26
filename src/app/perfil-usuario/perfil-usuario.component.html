@@ -1,8 +1,30 @@
-<p>perfil-usuario works!</p>
-
 <div class="usuario-datos">
     <h2>Usuario</h2>
     <p>Email: {{user.email}}</p>
     <p>Role: {{user.role}}</p>
     <p>Telefono: {{user.telefono}}</p>
 </div>
+
+<h2>Órdenes</h2>
+<div class="table-container">
+    <table class="table is-striped is-hoverable is-fullwidth">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Productos</th>
+          <th>Fecha</th>
+          <th>Cobro</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let orden of ordenes">
+          <td>{{ orden?.id }}</td>
+          <td><pre>{{ orden?.productos | formatProductos | async }}</pre></td>
+          <td>{{ orden?.fecha }}</td>
+          <td>{{ orden?.cobro | currency }}</td>
+          <td>{{ orden?.estado }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

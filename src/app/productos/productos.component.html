@@ -1,4 +1,37 @@
-<h1 class="title">Lista de Productos</h1>
+<!-- Campo de búsqueda -->
+<div class="panel">
+  <p class="panel-heading mt-5">Productos</p>
+  <div class="panel-block">
+    <p class="control has-icons-left">
+      <input 
+        class="input" 
+        type="text" 
+        placeholder="Buscar producto..." 
+        [(ngModel)]="searchTerm" 
+        (input)="filterProductos()"
+      />
+      <span class="icon is-left">
+        <i class="fas fa-search" aria-hidden="true"></i>
+      </span>
+    </p>
+  </div>
+  <!-- Selector de orden -->
+  <div class="panel-block">
+    <div class="field is-grouped">
+      <label class="label pt-2">Ordenar por:</label>
+      <div class="control">
+        <div class="select">
+          <select (change)="onSortOptionChange($event)">
+            <option value="none">Defecto</option>
+            <option value="asc">Precio: Menor a Mayor</option>
+            <option value="desc">Precio: Mayor a Menor</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="table-container">
   <table class="table is-striped is-hoverable is-fullwidth">
     <thead>
@@ -13,7 +46,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let producto of productos">
+      <tr *ngFor="let producto of paginatedProductos">
         <td>{{ producto?.id }}</td>
         <td>{{ producto?.nombre }}</td>
         <td>{{ producto?.descripcion }}</td>
@@ -32,3 +65,18 @@
     </tbody>
   </table>
 </div>
+
+<nav class="pagination" role="navigation" aria-label="pagination">
+  <a class="pagination-previous" (click)="goToPage(currentPage - 1)" [class.is-disabled]="currentPage === 1">Anterior</a>
+  <a class="pagination-next" (click)="goToPage(currentPage + 1)" [class.is-disabled]="currentPage === totalPages">Siguiente</a>
+  <ul class="pagination-list">
+    <li *ngFor="let page of [].constructor(totalPages); let i = index">
+      <a
+        href="#"
+        class="pagination-link"
+        [class.is-current]="i + 1 === currentPage"
+        (click)="onPageNumberClick($event, i + 1)"
+      >{{ i + 1 }}</a>
+    </li>
+  </ul>
+</nav>

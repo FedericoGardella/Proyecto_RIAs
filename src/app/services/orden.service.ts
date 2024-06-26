@@ -20,6 +20,11 @@ export class OrdenService {
     return this.http.get<Orden>(`${this.apiUrl}/${id}`);
   }
 
+  // obtener ordenes por email del usuario
+  getOrdenesByCliente(cliente: string): Observable<Orden[]> {
+    return this.http.get<Orden[]>(`${this.apiUrl}/cliente/${cliente}`);
+  }
+
   add(orden: any): Observable<Orden> {
     return this.http.post<Orden>(this.apiUrl, orden);
   }

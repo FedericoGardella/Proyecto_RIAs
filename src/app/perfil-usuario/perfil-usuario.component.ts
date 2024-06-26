@@ -1,28 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { OrdenService } from '../services/orden.service';
+import { AuthService } from '../services/auth.service';
+import { CommonModule } from '@angular/common';
+import { FormatProductosPipe } from "../format-productos.pipe";
+import { Orden } from '../model/orden';
 
 @Component({
-  selector: 'app-perfil-usuario',
-  standalone: true,
-  imports: [],
-  templateUrl: './perfil-usuario.component.html',
-  styleUrl: './perfil-usuario.component.css'
+    selector: 'app-perfil-usuario',
+    standalone: true,
+    templateUrl: './perfil-usuario.component.html',
+    styleUrl: './perfil-usuario.component.css',
+    imports: [CommonModule, FormatProductosPipe]
 })
 export class PerfilUsuarioComponent implements OnInit{
 
   user: any;
   userId: number;
+  userEmail: string | null = null;
+  ordenes: any[] = [];
 
   constructor(
     private userService: UserService,
-    private route: ActivatedRoute
+    private ordenService: OrdenService,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router
   ) { 
     this.userId = +this.route.snapshot.params['id'];
   }
 
   ngOnInit(): void {
+    this.userEmail = this.authService.getEmail();
+    console.log('Email:', this.userEmail);
     this.loadUser();
+    this.loadOrdenes();
+    
   }
 
   loadUser(): void {
@@ -36,4 +50,25 @@ export class PerfilUsuarioComponent implements OnInit{
       }
     );
   }
+
+  loadOrdenes(): void {
+    if (this.userEmail) {
+      this.ordenService.getOrdenesByCliente(this.userEmail).subscribe(
+        data => {
+          this.ordenes = data;
+          console.log('Ordenes:', this.ordenes);
+        },
+        error => {
+          console.error('Error al obtener ordenes:', error);
+        }
+      );
+    }
+    else {
+      console.error('No se puede obtener ordenes sin email');
+    }
+  }
+
+  /* verOrden(orden: Orden): void {
+    this.router.navigate(['/ordenes', orden.id]);
+  }  */
 }

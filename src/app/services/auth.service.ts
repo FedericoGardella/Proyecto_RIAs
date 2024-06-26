@@ -21,6 +21,7 @@ export class AuthService {
           this.email = email;
           this.role = response.role;
           localStorage.setItem('authToken', response.token);
+          localStorage.setItem('email', email);
         },
         error: (error) => {
           console.error('Login failed', error);
@@ -32,10 +33,11 @@ export class AuthService {
     this.email = null;
     this.role = null;
     localStorage.removeItem('authToken');
+    localStorage.removeItem('email');
   }
 
   public getEmail(): string | null {
-    return this.email;
+    return localStorage.getItem('email');
   }
 
   getRole(): string | null {

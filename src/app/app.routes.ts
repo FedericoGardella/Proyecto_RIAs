@@ -11,6 +11,7 @@ import { InsumosEditarComponent } from './insumos-editar/insumos-editar.componen
 import { OrdenesNuevoComponent } from './ordenes-nuevo/ordenes-nuevo.component';
 import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
 import { DetalleOrdenComponent } from './detalle-orden/detalle-orden.component';
+import { UsuariosListarComponent } from './usuarios-listar/usuarios-listar.component';
 
 export const routes: Routes = [
     { path: 'productos', component: ProductosComponent },
@@ -25,5 +26,6 @@ export const routes: Routes = [
     { path: 'insumos/update/:id', component: InsumosEditarComponent},
     { path: 'usuarios/:id', component: PerfilUsuarioComponent},
     { path: 'ordenes/:id', component: DetalleOrdenComponent },
+    { path: 'usuarios', component: UsuariosListarComponent },
     //{ path: '', redirectTo: '/login', pathMatch: 'full' }
 ];

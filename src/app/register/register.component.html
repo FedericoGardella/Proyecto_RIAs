@@ -20,22 +20,6 @@
             </p>
         </div>
         <div class="field">
-            <label class="label">Rol</label>
-            <div class="control">
-                <div class="select">
-                <select formControlName="role">
-                    <option value="">Seleccione un rol</option>
-                    <option value="ADMIN">Admin</option>
-                    <option value="PANADERO">Panadero</option>
-                    <option value="USER">Cliente</option>
-                </select>
-                </div>
-            </div>
-            <p class="help is-danger" *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched">
-                El rol es obligatorio
-            </p>
-        </div>
-        <div class="field">
             <label class="label">Teléfono</label>
             <div class="control">
                 <input class="input" type="text" formControlName="telefono">

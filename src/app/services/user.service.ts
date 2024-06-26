@@ -16,5 +16,15 @@ export class UserService {
   getProfile(id: Number): Observable<Usuario> {
     return this.http.get<Usuario>(`${this.apiUrl}/${id}`);
   }
+
+  // Obtener todos los usuarios
+  getAll(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(this.apiUrl);
+  }
+
+  // Actualizar rol de usuario
+  updateRole(id: Number, role: string): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.apiUrl}/updateRole`, { id, role });
+  }
 }
  
