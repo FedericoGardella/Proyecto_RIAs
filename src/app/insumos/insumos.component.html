@@ -1,61 +1,66 @@
-<!-- Campo de búsqueda -->
-<div class="panel">
-  <p class="panel-heading mt-5">Insumos</p>
-  <div class="panel-block">
-    <p class="control has-icons-left">
-      <input 
-        class="input" 
-        type="text" 
-        placeholder="Buscar insumo..." 
-        [(ngModel)]="searchTerm" 
-        (input)="filterInsumos()"
-      />
-      <span class="icon is-left">
-        <i class="fas fa-search" aria-hidden="true"></i>
-      </span>
-    </p>
+<div class="columns is-centered">
+  <div class="column is-half-desktop is-full-mobile">
+    <!-- Contenido de la página -->
+    <!-- Campo de búsqueda -->
+    <div class="panel">
+      <p class="panel-heading mt-5">Insumos</p>
+      <div class="panel-block">
+        <p class="control has-icons-left">
+          <input 
+            class="input" 
+            type="text" 
+            placeholder="Buscar insumo..." 
+            [(ngModel)]="searchTerm" 
+            (input)="filterInsumos()"
+          />
+          <span class="icon is-left">
+            <i class="fas fa-search" aria-hidden="true"></i>
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Unidad</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let insumo of paginatedInsumos">
+            <td>{{ insumo.id }}</td>
+            <td>{{ insumo.nombre }}</td>
+            <td>{{ insumo.unidad }}</td>
+            <td>
+              <a [routerLink]="['/insumos/update', insumo?.id]" class="button is-info mr-2">Editar</a>
+              <button (click)="deleteInsumo(insumo?.id!)" class="button is-danger">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <nav class="pagination" role="navigation" aria-label="pagination">
+      <a class="pagination-previous" (click)="goToPage(currentPage - 1)" [class.is-disabled]="currentPage === 1">Anterior</a>
+      <a class="pagination-next" (click)="goToPage(currentPage + 1)" [class.is-disabled]="currentPage === totalPages">Siguiente</a>
+      <ul class="pagination-list">
+        <li *ngFor="let page of [].constructor(totalPages); let i = index">
+          <a
+            href="#"
+            class="pagination-link"
+            [class.is-current]="i + 1 === currentPage"
+            (click)="onPageNumberClick($event, i + 1)"
+          >{{ i + 1 }}</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Botón para ir a agregar insumo -->
+    <a [routerLink]="['add/']" class="button is-primary">Agregar Insumo</a>
   </div>
 </div>
-
-<div class="table-container">
-  <table class="table is-striped is-hoverable is-fullwidth">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Unidad</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let insumo of paginatedInsumos">
-        <td>{{ insumo.id }}</td>
-        <td>{{ insumo.nombre }}</td>
-        <td>{{ insumo.unidad }}</td>
-        <td>
-          <a [routerLink]="['/insumos/update', insumo?.id]" class="button is-info mr-2">Editar</a>
-          <button (click)="deleteInsumo(insumo?.id!)" class="button is-danger">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<nav class="pagination" role="navigation" aria-label="pagination">
-  <a class="pagination-previous" (click)="goToPage(currentPage - 1)" [class.is-disabled]="currentPage === 1">Anterior</a>
-  <a class="pagination-next" (click)="goToPage(currentPage + 1)" [class.is-disabled]="currentPage === totalPages">Siguiente</a>
-  <ul class="pagination-list">
-    <li *ngFor="let page of [].constructor(totalPages); let i = index">
-      <a
-        href="#"
-        class="pagination-link"
-        [class.is-current]="i + 1 === currentPage"
-        (click)="onPageNumberClick($event, i + 1)"
-      >{{ i + 1 }}</a>
-    </li>
-  </ul>
-</nav>
-
-<!-- Botón para ir a agregar insumo -->
-<a [routerLink]="['add/']">Agregar Insumo</a>
 
