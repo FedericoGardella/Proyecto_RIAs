@@ -15,13 +15,14 @@ export class AuthService {
   private apiUrl = 'http://localhost:3000/usuarios';
 
   login(email: string, password: string) {
-    this.http.post<{ token: string, role: string, nombre: string }>(this.apiUrl + '/login', { email, password })
+    this.http.post<{ token: string, role: string, nombre: string, userId: number }>(this.apiUrl + '/login', { email, password })
       .subscribe({
         next: (response) => {
           this.email = email;
           this.role = response.role;
           localStorage.setItem('authToken', response.token);
           localStorage.setItem('email', email);
+          localStorage.setItem('userId', response.userId.toString());
         },
         error: (error) => {
           console.error('Login failed', error);
@@ -34,10 +35,16 @@ export class AuthService {
     this.role = null;
     localStorage.removeItem('authToken');
     localStorage.removeItem('email');
+    localStorage.removeItem('userId');
   }
 
   public getEmail(): string | null {
     return localStorage.getItem('email');
+  }
+
+  public getUserId(): number | null {
+    const userId = localStorage.getItem('userId');
+    return userId ? +userId : null;
   }
 
   getRole(): string | null {

@@ -1,29 +1,30 @@
-<h1 class="title">Lista de Ordenes</h1>
-
-<div class="panel-block">
-  <div class="field is-grouped">
-    <label class="label pt-2">Ordenar por:</label>
-    <div class="control">
-      <div class="select">
-        <select (change)="onSortOptionChange($event)">
-          <option value="fecha-asc">Fecha: Menor a Mayor</option>
-          <option value="fecha-desc">Fecha: Mayor a Menor</option>
-        </select>
+<div class="panel">
+  <p class="panel-heading mt-5">Órdenes</p>
+  <div class="panel-block">
+    <div class="field is-grouped">
+      <label class="label pt-2">Ordenar por:</label>
+      <div class="control">
+        <div class="select">
+          <select (change)="onSortOptionChange($event)">
+            <option value="fecha-asc">Fecha: Menor a Mayor</option>
+            <option value="fecha-desc">Fecha: Mayor a Menor</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="panel-block">
-  <div class="field is-grouped">
-    <label class="label pt-2">Filtrar por estado:</label>
-    <div class="control">
-      <div class="select">
-        <select (change)="onFilterEstadoChange($event)">
-          <option value="todos">Todos</option>
-          <option value="Pendiente">Pendiente</option>
-          <option value="En Preparacion">En Preparacion</option>
-          <option value="Listo">Listo</option>
-        </select>
+  <div class="panel-block">
+    <div class="field is-grouped">
+      <label class="label pt-2">Filtrar por estado:</label>
+      <div class="control">
+        <div class="select">
+          <select (change)="onFilterEstadoChange($event)">
+            <option value="todos">Todos</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="En Preparacion">En Preparacion</option>
+            <option value="Listo">Listo</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>

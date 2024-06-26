@@ -67,8 +67,4 @@ export class PerfilUsuarioComponent implements OnInit{
       console.error('No se puede obtener ordenes sin email');
     }
   }
-
-  /* verOrden(orden: Orden): void {
-    this.router.navigate(['/ordenes', orden.id]);
-  }  */
 }
