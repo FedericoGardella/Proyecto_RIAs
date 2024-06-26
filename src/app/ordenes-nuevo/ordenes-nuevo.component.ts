@@ -6,6 +6,7 @@ import { ProductoEnCarrito } from '../model/producto-en-carrito';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-ordenes-nuevo',
@@ -16,12 +17,17 @@ import { AuthService } from '../services/auth.service';
 })
 export class OrdenesNuevoComponent implements OnInit {
   productos: Producto[] = [];
+  filteredProductos: Producto[] = [];
   email: string = '';
   cantidades: { [key: number]: number } = {};
   mensajeError: string = '';
   mensajeExito: string = '';
   showErrorModal: boolean = false;
   showSuccessModal: boolean = false;
+  currentPage: number = 1;
+  itemsPerPage: number = 3;
+  totalPages: number = 1;
+  searchTerm: string = '';
 
   constructor(
     private authService: AuthService,
@@ -36,6 +42,7 @@ export class OrdenesNuevoComponent implements OnInit {
       this.productos.forEach(producto => {
         this.cantidades[producto.id] = 0;
       });
+      this.filterProductos();
     });
   }
 
@@ -67,5 +74,29 @@ export class OrdenesNuevoComponent implements OnInit {
 
   cerrarModalExito() {
     this.showSuccessModal = false;
+  }
+
+  filterProductos() {
+    this.filteredProductos = this.productos.filter(producto => 
+      producto.nombre.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+    this.totalPages = Math.ceil(this.filteredProductos.length / this.itemsPerPage);
+    this.goToPage(1);
+  }
+
+  get paginatedProductos(): Producto[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredProductos.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  onPageNumberClick(event: Event, page: number): void {
+    event.preventDefault();
+    this.goToPage(page);
   }
 }
