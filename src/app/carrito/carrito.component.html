@@ -1,0 +1,66 @@
+<div class="container" *ngIf="productos.length > 0">
+  <h2 class="title is-4">Carrito de Compras</h2>
+  <div class="columns is-multiline">
+    <div class="column is-one-third-tablet is-one-quarter-desktop" *ngFor="let producto of productos; let i = index">
+      <div class="card m-5">
+        <div class="card-image" style="position: relative;">
+          <figure class="image is-4by3">
+            <img [src]="prods[i]?.imagen" alt="{{prods[i]?.nombre}}">
+            <button (click)="openModal(i)" class="delete is-large has-background-danger" style="position: absolute; top: 0.5rem; right: 0.5rem;"></button>
+          </figure>
+        </div>
+        <div class="card-content">
+          <div class="media">
+            <div class="media-content">
+              <p class="title is-5">{{ prods[i]?.nombre }}</p>
+              <p class="subtitle is-6">Cantidad: {{ producto?.cantidad }}</p>
+              <p class="subtitle is-6">Precio: {{ prods[i]?.precio | currency }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h3 class="title is-4">Total del Carrito: {{ total | currency }}</h3>
+  <button class="button is-primary" (click)="openPurchaseModal()">Confirmar Compra</button>
+</div>
+<div class="container" *ngIf="productos.length === 0">
+  <p class="notification is-warning">El carrito está vacío.</p>
+</div>
+
+<!-- Modal de confirmación -->
+<div class="modal" [ngClass]="{'is-active': showModal}">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Confirmación</p>
+      <button class="delete" aria-label="close" (click)="cancelDelete()"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>¿Estás seguro de que deseas eliminar este producto del carrito?</p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-danger" (click)="confirmDelete()">Eliminar</button>
+      <button class="button" (click)="cancelDelete()">Cancelar</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Modal de confirmación de compra -->
+<div class="modal" [ngClass]="{'is-active': showPurchaseModal}">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Confirmar Compra</p>
+      <button class="delete" aria-label="close" (click)="cancelPurchase()"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>Introduce la fecha de entrega:</p>
+      <input type="date" [(ngModel)]="purchaseDate" class="input" required>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success" (click)="confirmPurchase()">Confirmar</button>
+      <button class="button" (click)="cancelPurchase()">Cancelar</button>
+    </footer>
+  </div>
+</div>
