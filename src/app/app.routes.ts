@@ -10,6 +10,7 @@ import { InsumosNuevoComponent } from './insumos-nuevo/insumos-nuevo.component';
 import { InsumosEditarComponent } from './insumos-editar/insumos-editar.component';
 import { OrdenesNuevoComponent } from './ordenes-nuevo/ordenes-nuevo.component';
 import { DetalleOrdenComponent } from './detalle-orden/detalle-orden.component';
+import { CarritoComponent } from './carrito/carrito.component';
 
 export const routes: Routes = [
     { path: 'productos', component: ProductosComponent },
@@ -23,5 +24,6 @@ export const routes: Routes = [
     { path: 'insumos/add', component: InsumosNuevoComponent},
     { path: 'insumos/update/:id', component: InsumosEditarComponent},
     { path: 'ordenes/:id', component: DetalleOrdenComponent },
+    { path: 'carrito', component: CarritoComponent },
     //{ path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
