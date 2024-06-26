@@ -1,30 +1,36 @@
-<div class="usuario-datos">
-    <h2>Usuario</h2>
-    <p>Email: {{user.email}}</p>
-    <p>Role: {{user.role}}</p>
-    <p>Telefono: {{user.telefono}}</p>
+<div class="container p-4">
+  <div class="columns is-centered">
+    <div class="column is-half-desktop is-full-mobile">
+      <div *ngIf="user" class="usuario-datos box p-4">
+        <h2 class="title is-4 has-text-primary">Usuario</h2>
+        <p>Email: <span class="has-text-weight-semibold has-text-dark">{{user?.email}}</span></p>
+        <p>Teléfono: <span class="has-text-weight-semibold has-text-dark">{{user?.telefono}}</span></p>
+      </div>
+
+      <h2 class="title is-4 mt-4 has-text-primary">Órdenes</h2>
+      <div class="table-container">
+        <table class="table is-striped is-hoverable is-fullwidth">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Productos</th>
+              <th>Fecha</th>
+              <th>Cobro</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let orden of ordenes">
+              <td>{{ orden?.id }}</td>
+              <td><pre>{{ orden?.productos | formatProductos | async }}</pre></td>
+              <td>{{ orden?.fecha }}</td>
+              <td>{{ orden?.cobro | currency }}</td>
+              <td>{{ orden?.estado }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
-<h2>Órdenes</h2>
-<div class="table-container">
-    <table class="table is-striped is-hoverable is-fullwidth">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Productos</th>
-          <th>Fecha</th>
-          <th>Cobro</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let orden of ordenes">
-          <td>{{ orden?.id }}</td>
-          <td><pre>{{ orden?.productos | formatProductos | async }}</pre></td>
-          <td>{{ orden?.fecha }}</td>
-          <td>{{ orden?.cobro | currency }}</td>
-          <td>{{ orden?.estado }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>

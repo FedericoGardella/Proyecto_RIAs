@@ -18,7 +18,7 @@ export class PerfilUsuarioComponent implements OnInit{
 
   user: any;
   userId: number;
-  userEmail: string | null = null;
+  userEmail: string = '';
   ordenes: any[] = [];
 
   constructor(
@@ -32,7 +32,7 @@ export class PerfilUsuarioComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.userEmail = this.authService.getEmail();
+    this.userEmail = this.authService.getEmail()!;
     console.log('Email:', this.userEmail);
     this.loadUser();
     this.loadOrdenes();
