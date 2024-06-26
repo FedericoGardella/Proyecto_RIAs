@@ -1,48 +1,58 @@
 <div class="container">
-  <form [formGroup]="ordenForm" (ngSubmit)="onSubmit()">
-    <div class="field">
-      <label class="label" for="fecha">Fecha</label>
-      <div class="control">
-        <input id="fecha" formControlName="fecha" type="date" class="input" />
-      </div>
-      <p class="help is-danger" *ngIf="ordenForm.get('fecha')?.invalid && ordenForm.get('fecha')?.touched">
-        Fecha es requerida.
-      </p>
-    </div>
-    <div formArrayName="productos" class="columns is-multiline">
-      <div class="column is-one-quarter" *ngFor="let producto of productosFormArray.controls; let i = index" [formGroupName]="i">
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <img [src]="productos[i].imagen" alt="{{ productos[i].nombre }}">
-            </figure>
+  <div class="columns is-multiline">
+    <div class="column is-one-quarter" *ngFor="let producto of productos">
+      <div class="card">
+        <div class="card-image">
+          <figure class="image is-4by3">
+            <img [src]="producto.imagen" alt="{{ producto.nombre }}">
+          </figure>
+        </div>
+        <div class="card-content">
+          <div class="media">
+            <div class="media-content">
+              <p class="title is-4">{{ producto.nombre }}</p>
+              <p class="subtitle is-6">{{ producto.descripcion }}</p>
+            </div>
           </div>
-          <div class="card-content">
-            <div class="media">
-              <div class="media-content">
-                <p class="title is-4">{{ productos[i].nombre }}</p>
-                <p class="subtitle is-6">{{ productos[i].descripcion }}</p>
+          <div class="content">
+            <p>Precio: {{ producto.precio | currency }}</p>
+            <div class="field">
+              <label class="label">Cantidad</label>
+              <div class="control">
+                <input class="input" type="number" [(ngModel)]="cantidades[producto.id]" min="1">
               </div>
             </div>
-            <div class="content">
-              <p>Precio: {{ productos[i].precio | currency }}</p>
-              <div class="field">
-                <label class="label">Cantidad</label>
-                <div class="control">
-                  <input class="input" type="number" formControlName="cantidad">
-                </div>
-              </div>
-            </div>
+            <button class="button is-success" (click)="agregarAlCarrito(producto, cantidades[producto.id])">
+              <span class="icon is-small">
+                <i class="fas fa-plus"></i>
+              </span>
+              <span>Agregar al Carrito</span>
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <div class="field">
-      <div class="control">
-        <button class="button is-primary" type="submit">Crear Orden</button>
-      </div>
-    </div>
-  </form>
+  </div>
 </div>
 
+<!-- Modales -->
+<div class="modal" [class.is-active]="showErrorModal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      <p class="has-text-danger">{{ mensajeError }}</p>
+      <button class="button is-success" (click)="cerrarModalError()">Ok</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" [class.is-active]="showSuccessModal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      <p class="has-text-success">{{ mensajeExito }}</p>
+      <button class="button is-success" (click)="cerrarModalExito()">Ok</button>
+    </div>
+  </div>
+</div>
 

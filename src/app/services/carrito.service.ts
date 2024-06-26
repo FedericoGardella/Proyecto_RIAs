@@ -20,7 +20,7 @@ export class CarritoService {
     return this.http.post<ProductoEnCarrito>(this.apiUrl, prod);
   }
 
-  delete(email: string, idProd: string): Observable<any>  {
+  delete(email: string, idProd: number): Observable<any>  {
     return this.http.delete(`${this.apiUrl}/${email}/${idProd}`);
   }
 
