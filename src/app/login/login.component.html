@@ -1,36 +1,36 @@
 <div class="container mt-3">
-    <div *ngIf="authService.isLoggedIn()">
-        <p>Email: {{ authService.getEmail() }}</p>
-        <p>Role: {{ authService.getRole() }}</p>
-        <form (ngSubmit)="logout()">
-            <button class="button is-danger" type="submit">Logout</button>
-        </form>
-    </div>
-    <div *ngIf="!authService.isLoggedIn()">
-        <div class="columns is-centered">
-            <div class="column is-half">
-                <h2 class="title is-2 has-text-centered">Login</h2>
-                <form (ngSubmit)="login()" #loginForm="ngForm">
-                    <div class="field">
-                        <label class="label">Email</label>
-                        <div class="control">
-                            <input class="input" type="text" id="email" name="email" [(ngModel)]="email"
-                                required>
+    <div class="columns is-centered">
+        <div class="column m-4 is-half-tablet is-one-third-desktop">
+            <div class="box">
+                <div *ngIf="authService.isLoggedIn()">
+                    <p>Email: {{ authService.getEmail() }}</p>
+                    <p>Role: {{ authService.getRole() }}</p>
+                    <form (ngSubmit)="logout()">
+                        <button class="button is-danger is-fullwidth" type="submit">Logout</button>
+                    </form>
+                </div>
+                <div *ngIf="!authService.isLoggedIn()">
+                    <h2 class="title is-2 has-text-centered">Login</h2>
+                    <form (ngSubmit)="login()" #loginForm="ngForm">
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control">
+                                <input class="input" type="text" id="email" name="email" [(ngModel)]="email" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Password</label>
-                        <div class="control">
-                            <input class="input" type="password" id="password" name="password" [(ngModel)]="password"
-                                required>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input class="input" type="password" id="password" name="password" [(ngModel)]="password" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <button class="button is-primary" type="submit" [disabled]="!loginForm.valid">Login</button>
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-primary is-fullwidth" type="submit" [disabled]="!loginForm.valid">Login</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

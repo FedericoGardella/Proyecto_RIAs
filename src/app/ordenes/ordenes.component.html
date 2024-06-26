@@ -1,85 +1,91 @@
-<div class="panel">
-  <p class="panel-heading mt-5">Órdenes</p>
-  <div class="panel-block">
-    <div class="field is-grouped">
-      <label class="label pt-2">Ordenar por:</label>
-      <div class="control">
-        <div class="select">
-          <select (change)="onSortOptionChange($event)">
-            <option value="fecha-asc">Fecha: Menor a Mayor</option>
-            <option value="fecha-desc">Fecha: Mayor a Menor</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="panel-block">
-    <div class="field is-grouped">
-      <label class="label pt-2">Filtrar por estado:</label>
-      <div class="control">
-        <div class="select">
-          <select (change)="onFilterEstadoChange($event)">
-            <option value="todos">Todos</option>
-            <option value="Pendiente">Pendiente</option>
-            <option value="En Preparacion">En Preparacion</option>
-            <option value="Listo">Listo</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="table-container">
-  <table class="table is-striped is-hoverable is-fullwidth">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Productos</th>
-        <th>Fecha</th>
-        <th>Cobro</th>
-        <th>Estado</th>
-        <th>-</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let orden of paginatedOrdenes">
-        <td>{{ orden?.id }}</td>
-        <td><pre>{{ orden?.productos | formatProductos | async }}</pre></td>
-        <td>{{ orden?.fecha }}</td>
-        <td>{{ orden?.cobro | currency }}</td>
-        <td>
-          <div class="buttons">
-            <button class="button is-small"
-                    [ngClass]="{'is-primary': orden.estado === 'Pendiente'}"
-                    (click)="editOrden(orden, 'Pendiente')">Pendiente</button>
-            <button class="button is-small"
-                    [ngClass]="{'is-primary': orden.estado === 'En Preparacion'}"
-                    (click)="editOrden(orden, 'En Preparacion')">En Preparación</button>
-            <button class="button is-small"
-                    [ngClass]="{'is-primary': orden.estado === 'Listo'}"
-                    (click)="editOrden(orden, 'Listo')">Listo</button>
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-half-desktop">
+        <div class="panel">
+          <p class="panel-heading mt-5">Órdenes</p>
+          <div class="panel-block">
+            <div class="field is-grouped">
+              <label class="label pt-2">Ordenar por:</label>
+              <div class="control">
+                <div class="select">
+                  <select (change)="onSortOptionChange($event)">
+                    <option value="fecha-asc">Fecha: Menor a Mayor</option>
+                    <option value="fecha-desc">Fecha: Mayor a Menor</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
-        </td>
-        <td>
-          <button class="button is-small is-primary" (click)="verOrden(orden)">Ver</button>
-        </td>        
-      </tr>
-    </tbody>
-  </table>
-</div>
+          <div class="panel-block">
+            <div class="field is-grouped">
+              <label class="label pt-2">Filtrar por estado:</label>
+              <div class="control">
+                <div class="select">
+                  <select (change)="onFilterEstadoChange($event)">
+                    <option value="todos">Todos</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En Preparacion">En Preparacion</option>
+                    <option value="Listo">Listo</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<nav class="pagination" role="navigation" aria-label="pagination">
-  <a class="pagination-previous" (click)="goToPage(currentPage - 1)" [class.is-disabled]="currentPage === 1">Anterior</a>
-  <a class="pagination-next" (click)="goToPage(currentPage + 1)" [class.is-disabled]="currentPage === totalPages">Siguiente</a>
-  <ul class="pagination-list">
-    <li *ngFor="let page of [].constructor(totalPages); let i = index">
-      <a
-        href="#"
-        class="pagination-link"
-        [class.is-current]="i + 1 === currentPage"
-        (click)="onPageNumberClick($event, i + 1)"
-      >{{ i + 1 }}</a>
-    </li>
-  </ul>
-</nav>
+        <div class="table-container">
+          <table class="table is-striped is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Productos</th>
+                <th>Fecha</th>
+                <th>Cobro</th>
+                <th>Estado</th>
+                <th>-</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let orden of paginatedOrdenes">
+                <td>{{ orden?.id }}</td>
+                <td><pre>{{ orden?.productos | formatProductos | async }}</pre></td>
+                <td>{{ orden?.fecha }}</td>
+                <td>{{ orden?.cobro | currency }}</td>
+                <td>
+                  <div class="buttons">
+                    <button class="button is-small"
+                            [ngClass]="{'is-primary': orden.estado === 'Pendiente'}"
+                            (click)="editOrden(orden, 'Pendiente')">Pendiente</button>
+                    <button class="button is-small"
+                            [ngClass]="{'is-primary': orden.estado === 'En Preparacion'}"
+                            (click)="editOrden(orden, 'En Preparacion')">En Preparación</button>
+                    <button class="button is-small"
+                            [ngClass]="{'is-primary': orden.estado === 'Listo'}"
+                            (click)="editOrden(orden, 'Listo')">Listo</button>
+                  </div>
+                </td>
+                <td>
+                  <button class="button is-small is-primary" (click)="verOrden(orden)">Ver</button>
+                </td>        
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+          <a class="pagination-previous" (click)="goToPage(currentPage - 1)" [class.is-disabled]="currentPage === 1">Anterior</a>
+          <a class="pagination-next" (click)="goToPage(currentPage + 1)" [class.is-disabled]="currentPage === totalPages">Siguiente</a>
+          <ul class="pagination-list">
+            <li *ngFor="let page of [].constructor(totalPages); let i = index">
+              <a href="#" class="pagination-link"
+                [class.is-current]="i + 1 === currentPage"
+                (click)="onPageNumberClick($event, i + 1)"
+              >{{ i + 1 }}</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>

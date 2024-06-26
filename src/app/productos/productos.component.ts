@@ -18,7 +18,7 @@ export class ProductosComponent implements OnInit {
   public displayedColumns: string[] = ['id', 'nombre', 'descripcion', 'imagen', 'precio', 'insumos'];
   router: any;
   currentPage: number = 1;
-  itemsPerPage: number = 2;
+  itemsPerPage: number = 3;
   totalPages: number = 1;
   searchTerm: string = '';
   sortOption: string = 'none';

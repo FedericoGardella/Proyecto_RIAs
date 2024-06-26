@@ -1,56 +1,86 @@
-<h1>Editar Producto</h1>
-<form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
-    <label for="nombre">Nombre</label>
-    <input id="nombre" formControlName="nombre" type="text" />
-    <div *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched">
-        <div *ngIf="productoForm.get('nombre')?.errors?.['required']">Nombre es requerido.</div>
-        <div *ngIf="productoForm.get('nombre')?.errors?.['minlength']">Nombre debe tener al menos 5 caracteres.</div>
-        <div *ngIf="productoForm.get('nombre')?.errors?.['maxlength']">Nombre no puede exceder 30 caracteres.</div>
-        <div *ngIf="productoForm.get('nombre')?.errors?.['uniqueName']">Nombre ya está en uso.</div>
-    </div>
+<div class="columns is-centered">
+  <div class="column is-half-desktop is-full-mobile">
+    <h1 class="title is-3 has-text-centered">Editar Producto</h1>
 
-    <label for="descripcion">Descripción</label>
-    <input id="descripcion" formControlName="descripcion" type="text" />
-    <div *ngIf="productoForm.get('descripcion')?.invalid && productoForm.get('descripcion')?.touched">
-        <div *ngIf="productoForm.get('descripcion')?.errors?.['required']">Descripción es requerida.</div>
-        <div *ngIf="productoForm.get('descripcion')?.errors?.['minlength']">Descripción debe tener al menos 10 caracteres.</div>
-        <div *ngIf="productoForm.get('descripcion')?.errors?.['maxlength']">Descripción no puede exceder los 150 caracteres.</div>
-    </div>
-
-    <label for="imagen">Imagen</label>
-    <input id="imagen" type="file" (change)="onFileSelected($event)" />
-    <div *ngIf="productoForm.get('imagen')?.invalid && productoForm.get('imagen')?.touched">
-        Imagen es requerida.
-    </div>
-
-    <label for="precio">Precio</label>
-    <input id="precio" formControlName="precio" type="number" />
-    <div *ngIf="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched">Precio es requerido y debe ser un valor positivo.</div>
-
-    <!-- Insumos del producto -->
-    <div formArrayName="insumos">
-      <div *ngFor="let insumo of insumosControls; let i = index" [formGroupName]="i" class="box">
-        <div>
-          <label>Insumo:</label>
-          <div>{{ getInsumoNombre(insumo.get('insumoId')?.value) }}</div>
+    <form [formGroup]="productoForm" (ngSubmit)="onSubmit()" class="box">
+      <div class="field">
+        <label for="nombre" class="label">Nombre</label>
+        <div class="control">
+          <input id="nombre" formControlName="nombre" class="input" type="text" placeholder="Nombre del producto" />
         </div>
-        <div>
-          <label>Cantidad:</label>
-          <div class="cantidad-unidad-container">
-            <input formControlName="cantidad" type="number" placeholder="Cantidad del insumo" />
-            <div>{{ getInsumoUnidad(insumo.get('insumoId')?.value) }}</div>
+        <p class="help is-danger" *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched">
+          <span *ngIf="productoForm.get('nombre')?.errors?.['required']">El nombre es requerido.</span>
+          <span *ngIf="productoForm.get('nombre')?.errors?.['minlength']">El nombre debe tener al menos 5 caracteres.</span>
+          <span *ngIf="productoForm.get('nombre')?.errors?.['maxlength']">El nombre no puede exceder 30 caracteres.</span>
+          <span *ngIf="productoForm.get('nombre')?.errors?.['uniqueName']">Este nombre ya está en uso.</span>
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="descripcion" class="label">Descripción</label>
+        <div class="control">
+          <input id="descripcion" formControlName="descripcion" class="input" type="text" placeholder="Descripción del producto" />
+        </div>
+        <p class="help is-danger" *ngIf="productoForm.get('descripcion')?.invalid && productoForm.get('descripcion')?.touched">
+          <span *ngIf="productoForm.get('descripcion')?.errors?.['required']">La descripción es requerida.</span>
+          <span *ngIf="productoForm.get('descripcion')?.errors?.['minlength']">La descripción debe tener al menos 10 caracteres.</span>
+          <span *ngIf="productoForm.get('descripcion')?.errors?.['maxlength']">La descripción no puede exceder 150 caracteres.</span>
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="imagen" class="label">Imagen</label>
+        <div class="control">
+          <input id="imagen" type="file" (change)="onFileSelected($event)" />
+        </div>
+        <p class="help is-danger" *ngIf="productoForm.get('imagen')?.invalid && productoForm.get('imagen')?.touched">La imagen es requerida.</p>
+      </div>
+
+      <div class="field">
+        <label for="precio" class="label">Precio</label>
+        <div class="control">
+          <input id="precio" formControlName="precio" class="input" type="number" placeholder="Precio del producto" />
+        </div>
+        <p class="help is-danger" *ngIf="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched">El precio es requerido y debe ser un valor positivo.</p>
+      </div>
+
+      <!-- Insumos del producto -->
+      <div formArrayName="insumos">
+        <div *ngFor="let insumo of insumosControls; let i = index" [formGroupName]="i" class="box">
+          <div class="field">
+            <label class="label">Insumo:</label>
+            <div class="control">
+              <div>{{ getInsumoNombre(insumo.get('insumoId')?.value) }}</div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Cantidad:</label>
+            <div class="control cantidad-unidad-container">
+              <input formControlName="cantidad" class="input" type="number" placeholder="Cantidad del insumo" />
+              <div>{{ getInsumoUnidad(insumo.get('insumoId')?.value) }}</div>
+            </div>
+          </div>
+          <button type="button" (click)="removeInsumo(i)" class="button is-danger is-small btn-remove">Eliminar Insumo</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Añadir Insumo:</label>
+        <div class="control">
+          <div class="select is-fullwidth">
+            <select #insumoSelect>
+              <option *ngFor="let insumo of availableInsumos" [value]="insumo.id">{{ insumo.nombre }}</option>
+            </select>
           </div>
         </div>
-        <button type="button" (click)="removeInsumo(i)" class="btn-remove">Eliminar Insumo</button>
+        <button type="button" (click)="addInsumo(+insumoSelect.value)" class="button is-info btn-add">Añadir Insumo</button>
       </div>
-    </div>
-    <div>
-      <label>Añadir Insumo:</label>
-      <select #insumoSelect>
-        <option *ngFor="let insumo of availableInsumos" [value]="insumo.id">{{ insumo.nombre }}</option>
-      </select>
-      <button type="button" (click)="addInsumo(+insumoSelect.value)" class="btn-add">Añadir Insumo</button>
-    </div>
 
-    <button type="submit" [disabled]="productoForm.invalid">Actualizar Producto</button>
-</form>
+      <div class="field">
+        <div class="control">
+          <button type="submit" class="button is-primary" [disabled]="productoForm.invalid">Actualizar Producto</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

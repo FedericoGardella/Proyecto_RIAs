@@ -1,22 +1,41 @@
-<h1>Añadir insumo</h1>
-
-<form [formGroup]="insumoForm" (ngSubmit)="onSubmit()">
-    <label for="nombre">Nombre</label>
-    <input class="m-2" id="nombre" formControlName="nombre" type="text" />
-    <div *ngIf="insumoForm.get('nombre')?.invalid && insumoForm.get('nombre')?.touched">
-        <div *ngIf="insumoForm.get('nombre')?.errors?.['required']">El nombre es requerido</div>
-        <div *ngIf="insumoForm.get('nombre')?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</div>
-        <div *ngIf="insumoForm.get('nombre')?.errors?.['maxlength']">El nombre no puede exceder los 30 caracteres</div>
-        <div *ngIf="insumoForm.get('nombre')?.errors?.['uniqueName']">El nombre ya está en uso</div>
+<div class="columns mt-4 is-centered">
+    <div class="column is-half-desktop is-full-mobile">
+      <h1 class="title is-3 has-text-centered">Añadir Insumo</h1>
+  
+      <form [formGroup]="insumoForm" (ngSubmit)="onSubmit()" class="box">
+        <div class="field">
+          <label for="nombre" class="label">Nombre</label>
+          <div class="control">
+            <input id="nombre" formControlName="nombre" class="input m-2" type="text" placeholder="Nombre del insumo" />
+          </div>
+          <p class="help is-danger" *ngIf="insumoForm.get('nombre')?.invalid && insumoForm.get('nombre')?.touched">
+            <span *ngIf="insumoForm.get('nombre')?.errors?.['required']">El nombre es requerido.</span>
+            <span *ngIf="insumoForm.get('nombre')?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</span>
+            <span *ngIf="insumoForm.get('nombre')?.errors?.['maxlength']">El nombre no puede exceder 30 caracteres.</span>
+            <span *ngIf="insumoForm.get('nombre')?.errors?.['uniqueName']">Este nombre ya está en uso.</span>
+          </p>
+        </div>
+  
+        <div class="field">
+          <label for="unidad" class="label">Unidad</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="unidad" formControlName="unidad" class="m-2">
+                <option *ngFor="let unidad of unidades" [value]="unidad">{{ unidad }}</option>
+              </select>
+            </div>
+          </div>
+          <p class="help is-danger" *ngIf="insumoForm.get('unidad')?.invalid && insumoForm.get('unidad')?.touched">
+            <span *ngIf="insumoForm.get('unidad')?.errors?.['required']">La unidad es requerida.</span>
+          </p>
+        </div>
+  
+        <div class="field">
+          <div class="control">
+            <button type="submit" class="mt-2 button is-primary" [disabled]="insumoForm.invalid">Añadir Insumo</button>
+          </div>
+        </div>
+      </form>
     </div>
-
-    <label for="unidad">Unidad</label>
-    <select class="m-2" id="unidad" formControlName="unidad">
-        <option *ngFor="let unidad of unidades" [value]="unidad">{{ unidad }}</option>
-    </select>
-    <div *ngIf="insumoForm.get('unidad')?.invalid && insumoForm.get('unidad')?.touched">
-        <div *ngIf="insumoForm.get('unidad')?.errors?.['required']">La unidad es requerida</div>
-    </div>
-
-    <button type="submit" [disabled]="insumoForm.invalid">Añadir insumo</button>
-</form>
+  </div>
+  
