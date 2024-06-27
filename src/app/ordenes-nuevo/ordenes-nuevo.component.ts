@@ -25,7 +25,7 @@ export class OrdenesNuevoComponent implements OnInit {
   showErrorModal: boolean = false;
   showSuccessModal: boolean = false;
   currentPage: number = 1;
-  itemsPerPage: number = 3;
+  itemsPerPage: number = 4;
   totalPages: number = 1;
   searchTerm: string = '';
 

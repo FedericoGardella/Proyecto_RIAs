@@ -1,7 +1,11 @@
+
+<div class="container p-2">
+  <div class="columns is-centered">
+    <div class="column is-three-quarters-desktop is-full-mobile">
 <div class="container" *ngIf="productos.length > 0">
   <h2 class="title is-4">Carrito de Compras</h2>
   <div class="columns is-multiline">
-    <div class="column is-one-third-tablet is-one-quarter-desktop" *ngFor="let producto of productos; let i = index">
+    <div class="column is-one-quarter-desktop" *ngFor="let producto of productos; let i = index">
       <div *ngIf="prods && prods[i]" class="card m-5">
         <div class="card-image" style="position: relative;">
           <figure class="image is-4by3">
@@ -25,7 +29,11 @@
   <button class="button is-primary" (click)="openPurchaseModal()">Confirmar Compra</button>
 </div>
 <div class="container" *ngIf="productos.length === 0">
-  <p class="notification is-warning">El carrito está vacío.</p>
+  <div class="columns  is-centered">
+    <div class="column is-half-desktop">
+      <p class="notification is-info">El carrito está vacío.</p>
+    </div>
+  </div>
 </div>
 
 <!-- Modal de confirmación -->
@@ -62,5 +70,8 @@
       <button class="button is-success" (click)="confirmPurchase()">Confirmar</button>
       <button class="button" (click)="cancelPurchase()">Cancelar</button>
     </footer>
+  </div>
+</div>
+    </div>
   </div>
 </div>

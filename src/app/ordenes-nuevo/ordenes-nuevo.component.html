@@ -1,5 +1,9 @@
+
+<div class="container p-4">
+  <div class="columns is-centered">
+    <div class="column is-three-quarters-desktop is-full-mobile">
 <!-- Campo de búsqueda -->
-<div class="panel">
+<div class="panel is-centered">
   <p class="panel-heading mt-5">Catálogo</p>
   <div class="panel-block">
     <p class="control has-icons-left">
@@ -17,9 +21,10 @@
   </div>
 </div>
 
+<!-- Contenedor de productos -->
 <div class="container">
-  <div class="columns is-multiline">
-    <div class="column is-one-quarter" *ngFor="let producto of paginatedProductos">
+  <div class="columns is-multiline is-centered">
+    <div class="column is-half-tablet is-one-quarter-desktop" *ngFor="let producto of paginatedProductos">
       <div class="card">
         <div class="card-image">
           <figure class="image is-4by3">
@@ -76,7 +81,7 @@
 </div>
 
 <!-- Paginado -->
-<nav class="pagination" role="navigation" aria-label="pagination">
+<nav class="mt-4 pagination is-centered" role="navigation" aria-label="pagination">
   <a class="pagination-previous" (click)="goToPage(currentPage - 1)" [class.is-disabled]="currentPage === 1">Anterior</a>
   <a class="pagination-next" (click)="goToPage(currentPage + 1)" [class.is-disabled]="currentPage === totalPages">Siguiente</a>
   <ul class="pagination-list">
@@ -90,3 +95,6 @@
     </li>
   </ul>
 </nav>
+    </div>
+    </div>
+</div>
