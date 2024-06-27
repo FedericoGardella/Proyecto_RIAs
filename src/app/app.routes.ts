@@ -13,6 +13,7 @@ import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.componen
 import { DetalleOrdenComponent } from './detalle-orden/detalle-orden.component';
 import { UsuariosListarComponent } from './usuarios-listar/usuarios-listar.component';
 import { CarritoComponent } from './carrito/carrito.component';
+import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
     { path: 'productos', component: ProductosComponent },
@@ -29,5 +30,6 @@ export const routes: Routes = [
     { path: 'ordenes/:id', component: DetalleOrdenComponent },
     { path: 'usuarios', component: UsuariosListarComponent },
     { path: 'carrito', component: CarritoComponent },
+    { path: '', component: HomeComponent },
     //{ path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
