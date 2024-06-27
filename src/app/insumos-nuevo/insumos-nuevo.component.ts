@@ -19,6 +19,10 @@ export class InsumosNuevoComponent implements OnInit{
   insumoForm: FormGroup;
   unidades = ['Kg', 'Lt'];
 
+  // Variables para los modales de éxito y error
+  showSuccessModal: boolean = false;
+  showErrorModal: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private insumoService: InsumoService,
@@ -50,13 +54,22 @@ export class InsumosNuevoComponent implements OnInit{
     if (this.insumoForm.valid) {
       this.insumoService.add(this.insumoForm.value).subscribe({
         next: () => {
-          alert('Insumo creado con éxito');
-          this.router.navigate(['/insumos']);
+          this.showSuccessModal = true;          
         },
         error: (error) => {
           console.error('Error al añadir el insumo', error);
+          this.showErrorModal = true;
         }
       });
     }
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal = false;
+    this.router.navigate(['/insumos']);
+  }
+
+  closeErrorModal() {
+    this.showErrorModal = false;
   }
 }

@@ -90,3 +90,55 @@
     </div>
   </div>
 </div>
+
+<!-- Modal de éxito -->
+<div class="modal" [ngClass]="{'is-active': showSuccessModal}">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Éxito</p>
+      <button class="delete" aria-label="close" (click)="closeSuccessModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>El producto ha sido eliminado correctamente.</p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success" (click)="closeSuccessModal()">Cerrar</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Modal de error -->
+<div class="modal" [ngClass]="{'is-active': showErrorModal}">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Error</p>
+      <button class="delete" aria-label="close" (click)="closeErrorModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>Hubo un error al eliminar el producto. Por favor, inténtelo de nuevo.</p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-danger" (click)="closeErrorModal()">Cerrar</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Modal de confirmación -->
+<div class="modal" [ngClass]="{'is-active': showConfirmModal}">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Confirmación</p>
+      <button class="delete" aria-label="close" (click)="cancelDelete()"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>¿Está seguro de que desea eliminar este producto?</p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-danger" (click)="confirmDelete()">Eliminar</button>
+      <button class="button" (click)="cancelDelete()">Cancelar</button>
+    </footer>
+  </div>
+</div>

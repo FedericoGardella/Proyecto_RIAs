@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ProductoService } from '../services/producto.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Route, Router } from '@angular/router';
@@ -24,6 +24,11 @@ export class ProductosNuevoComponent implements OnInit{
   insumos: Insumo[] = [];
   selectedInsumos: any[] = [];
   availableInsumos: Insumo[] = [];
+  allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+
+  // Variables para los modales de éxito y error
+  showSuccessModal: boolean = false;
+  showErrorModal: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -35,7 +40,7 @@ export class ProductosNuevoComponent implements OnInit{
     this.productoForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(30)], [this.uniqueNameValidator()]],
       descripcion: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(150)]],
-      imagen: ['', [Validators.required]],
+      imagen: ['', [Validators.required, this.isValidImage(this.allowedExtensions)]],
       precio: ['', [Validators.required, Validators.min(0.01)]],
       insumos: this.fb.array([])
     });
@@ -50,6 +55,23 @@ export class ProductosNuevoComponent implements OnInit{
           return producto ? { uniqueName: true } : null;
         })
       );
+    };
+  }
+
+  // Chequear si la imagen es valida
+  isValidImage(allowedExtensions: string[]): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const file = control.value;
+      
+      if (file) {
+        console.log('Archivo:', file);
+        const fileExtension = file.split('.').pop()?.toLowerCase();
+        if (allowedExtensions.indexOf(fileExtension) === -1) {
+          console.log('Extension no permitida:', fileExtension);
+          return { 'fileType': { value: control.value } };
+        }
+      }
+      return null;
     };
   }
 
@@ -125,17 +147,25 @@ export class ProductosNuevoComponent implements OnInit{
 
       this.productoService.add(formData).subscribe({
         next: () => {
-          alert('Producto añadido exitosamente');
-          this.router.navigate(['/productos']);
+          this.showSuccessModal = true;
         },
         error: (error) => {
           console.error('Error al añadir el producto', error);
-          alert('Hubo un error al añadir el producto');
+          this.showErrorModal = true;
         }
       });
     }
     else {
       console.log('Formulario inválido o archivo no seleccionado');
     }
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal = false;
+    this.router.navigate(['/productos']);
+  }
+
+  closeErrorModal() {
+    this.showErrorModal = false;
   }
 }

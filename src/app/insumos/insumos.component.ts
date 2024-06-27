@@ -3,7 +3,7 @@ import { InsumoService } from '../services/insumo.service';
 import { Insumo } from '../model/insumo';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-insumos',
@@ -20,8 +20,18 @@ export class InsumosComponent implements OnInit {
   itemsPerPage: number = 2;
   totalPages: number = 1;
   searchTerm: string = '';
+
+  // Variables para los modales de éxito y error
+  showSuccessModal: boolean = false;
+  showErrorModal: boolean = false;
+
+  showConfirmModal: boolean = false;
+  insumoIdToDelete: number | null = null;
   
-  constructor(private insumoService: InsumoService) {}
+  constructor(
+    private insumoService: InsumoService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadInsumos();
@@ -60,18 +70,38 @@ export class InsumosComponent implements OnInit {
   }
 
   deleteInsumo(id: number): void {
-    if (confirm('¿Está seguro de que desea eliminar este insumo?')) {
-      this.insumoService.delete(id).subscribe({
+    this.insumoIdToDelete = id;
+    this.showConfirmModal = true;
+  }
+
+  confirmDelete(): void {
+    if (this.insumoIdToDelete !== null) {
+      this.insumoService.delete(this.insumoIdToDelete).subscribe({
         next: () => {
-          alert('Insumo eliminado exitosamente');
-          this.loadInsumos(); // Recargar la lista de insumos
+          this.showSuccessModal = true;
+          this.showConfirmModal = false;
         },
         error: (error) => {
           console.error('Error al eliminar el insumo', error);
-          alert('Hubo un error al eliminar el insumo');
+          this.showErrorModal = true;
+          this.showConfirmModal = false;
         }
       });
     }
+  }
+
+  cancelDelete(): void {
+    this.showConfirmModal = false;
+    this.insumoIdToDelete = null;
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal = false;
+    this.loadInsumos(); // Recargar la lista de insumos
+  }
+
+  closeErrorModal() {
+    this.showErrorModal = false;
   }
 
 }

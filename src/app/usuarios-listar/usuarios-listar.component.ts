@@ -22,6 +22,10 @@ export class UsuariosListarComponent implements OnInit{
   roles: string[] = ['ADMIN', 'PANADERO', 'USER'];
   emailUsuario: string | null = null;
 
+  // Variables para los modales de éxito y error
+  showSuccessModal: boolean = false;
+  showErrorModal: boolean = false;
+
   constructor(
     private userService: UserService,
     private authService: AuthService
@@ -45,10 +49,17 @@ export class UsuariosListarComponent implements OnInit{
   updateRole(id: Number, role: string): void {
     this.userService.updateRole(id, role).subscribe((usuario) => {
       console.log('Rol actualizado:', usuario);
-      //Alerta de éxito
-      alert('Rol actualizado correctamente'); 
-      this.loadUsuarios();
+      this.showSuccessModal = true;
     });
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal = false;
+    this.loadUsuarios();
+  }
+
+  closeErrorModal() {
+    this.showErrorModal = false;
   }
 
 }

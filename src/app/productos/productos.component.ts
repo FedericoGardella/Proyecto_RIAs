@@ -23,6 +23,13 @@ export class ProductosComponent implements OnInit {
   searchTerm: string = '';
   sortOption: string = 'none';
 
+  // Variables para los modales de éxito y error
+  showSuccessModal: boolean = false;
+  showErrorModal: boolean = false;
+
+  showConfirmModal: boolean = false;
+  productoIdToDelete: number | null = null;
+
   constructor(private productosService: ProductoService) {}
 
   ngOnInit(): void {
@@ -76,6 +83,40 @@ export class ProductosComponent implements OnInit {
   }
 
   deleteProducto(id: number): void {
+    this.productoIdToDelete = id;
+    this.showConfirmModal = true;
+  }
+
+  confirmDelete(): void {
+    if (this.productoIdToDelete !== null) {
+      this.productosService.delete(this.productoIdToDelete).subscribe({
+        next: () => {
+          this.showSuccessModal = true;
+          this.showConfirmModal = false;
+        },
+        error: (error) => {
+          this.showErrorModal = true;
+          this.showConfirmModal = false;
+        }
+      });
+    }
+  }
+
+  cancelDelete(): void {
+    this.showConfirmModal = false;
+    this.productoIdToDelete = null;
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal = false;
+    this.loadProductos();
+  }
+
+  closeErrorModal() {
+    this.showErrorModal = false;
+  }
+
+  /* deleteProducto(id: number): void {
     if (confirm('¿Está seguro de que desea eliminar este producto?')) {
       this.productosService.delete(id).subscribe({
         next: () => {
@@ -88,6 +129,6 @@ export class ProductosComponent implements OnInit {
         }
       });
     }
-  }
+  } */
   
 }

@@ -24,10 +24,11 @@
                       <div *ngIf="productoForm.get('descripcion')?.errors?.['maxlength']" class="help is-danger">Descripción no puede exceder los 150 caracteres.</div>
                   </div>
 
-                  <label for="imagen" class="label">Imagen</label>
+                  <label for="imagen" class="label">Imagen (jpg, jpeg, png o webp)</label>
                   <input id="imagen" (change)="onFileSelected($event)" type="file" class="input" />
                   <div *ngIf="productoForm.get('imagen')?.invalid && productoForm.get('imagen')?.touched">
                       <div *ngIf="productoForm.get('imagen')?.errors?.['required']" class="help is-danger">Imagen es requerida.</div>
+                        <div *ngIf="productoForm.get('imagen')?.errors?.['invalidFile']" class="help is-danger">Imagen debe ser de tipo 'jpg', 'jpeg', 'png' o 'webp'.</div>
                   </div>
 
                   <label for="precio" class="label">Precio</label>
@@ -82,3 +83,37 @@
       </form>
   </div>
 </section>
+
+<!-- Modal de éxito -->
+<div class="modal" [ngClass]="{'is-active': showSuccessModal}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Éxito</p>
+        <button class="delete" aria-label="close" (click)="closeSuccessModal()"></button>
+      </header>
+      <section class="modal-card-body">
+        <p>El producto ha sido añadido correctamente.</p>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" (click)="closeSuccessModal()">Cerrar</button>
+      </footer>
+    </div>
+  </div>
+  
+  <!-- Modal de error -->
+  <div class="modal" [ngClass]="{'is-active': showErrorModal}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Error</p>
+        <button class="delete" aria-label="close" (click)="closeErrorModal()"></button>
+      </header>
+      <section class="modal-card-body">
+        <p>Hubo un error al añadir el producto. Por favor, inténtelo de nuevo.</p>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-danger" (click)="closeErrorModal()">Cerrar</button>
+      </footer>
+    </div>
+  </div>

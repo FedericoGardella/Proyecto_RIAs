@@ -23,6 +23,7 @@ export class CarritoComponent implements OnInit {
   email: string = '';
   total: number = 0;
   arrayprod : { id: number, cantidad: number }[] = [];
+  isDateValid: boolean = true;
 
   // Variables para el modal de confirmación
   showModal: boolean = false;
@@ -31,6 +32,10 @@ export class CarritoComponent implements OnInit {
   // Variables para el modal de confirmación de compra
   showPurchaseModal: boolean = false;
   purchaseDate: string = '';
+
+  // Variables para los modales de éxito y error
+  showSuccessModal: boolean = false;
+  showErrorModal: boolean = false;
 
   constructor(
     private carritoService: CarritoService,
@@ -102,40 +107,49 @@ export class CarritoComponent implements OnInit {
   }
 
   confirmPurchase() {
-    if (this.purchaseDate) {
-      const emailCliente = this.authService.getEmail();
-      if (!emailCliente) {
-        console.error('Email del cliente es null o undefined');
-        return;
+    this.validateDate();
+    if (this.isDateValid) {
+      if (this.purchaseDate) {
+        const emailCliente = this.authService.getEmail();
+        if (!emailCliente) {
+          console.error('Email del cliente es null o undefined');
+          return;
+        }
+
+        this.productos.forEach((p: ProductoEnCarrito) => {
+          this.arrayprod.push({
+            id: p.idProd,
+            cantidad: p.cantidad
+          });
+        });
+
+        const nuevaOrden: Orden = {
+          id: 0,
+          productos: this.arrayprod,
+          fecha: this.purchaseDate,
+          cobro: this.total,
+          estado: 'Pendiente',
+          cliente: emailCliente,
+        };
+
+        this.ordenService.add(nuevaOrden).subscribe({
+          next: () => {
+            this.carritoService.deleteAll(emailCliente).subscribe(() => {
+              this.loadCarrito();
+            });
+            this.showPurchaseModal = false;
+            this.purchaseDate = '';
+            this.showSuccessModal = true; // Muestra el modal de éxito
+          },
+          error: (error) => {
+            console.error('Error al confirmar la compra:', error);
+            this.showPurchaseModal = false;
+            this.showErrorModal = true; // Muestra el modal de error
+          }
+        });
+      } else {
+        this.showErrorModal = true;
       }
-
-      this.productos.forEach((p: ProductoEnCarrito) => {
-        this.arrayprod.push({
-          id: p.idProd,
-          cantidad: p.cantidad
-        });
-      });
-
-      const nuevaOrden: Orden = {
-        id: 0,
-        productos: this.arrayprod,
-        fecha: this.purchaseDate,
-        cobro: this.total,
-        estado: 'Pendiente',
-        cliente: emailCliente,
-      };
-
-      this.ordenService.add(nuevaOrden).subscribe(response => {
-        this.carritoService.deleteAll(emailCliente).subscribe(() => {
-          this.loadCarrito();
-        });
-      });
-
-      this.showPurchaseModal = false;
-
-      this.purchaseDate = '';
-    } else {
-      alert('Por favor, introduce una fecha de entrega.');
     }
   }
 
@@ -143,4 +157,26 @@ export class CarritoComponent implements OnInit {
     this.showPurchaseModal = false;
     this.purchaseDate = '';
   }
+
+  closeSuccessModal() {
+    this.showSuccessModal = false;
+  }
+
+  closeErrorModal() {
+    this.showErrorModal = false;
+  }
+
+  validateDate(): void {
+    if (!this.purchaseDate) {
+      this.isDateValid = false;
+      return;
+    }
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(this.purchaseDate);
+    
+    this.isDateValid = selectedDate > today;
+  }
+
 }

@@ -25,7 +25,7 @@ export class OrdenesNuevoComponent implements OnInit {
   showErrorModal: boolean = false;
   showSuccessModal: boolean = false;
   currentPage: number = 1;
-  itemsPerPage: number = 3;
+  itemsPerPage: number = 4;
   totalPages: number = 1;
   searchTerm: string = '';
 
@@ -47,8 +47,30 @@ export class OrdenesNuevoComponent implements OnInit {
   }
 
   agregarAlCarrito(producto: Producto, cantidad: number) {
+    console.log('Cantidad: ', cantidad);
+
     if (cantidad === 0) {
       this.mensajeError = 'La cantidad no puede ser 0';
+      this.showErrorModal = true;
+      return;
+    }
+
+    if (cantidad < 0) {
+      this.mensajeError = 'La cantidad no puede ser negativa';
+      this.showErrorModal = true;
+      return;
+    }
+
+    // Verificar si cantidad es null
+    if (cantidad === null) {
+      this.mensajeError = 'La cantidad no puede ser nula y debe ser un número';
+      this.showErrorModal = true;
+      return;
+    }
+
+    // Verificar si cantidad es un entero
+    if (!Number.isInteger(cantidad)) {
+      this.mensajeError = 'La cantidad debe ser un número entero';
       this.showErrorModal = true;
       return;
     }

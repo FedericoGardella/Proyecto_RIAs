@@ -39,3 +39,36 @@
     </div>
   </div>
   
+  <!-- Modal de éxito -->
+<div class="modal" [ngClass]="{'is-active': showSuccessModal}">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Éxito</p>
+      <button class="delete" aria-label="close" (click)="closeSuccessModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>El insumo ha sido editado correctamente.</p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success" (click)="closeSuccessModal()">Cerrar</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Modal de error -->
+<div class="modal" [ngClass]="{'is-active': showErrorModal}">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Error</p>
+      <button class="delete" aria-label="close" (click)="closeErrorModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>Hubo un error al editar el insumo. Por favor, inténtelo de nuevo.</p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-danger" (click)="closeErrorModal()">Cerrar</button>
+    </footer>
+  </div>
+</div>

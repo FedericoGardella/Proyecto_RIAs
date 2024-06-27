@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AsyncValidatorFn, AbstractControl, ValidationErrors, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AsyncValidatorFn, AbstractControl, ValidationErrors, FormArray, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductoService } from '../services/producto.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,6 +23,11 @@ export class ProductosEditarComponent implements OnInit{
   selectedFile: File | null = null;
   insumos: Insumo[] = [];
   availableInsumos: Insumo[] = [];
+  allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+
+  // Variables para los modales de éxito y error
+  showSuccessModal: boolean = false;
+  showErrorModal: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -35,7 +40,7 @@ export class ProductosEditarComponent implements OnInit{
     this.productoForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(30)], [this.uniqueNameValidator()]],
       descripcion: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(150)]],
-      imagen: ['', [Validators.required]],
+      imagen: ['', [Validators.required, this.isValidImage(this.allowedExtensions)]],
       precio: ['', [Validators.required, Validators.min(0.01)]],
       insumos: this.fb.array([])
     });
@@ -50,6 +55,23 @@ export class ProductosEditarComponent implements OnInit{
           return producto ? { uniqueName: true } : null;
         })
       );
+    };
+  }
+
+  // Chequear si la imagen es valida
+  isValidImage(allowedExtensions: string[]): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const file = control.value;
+      
+      if (file) {
+        console.log('Archivo:', file);
+        const fileExtension = file.split('.').pop()?.toLowerCase();
+        if (allowedExtensions.indexOf(fileExtension) === -1) {
+          console.log('Extension no permitida:', fileExtension);
+          return { 'fileType': { value: control.value } };
+        }
+      }
+      return null;
     };
   }
 
@@ -118,6 +140,13 @@ export class ProductosEditarComponent implements OnInit{
 
   addInsumo(insumoId: number): void {
     const insumosArray = this.productoForm.get('insumos') as FormArray;
+    
+    // Verificar si hay insumos disponibles
+    if (this.availableInsumos.length === 0) {
+      console.log('No hay insumos disponibles');
+      return;
+    }
+
     insumosArray.push(this.fb.group({
       insumoId: [insumoId, Validators.required],
       cantidad: ['', Validators.required]
@@ -134,19 +163,6 @@ export class ProductosEditarComponent implements OnInit{
   getInsumoNombre(insumoId: number): string {
 
     const insumo = this.insumos.find(i => i.id === insumoId);
-
-   /*  //mostrar todos los insumos en consola
-    console.log('Insumos:', this.insumos);
-    //mostrar solo el nombre de los insumos en consola
-    console.log('Nombre de los insumos:', this.insumos.map(i => i.nombre));
-    //mostrar insumos disponibles en consola
-    console.log('Insumos disponibles:', this.availableInsumos);
-    if (insumo) {
-      console.log('Insumo encontrado:', insumo);
-    }
-    else {
-      console.log('Insumo no encontrado:', insumoId);
-    } */
     return insumo ? insumo.nombre : 'Insumo no encontrado';
   }
 
@@ -186,16 +202,25 @@ export class ProductosEditarComponent implements OnInit{
         this.productoService.update(this.productoId, formData).subscribe({
             next: (data) => {
                 console.log('Producto actualizado', data);
-                alert('Producto actualizado');
-                this.router.navigate(['/productos']);
+                this.showSuccessModal = true;
             },
             error: (error) => {
                 console.error('Error al actualizar el producto', error);
+                this.showErrorModal = true;
             }
         });
     }
     else {
       console.log('Formulario inválido');
     }
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal = false;
+    this.router.navigate(['/productos']);
+  }
+
+  closeErrorModal() {
+    this.showErrorModal = false;
   }
 }

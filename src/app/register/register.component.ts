@@ -6,6 +6,7 @@ import { Usuario } from '../model/usuario';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import e from 'express';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,9 @@ import { RouterModule } from '@angular/router';
 })
 export class RegisterComponent implements OnInit{
   registerForm: FormGroup;
+  errorMessage: string | null = null;
+  showModal: boolean = false;
+  showSuccess: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -23,10 +27,10 @@ export class RegisterComponent implements OnInit{
     private router: Router
   ) { 
     this.registerForm = this.fb.group({
-      email: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(30)]],
+      password: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(20)]],
       role: ['USER', [Validators.required]],
-      telefono: ['', [Validators.required]]
+      telefono: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(12), Validators.pattern('^[0-9]*$')]],
     });
   } 
 
@@ -38,14 +42,28 @@ export class RegisterComponent implements OnInit{
       const newUsuario: Usuario = this.registerForm.value;
       this.authService.register(newUsuario).subscribe({
         next: () => {
-          alert('Usuario registrado exitosamente');
-          this.router.navigate(['/login']);
+          this.showSuccess = true;
         },
         error: (error) => {
           console.error('Error al registrar el usuario', error);
-          alert('Hubo un error al registrar el usuario');
+          if (error.status === 400) {
+            this.errorMessage = error.error.message;
+          }
+          else {
+            this.errorMessage = 'Error al registrar el usuario';
+          }
+          this.showModal = true;            
         }
       });
     }
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+  }
+
+  closeSuccess(): void {
+    this.showSuccess = false;
+    this.router.navigate(['/login']);
   }
 }
