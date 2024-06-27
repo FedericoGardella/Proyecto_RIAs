@@ -22,6 +22,7 @@ export class AuthService {
           this.role = response.role;
           localStorage.setItem('authToken', response.token);
           localStorage.setItem('email', email);
+          localStorage.setItem('role', this.role);
           localStorage.setItem('userId', response.userId.toString());
         },
         error: (error) => {
@@ -48,11 +49,11 @@ export class AuthService {
   }
 
   getRole(): string | null {
-    return this.role;
+    return localStorage.getItem('role');
   }
 
   isLoggedIn(): boolean {
-    return !!this.email && !!this.role && !!localStorage.getItem('authToken');
+    return !!localStorage.getItem('authToken');
   }
 
   register(usuario: Usuario): Observable<Usuario> {

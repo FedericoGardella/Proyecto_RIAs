@@ -1,0 +1,52 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="#">
+        <!-- Aquí puedes poner tu logo o nombre del sitio -->
+        Home
+      </a>
+  
+      <!-- Botón hamburguesa -->
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+         data-target="navbarMenu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+  
+    <div id="navbarMenu" class="navbar-menu">
+        <div class="navbar-start">
+            <ng-container *ngIf="authService.isLoggedIn() && userRole == 'ADMIN'">
+                <a class="navbar-item" routerLink="/productos">Productos</a>
+                <a class="navbar-item" routerLink="/productos/add">Agregar Producto</a>
+                <a class="navbar-item" routerLink="/insumos">Insumos</a>
+                <a class="navbar-item" routerLink="/usuarios">Usuarios</a>
+                <a class="navbar-item" routerLink="/ordenes">Ordenes</a>
+            </ng-container>
+
+            <ng-container *ngIf="authService.isLoggedIn() && userRole == 'USER'">
+                <a class="navbar-item" routerLink="/ordenes/add">Catálogo</a>
+                <a class="navbar-item" routerLink="/carrito">Mi Carrito</a>
+                <a class="navbar-item" [routerLink]="['/usuarios/', userId]">Perfil</a>
+            </ng-container>
+
+            <ng-container *ngIf="authService.isLoggedIn() && userRole == 'PANADERO'">
+                <a class="navbar-item" routerLink="/ordenes">Ordenes</a>
+            </ng-container>
+
+            <ng-container *ngIf="!authService.isLoggedIn()">
+                <a class="navbar-item" routerLink="/register">Registro</a>
+            </ng-container>
+        </div>
+
+        <div class="navbar-end">
+            <ng-container *ngIf="!authService.isLoggedIn()">
+                <a class="navbar-item" routerLink="/login">Login</a>
+            </ng-container>
+            <ng-container *ngIf="authService.isLoggedIn()">
+                <a class="navbar-item" (click)="logout()">Logout</a>
+            </ng-container>
+        </div>
+    </div>
+
+  </nav>
