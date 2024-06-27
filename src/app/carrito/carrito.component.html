@@ -2,10 +2,10 @@
   <h2 class="title is-4">Carrito de Compras</h2>
   <div class="columns is-multiline">
     <div class="column is-one-third-tablet is-one-quarter-desktop" *ngFor="let producto of productos; let i = index">
-      <div *ngIf="prods" class="card m-5">
+      <div *ngIf="prods && prods[i]" class="card m-5">
         <div class="card-image" style="position: relative;">
           <figure class="image is-4by3">
-            <img [src]="prods[i].imagen" alt="{{prods[i].nombre}}">
+            <img [src]="prods[i].imagen">
             <button (click)="openModal(i)" class="delete is-large has-background-danger" style="position: absolute; top: 0.5rem; right: 0.5rem;"></button>
           </figure>
         </div>
