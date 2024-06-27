@@ -8,7 +8,6 @@ import { ProductoService } from '../services/producto.service';
 import { FormsModule } from '@angular/forms';
 import { Orden } from '../model/orden';
 import { OrdenService } from '../services/orden.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-carrito',
@@ -42,7 +41,6 @@ export class CarritoComponent implements OnInit {
     private authService: AuthService,
     private productoService: ProductoService,
     private ordenService: OrdenService,
-    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -93,7 +91,6 @@ export class CarritoComponent implements OnInit {
         this.productos.splice(index, 1);
         this.prods.splice(index, 1);
         this.loadCarrito();
-
       },
       error: (error) => {
         console.error('Error al eliminar el producto del carrito:', error);
@@ -101,7 +98,6 @@ export class CarritoComponent implements OnInit {
     });
   }
   
-
   openPurchaseModal() {
     this.showPurchaseModal = true;
   }

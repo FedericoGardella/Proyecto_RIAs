@@ -1,37 +1,5 @@
 <main>
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="#">
-      <!-- Aquí puedes poner tu logo o nombre del sitio -->
-      Home
-    </a>
-
-    <!-- Botón hamburguesa -->
-    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-       data-target="navbarMenu">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-
-  <!-- Menú -->
-  <div id="navbarMenu" class="navbar-menu">
-    <div class="navbar-end">
-      <a class="navbar-item" routerLink="productos/">Productos</a>
-      <a class="navbar-item" routerLink="login/">Login</a>
-      <a class="navbar-item" routerLink="productos/add/">Agregar Producto</a>
-      <a class="navbar-item" routerLink="ordenes/add">Catálogo</a>
-      <a class="navbar-item" routerLink="ordenes/">Ordenes</a>
-      <a class="navbar-item" routerLink="register/">Registro</a>
-      <a class="navbar-item" routerLink="insumos/">Insumos</a>
-      <a class="navbar-item" routerLink="carrito/">Mi Carrito</a>
-      <a class="navbar-item" routerLink="usuarios/">Usuarios</a>
-      <a class="navbar-item" [routerLink]="['usuarios/', userId]">Perfil</a>
-    </div>
-  </div>
-</nav>
-
+  <app-header></app-header>
 </main>
 
 <router-outlet />

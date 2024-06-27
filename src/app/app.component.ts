@@ -3,22 +3,20 @@ import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
+import { HeaderComponent } from './header/header.component';
+
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, HttpClientModule, ReactiveFormsModule],
+  imports: [RouterOutlet, RouterModule, HttpClientModule, ReactiveFormsModule, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'proyecto-angular';
-  userId: number | null = 0;
 
-  constructor(
-    private authService: AuthService,
-  ) {
-    this.userId = this.authService.getUserId();
-  }
+  constructor() { }
+
 }

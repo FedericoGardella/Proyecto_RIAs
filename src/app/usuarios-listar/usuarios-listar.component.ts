@@ -42,7 +42,6 @@ export class UsuariosListarComponent implements OnInit{
         ...usuario,
         startingRole: usuario.role
       }));
-      console.log('Usuarios:', this.usuarios);
     });
   }
 

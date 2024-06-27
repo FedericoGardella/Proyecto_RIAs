@@ -5,7 +5,6 @@ import { OrdenService } from '../services/orden.service';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormatProductosPipe } from "../format-productos.pipe";
-import { Orden } from '../model/orden';
 
 @Component({
     selector: 'app-perfil-usuario',
@@ -18,7 +17,7 @@ export class PerfilUsuarioComponent implements OnInit{
 
   user: any;
   userId: number;
-  userEmail: string | null = null;
+  userEmail: string = '';
   ordenes: any[] = [];
 
   constructor(
@@ -32,8 +31,7 @@ export class PerfilUsuarioComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.userEmail = this.authService.getEmail();
-    console.log('Email:', this.userEmail);
+    this.userEmail = this.authService.getEmail()!;
     this.loadUser();
     this.loadOrdenes();
     
@@ -43,7 +41,6 @@ export class PerfilUsuarioComponent implements OnInit{
     this.userService.getProfile(this.userId).subscribe(
       data => {
         this.user = data;
-        console.log('Usuario:', this.user);
       },
       error => {
         console.error('Error al obtener usuario:', error);
@@ -56,7 +53,6 @@ export class PerfilUsuarioComponent implements OnInit{
       this.ordenService.getOrdenesByCliente(this.userEmail).subscribe(
         data => {
           this.ordenes = data;
-          console.log('Ordenes:', this.ordenes);
         },
         error => {
           console.error('Error al obtener ordenes:', error);

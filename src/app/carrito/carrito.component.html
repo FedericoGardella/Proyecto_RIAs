@@ -1,20 +1,24 @@
+
+<div class="container p-2">
+  <div class="columns is-centered">
+    <div class="column is-three-quarters-desktop is-full-mobile">
 <div class="container" *ngIf="productos.length > 0">
   <h2 class="title is-4">Carrito de Compras</h2>
   <div class="columns is-multiline">
-    <div class="column is-one-third-tablet is-one-quarter-desktop" *ngFor="let producto of productos; let i = index">
-      <div class="card m-5">
+    <div class="column is-one-quarter-desktop" *ngFor="let producto of productos; let i = index">
+      <div *ngIf="prods && prods[i]" class="card m-5">
         <div class="card-image" style="position: relative;">
           <figure class="image is-4by3">
-            <img [src]="prods[i]?.imagen" alt="{{prods[i]?.nombre}}">
+            <img [src]="prods[i].imagen">
             <button (click)="openModal(i)" class="delete is-large has-background-danger" style="position: absolute; top: 0.5rem; right: 0.5rem;"></button>
           </figure>
         </div>
         <div class="card-content">
           <div class="media">
             <div class="media-content">
-              <p class="title is-5">{{ prods[i]?.nombre }}</p>
-              <p class="subtitle is-6">Cantidad: {{ producto?.cantidad }}</p>
-              <p class="subtitle is-6">Precio: {{ prods[i]?.precio | currency }}</p>
+              <p class="title is-5">{{ prods[i].nombre }}</p>
+              <p class="subtitle is-6">Cantidad: {{ producto.cantidad }}</p>
+              <p class="subtitle is-6">Precio: {{ prods[i].precio | currency }}</p>
             </div>
           </div>
         </div>
@@ -25,8 +29,16 @@
   <button class="button is-primary" (click)="openPurchaseModal()">Confirmar Compra</button>
 </div>
 <div class="container" *ngIf="productos.length === 0">
-  <p class="notification is-warning">El carrito está vacío.</p>
+  <div class="columns  is-centered">
+    <div class="column is-half-desktop">
+      <p class="notification is-info">El carrito está vacío.</p>
+    </div>
+  </div>
 </div>
+</div>
+</div>
+</div>
+
 
 <!-- Modal de confirmación -->
 <div class="modal" [ngClass]="{'is-active': showModal}">

@@ -24,13 +24,18 @@ export class LoginComponent {
 
   login() {
     this.authService.login(this.email, this.password);
-    this.router.navigate(['/login']);
+    setTimeout(() => { 
+      window.location.reload();
+    }, 500);
+    this.router.navigate(['/']);
   } 
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
+
+
   
 }
 
