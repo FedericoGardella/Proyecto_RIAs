@@ -38,13 +38,11 @@ export class UsuariosListarComponent implements OnInit{
         ...usuario,
         startingRole: usuario.role
       }));
-      console.log('Usuarios:', this.usuarios);
     });
   }
 
   updateRole(id: Number, role: string): void {
     this.userService.updateRole(id, role).subscribe((usuario) => {
-      console.log('Rol actualizado:', usuario);
       //Alerta de éxito
       alert('Rol actualizado correctamente'); 
       this.loadUsuarios();

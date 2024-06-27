@@ -31,7 +31,6 @@ export class ProductosComponent implements OnInit {
 
   loadProductos(): void {
     this.productosService.get().subscribe((productos) => {
-      console.log('Productos recibidos:', productos);
       this.productos = productos;
       this.filterProductos();
     });
