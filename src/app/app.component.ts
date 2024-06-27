@@ -6,6 +6,7 @@ import { AuthService } from './services/auth.service';
 import { HeaderComponent } from './header/header.component';
 
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -16,7 +17,6 @@ import { HeaderComponent } from './header/header.component';
 export class AppComponent {
   title = 'proyecto-angular';
 
-  constructor() {
-    
-  }
+  constructor() { }
+
 }

@@ -6,15 +6,15 @@
       </a>
   
       <!-- Botón hamburguesa -->
-      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-         data-target="navbarMenu">
+      <a (click)="toggleNavbar()" role="button" #navBurger class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
   
-    <div id="navbarMenu" class="navbar-menu">
+    <!-- Menú de navegación -->
+    <div id="navbarMenu" #navMenu class="navbar-menu">
         <div class="navbar-start">
             <ng-container *ngIf="authService.isLoggedIn() && userRole == 'ADMIN'">
                 <a class="navbar-item" routerLink="/productos">Productos</a>
