@@ -4,6 +4,8 @@ import { ProductoService } from '../services/producto.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { OrdenService } from '../services/orden.service';
+import { CarritoService } from '../services/carrito.service';
 
 @Component({
   selector: 'app-productos',
@@ -30,7 +32,12 @@ export class ProductosComponent implements OnInit {
   showConfirmModal: boolean = false;
   productoIdToDelete: number | null = null;
 
-  constructor(private productosService: ProductoService) {}
+  constructor(
+    private productosService: ProductoService, 
+    private ordenesService: OrdenService, 
+    private carritoService: CarritoService
+
+  ) {}
 
   ngOnInit(): void {
     this.loadProductos();
@@ -90,6 +97,23 @@ export class ProductosComponent implements OnInit {
     if (this.productoIdToDelete !== null) {
       this.productosService.delete(this.productoIdToDelete).subscribe({
         next: () => {
+          this.ordenesService.deleteProductoFromOrdenes(this.productoIdToDelete!).subscribe({
+            next: () => {
+              console.log('Producto eliminado de las ordenes');
+            },
+            error: (error) => {
+              console.error('Error al eliminar el producto de las ordenes');
+            }
+          
+          });
+          this.carritoService.deleteProducto(this.productoIdToDelete!).subscribe({
+            next: () => {
+              console.log('Producto eliminado de los carritos');
+            },
+            error: (error) => {
+              console.error('Error al eliminar el producto de los carritos');
+            }
+          });
           this.showSuccessModal = true;
           this.showConfirmModal = false;
         },
@@ -115,19 +139,4 @@ export class ProductosComponent implements OnInit {
     this.showErrorModal = false;
   }
 
-  /* deleteProducto(id: number): void {
-    if (confirm('¿Está seguro de que desea eliminar este producto?')) {
-      this.productosService.delete(id).subscribe({
-        next: () => {
-          alert('Producto eliminado exitosamente');
-          this.loadProductos(); // Recargar la lista de productos
-        },
-        error: (error) => {
-          console.error('Error al eliminar el producto', error);
-          alert('Hubo un error al eliminar el producto');
-        }
-      });
-    }
-  } */
-  
 }
