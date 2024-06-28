@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,25 +16,35 @@ export class LoginComponent {
 
   user = Usuario;
 
+  errorMessage: string = '';
   email: string = '';
   password: string = '';
 
-  constructor(private http: HttpClient, private router: Router, public authService: AuthService) {}
+  constructor(private router: Router, public authService: AuthService) {}
 
   login() {
-    this.authService.login(this.email, this.password);
-    setTimeout(() => { 
-      window.location.reload();
-    }, 500);
-    this.router.navigate(['/']);
-  } 
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        this.errorMessage = 'Usuario y/o contraseña incorrectos';
+      }
+    });
+  }
 
   logout() {
     this.authService.logout();
     this.router.navigate(['/']);
   }
 
-
+  forgotPassword() {
+    // Implement logic for forgotten password, e.g., navigate to a forgot password page or show a modal
+    console.log('Forgot password clicked');
+  }
   
 }
 

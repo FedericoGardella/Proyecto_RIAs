@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Usuario } from '../model/usuario';
 import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators'; 
 
 @Injectable({
   providedIn: 'root'
@@ -14,21 +15,18 @@ export class AuthService {
 
   private apiUrl = 'http://localhost:3000/usuarios';
 
-  login(email: string, password: string) {
-    this.http.post<{ token: string, role: string, nombre: string, userId: number }>(this.apiUrl + '/login', { email, password })
-      .subscribe({
-        next: (response) => {
+  login(email: string, password: string): Observable<{ token: string, role: string, nombre: string, userId: number }> {
+    return this.http.post<{ token: string, role: string, nombre: string, userId: number }>(this.apiUrl + '/login', { email, password })
+      .pipe(
+        tap(response => {
           this.email = email;
           this.role = response.role;
           localStorage.setItem('authToken', response.token);
           localStorage.setItem('email', email);
-          localStorage.setItem('role', this.role);
+          localStorage.setItem('role', response.role);
           localStorage.setItem('userId', response.userId.toString());
-        },
-        error: (error) => {
-          console.error('Login failed', error);
-        }
-      });
+        })
+      );
   }
 
   logout() {

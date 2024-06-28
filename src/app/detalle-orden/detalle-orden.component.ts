@@ -32,8 +32,6 @@ export class DetalleOrdenComponent implements OnInit {
       next: (data) => {
         this.data = data;
         this.loadProductos();
-        console.log(data); 
-        console.log(this.insumos);
       }
     });
   }
