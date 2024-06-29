@@ -32,6 +32,27 @@
               </div>
             </div>
           </div>
+
+          <div class="panel-block">
+            <label class="label pt-2 mr-2">Ordenar por:</label>
+            <div class="field is-grouped is-grouped-multiline">
+              
+              <div class="field">
+                <label class="label">Fecha de Inicio</label>
+                <div class="control">
+                  <input class="input" type="date" (change)="onFilterFechaChange($event, 'inicio')" />
+                </div>
+              </div>
+              
+              <div class="field">
+                <label class="label">Fecha de Fin</label>
+                <div class="control">
+                  <input class="input" type="date" (change)="onFilterFechaChange($event, 'fin')" />
+                </div>
+              </div>
+            </div>
+          </div>
+          
         </div>
 
         <div class="table-container">
@@ -89,3 +110,24 @@
     </div>
   </div>
 </section>
+
+<div class="buttons is-centered">
+  <button class="button is-primary" (click)="showModalInsumosTotales()" >Calcular Insumos Totales</button>
+</div>
+<!-- Modal para mostrar insumos totales -->
+<div class="modal is-fullwidth-mobile is-desktop" [class.is-active]="showInsumosTotales">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      <h2 class="subtitle">Insumos Totales:</h2>
+      <pre>{{ insumosTotales | json | formatInsumos | async }}</pre>
+    </div>
+  </div>
+
+  <footer class="modal-card-foot">
+    <button class="button is-success is-centered" (click)="closeModalInsumosTotales()">Cerrar</button>
+  </footer>
+
+</div>
+
+  
