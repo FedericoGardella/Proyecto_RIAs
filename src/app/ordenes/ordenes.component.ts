@@ -6,14 +6,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { FormatProductosPipe } from '../format-productos.pipe';
 import e from 'express';
+import { ProductoService } from '../services/producto.service';
+import { FormatInsumosPipe } from "../format-insumos.pipe";
 
 
 @Component({
-  selector: 'app-ordenes',
-  standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, FormatProductosPipe],
-  templateUrl: './ordenes.component.html',
-  styleUrl: './ordenes.component.css'
+    selector: 'app-ordenes',
+    standalone: true,
+    templateUrl: './ordenes.component.html',
+    styleUrl: './ordenes.component.css',
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, FormatProductosPipe, FormatInsumosPipe]
 })
 
 export class OrdenesComponent implements OnInit{
@@ -26,9 +28,15 @@ export class OrdenesComponent implements OnInit{
   sortField: string = 'none';
   sortDirection: 'asc' | 'desc' = 'asc';
   filterEstado: string = 'todos';
+  filterFechaInicio: Date | null = null;
+  filterFechaFin: Date | null = null;
+  insumosTotales: { id: number, cantidad: number }[] = [];
+
+  showInsumosTotales: boolean = false;
 
   constructor(
     private ordenesService: OrdenService,
+    private productoService: ProductoService,
     private router: Router
   ) {}
 
@@ -45,7 +53,15 @@ export class OrdenesComponent implements OnInit{
   }
 
   get paginatedOrdenes(): Orden[] {
-    const filteredOrdenes = this.ordenes.filter(orden => this.filterEstado === 'todos' || orden.estado === this.filterEstado);
+    const filteredOrdenes = this.ordenes.filter(orden => {
+      const fechaOrden = new Date(orden.fecha);
+      const fechaInicioValida = !this.filterFechaInicio || fechaOrden >= new Date(this.filterFechaInicio);
+      const fechaFinValida = !this.filterFechaFin || fechaOrden <= new Date(this.filterFechaFin);
+      const estadoValido = this.filterEstado === 'todos' || orden.estado === this.filterEstado;
+  
+      return fechaInicioValida && fechaFinValida && estadoValido;
+    });    
+    
     this.totalPages = Math.ceil(filteredOrdenes.length / this.itemsPerPage);
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     return filteredOrdenes.slice(startIndex, startIndex + this.itemsPerPage);
@@ -76,6 +92,18 @@ export class OrdenesComponent implements OnInit{
 
   onFilterEstadoChange(event: Event): void {
     this.filterEstado = (event.target as HTMLSelectElement).value;
+    this.sortAndPaginateOrdenes();
+  }
+
+  onFilterFechaChange(event: Event, tipo: 'inicio' | 'fin'): void {
+    const fechaSeleccionada = (event.target as HTMLInputElement).value;
+    
+    if (tipo === 'inicio') {
+      this.filterFechaInicio = fechaSeleccionada ? new Date(fechaSeleccionada) : null;
+    } else if (tipo === 'fin') {
+      this.filterFechaFin = fechaSeleccionada ? new Date(fechaSeleccionada) : null;
+    }
+  
     this.sortAndPaginateOrdenes();
   }
 
@@ -118,5 +146,47 @@ export class OrdenesComponent implements OnInit{
       }
     });
   }
+
+  // Calcular insumos totales, pero de las ordenes filtradas (no por pagina)
+  calcularInsumosTotalesFiltrados(): void {
+    this.insumosTotales = [];
+
+    const ordenesFiltradas = this.ordenes.filter((orden) => {
+      const fechaOrden = new Date(orden.fecha);
+      const fechaInicioValida = !this.filterFechaInicio || fechaOrden >= new Date(this.filterFechaInicio);
+      const fechaFinValida = !this.filterFechaFin || fechaOrden <= new Date(this.filterFechaFin);
+      const estadoValido = this.filterEstado === 'todos' || orden.estado === this.filterEstado;
+
+      return fechaInicioValida && fechaFinValida && estadoValido;
+    });
+
+    ordenesFiltradas.forEach((orden) => {
+      orden.productos.forEach((productoEnOrden) => {
+        this.productoService.getProductoById(productoEnOrden.id).subscribe((producto) => {
+          producto.insumos.forEach((insumo: any) => {
+            const insumoExistente = this.insumosTotales.findIndex((i) => i.id === insumo.id);
+            const cantidadNueva = Math.round((insumo.cantidad * productoEnOrden.cantidad) * 10) / 10;
+            if (insumoExistente !== -1) {
+              this.insumosTotales[insumoExistente].cantidad += cantidadNueva;
+            } else {
+              this.insumosTotales.push({ id: insumo.id, cantidad: cantidadNueva });
+            }
+          });
+        });
+      });
+    });
+  }
+
+  showModalInsumosTotales(): void {
+    this.showInsumosTotales = true;
+    this.calcularInsumosTotalesFiltrados();
+  }
+
+  closeModalInsumosTotales(): void {
+    this.showInsumosTotales = false;
+  }
+
+
+  
 
 }
