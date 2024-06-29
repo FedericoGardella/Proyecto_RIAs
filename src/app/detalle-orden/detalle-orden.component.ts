@@ -42,7 +42,10 @@ export class DetalleOrdenComponent implements OnInit {
             (producto) => {
                 producto.insumos.forEach((i: any) => {
                     const existingIndex = this.insumos.findIndex((item) => item.id === i.id);
-                    const nuevaCantidad = Math.round((i.cantidad * p.cantidad) * 10) / 10; // Redondear a un decimal
+                    //const nuevaCantidad = Math.round((i.cantidad * p.cantidad) * 10) / 10; // Redondear a un decimal
+                    // Misma linea que arriba pero con redondeo a 2 decimales
+                    const nuevaCantidad = Math.round((i.cantidad * p.cantidad) * 100) / 100; // Redondear a dos decimales
+
                     if (existingIndex !== -1) {
                         this.insumos[existingIndex].cantidad += nuevaCantidad;
                     } else {

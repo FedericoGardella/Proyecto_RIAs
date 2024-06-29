@@ -17,7 +17,7 @@ export class InsumosComponent implements OnInit {
   public insumos: Insumo[] = [];
   filteredInsumos: Insumo[] = [];
   currentPage: number = 1;
-  itemsPerPage: number = 2;
+  itemsPerPage: number = 5;
   totalPages: number = 1;
   searchTerm: string = '';
 

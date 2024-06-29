@@ -17,7 +17,7 @@ export class InsumosEditarComponent implements OnInit{
 
   insumoForm: FormGroup;
   insumoId: number;
-  unidades = ['Kg', 'Lt'];
+  unidades = ['Kg', 'Lt', 'Unidad/es'];
 
   // Variables para los modales de éxito y error
   showSuccessModal: boolean = false;

@@ -64,6 +64,9 @@ export class OrdenesComponent implements OnInit{
     
     this.totalPages = Math.ceil(filteredOrdenes.length / this.itemsPerPage);
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    // Ver ordenes filtradas
+    console.log('Ordenes filtradas:', filteredOrdenes);
+
     return filteredOrdenes.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
@@ -164,8 +167,11 @@ export class OrdenesComponent implements OnInit{
       orden.productos.forEach((productoEnOrden) => {
         this.productoService.getProductoById(productoEnOrden.id).subscribe((producto) => {
           producto.insumos.forEach((insumo: any) => {
+            // Pasar id a number
+            insumo.id = +insumo.id;
             const insumoExistente = this.insumosTotales.findIndex((i) => i.id === insumo.id);
-            const cantidadNueva = Math.round((insumo.cantidad * productoEnOrden.cantidad) * 10) / 10;
+            const cantidadNueva = Math.round((insumo.cantidad * productoEnOrden.cantidad) * 100) / 100; // Redondear a dos decimales
+
             if (insumoExistente !== -1) {
               this.insumosTotales[insumoExistente].cantidad += cantidadNueva;
             } else {
@@ -175,6 +181,8 @@ export class OrdenesComponent implements OnInit{
         });
       });
     });
+    // Ver insumos totales
+    console.log('Insumos totales:', this.insumosTotales);
   }
 
   showModalInsumosTotales(): void {

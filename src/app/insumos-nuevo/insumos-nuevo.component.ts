@@ -17,7 +17,7 @@ import { Observable, map } from 'rxjs';
 export class InsumosNuevoComponent implements OnInit{
 
   insumoForm: FormGroup;
-  unidades = ['Kg', 'Lt'];
+  unidades = ['Kg', 'Lt', 'Unidad/es'];
 
   // Variables para los modales de éxito y error
   showSuccessModal: boolean = false;
