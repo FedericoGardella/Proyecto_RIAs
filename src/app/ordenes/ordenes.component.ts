@@ -8,6 +8,7 @@ import { FormatProductosPipe } from '../format-productos.pipe';
 import e from 'express';
 import { ProductoService } from '../services/producto.service';
 import { FormatInsumosPipe } from "../format-insumos.pipe";
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -31,17 +32,20 @@ export class OrdenesComponent implements OnInit{
   filterFechaInicio: Date | null = null;
   filterFechaFin: Date | null = null;
   insumosTotales: { id: number, cantidad: number }[] = [];
-
+  userRole: string | null = '';
   showInsumosTotales: boolean = false;
 
   constructor(
     private ordenesService: OrdenService,
     private productoService: ProductoService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadOrdenes();
+    this.userRole = this.authService.getRole();
+    console.log('rol: ', this.userRole);
   }
 
   loadOrdenes(): void {
@@ -65,7 +69,7 @@ export class OrdenesComponent implements OnInit{
     this.totalPages = Math.ceil(filteredOrdenes.length / this.itemsPerPage);
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     // Ver ordenes filtradas
-    console.log('Ordenes filtradas:', filteredOrdenes);
+    //console.log('Ordenes filtradas:', filteredOrdenes);
 
     return filteredOrdenes.slice(startIndex, startIndex + this.itemsPerPage);
   }
@@ -192,9 +196,6 @@ export class OrdenesComponent implements OnInit{
 
   closeModalInsumosTotales(): void {
     this.showInsumosTotales = false;
-  }
-
-
-  
+  }  
 
 }

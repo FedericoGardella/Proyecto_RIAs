@@ -87,7 +87,7 @@
                   </div>
                 </td>
                 <td>
-                  <button class="button is-small is-primary" (click)="verOrden(orden)">Ver</button>
+                  <button class="button is-small is-primary" *ngIf="userRole === 'ADMIN'" (click)="verOrden(orden)">Ver</button>
                 </td>        
               </tr>
             </tbody>
@@ -111,7 +111,7 @@
   </div>
 </section>
 
-<div class="buttons is-centered">
+<div class="buttons is-centered" *ngIf="userRole === 'ADMIN'">
   <button class="button is-primary" (click)="showModalInsumosTotales()" >Calcular Insumos Totales</button>
 </div>
 <!-- Modal para mostrar insumos totales -->
