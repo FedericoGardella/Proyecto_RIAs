@@ -19,6 +19,11 @@ export class LoginComponent {
   errorMessage: string = '';
   email: string = '';
   password: string = '';
+  linkResetPassword: string = '';
+
+  forgotPasswordEmail!: string;
+  forgotPasswordErrorMessage!: string;
+  isForgotPasswordModalActive: boolean = false;
 
   constructor(private router: Router, public authService: AuthService) {}
 
@@ -41,9 +46,28 @@ export class LoginComponent {
     this.router.navigate(['/']);
   }
 
-  forgotPassword() {
-    // Implement logic for forgotten password, e.g., navigate to a forgot password page or show a modal
-    console.log('Forgot password clicked');
+  openForgotPasswordModal() {
+    this.isForgotPasswordModalActive = true;
+  }
+
+  closeForgotPasswordModal() {
+    this.isForgotPasswordModalActive = false;
+    this.forgotPasswordEmail = '';
+    this.forgotPasswordErrorMessage = '';
+  }
+
+  sendResetPasswordEmail() {
+    if (this.forgotPasswordEmail) {
+      this.authService.forgotPassword(this.forgotPasswordEmail).subscribe(
+        (response) => {
+          this.linkResetPassword = response.resetLink;
+          this.closeForgotPasswordModal();
+        },
+        (error) => {
+          this.forgotPasswordErrorMessage = 'Error sending reset password email';
+        }
+      );
+    }
   }
   
 }

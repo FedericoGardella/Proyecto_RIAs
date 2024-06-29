@@ -34,7 +34,7 @@
                         </div>
                         <div class="field">
                             <p class="help is-link has-text-centered">
-                                <a (click)="forgotPassword()">¿Olvidaste tu contraseña?</a>
+                                <a (click)="openForgotPasswordModal()">¿Olvidaste tu contraseña?</a>
                             </p>
                         </div>
                     </form>
@@ -43,3 +43,50 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal" [ngClass]="{'is-active': isForgotPasswordModalActive}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Restablecer Contraseña</p>
+            <button class="delete" aria-label="close" (click)="closeForgotPasswordModal()"></button>
+        </header>
+        <section class="modal-card-body">
+            <form (ngSubmit)="sendResetPasswordEmail()" #forgotPasswordForm="ngForm">
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control">
+                        <input class="input" type="email" name="forgotPasswordEmail" [(ngModel)]="forgotPasswordEmail" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <p class="help is-danger" *ngIf="forgotPasswordErrorMessage">{{ forgotPasswordErrorMessage }}</p>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-primary" type="submit" >Enviar</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+<div class="container mt-3">
+    <div class="columns is-centered">
+        <div class="column m-4 is-half-tablet is-one-third-desktop">
+            <div class="box has-text-centered" *ngIf="linkResetPassword">
+                <label class="label">Link para restablecer contraseña</label>
+                <div class="overflow-hidden">
+                    <a class="button is-danger is-fullwidth" style="white-space: normal; word-wrap: break-word;"
+                       *ngIf="linkResetPassword" [href]="linkResetPassword">{{ linkResetPassword }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

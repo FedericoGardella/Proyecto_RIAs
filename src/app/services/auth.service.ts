@@ -37,6 +37,16 @@ export class AuthService {
     localStorage.removeItem('userId');
   }
 
+  forgotPassword(email: string): Observable<any> {
+    localStorage.setItem('email', email);
+    return this.http.post(`${this.apiUrl}/forgot-password`, {email});
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    const email = localStorage.getItem('email');
+    return this.http.post(`${this.apiUrl}/change-password`, { email, newPassword });
+  }
+
   public getEmail(): string | null {
     return localStorage.getItem('email');
   }

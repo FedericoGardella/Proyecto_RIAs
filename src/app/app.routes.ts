@@ -14,6 +14,7 @@ import { DetalleOrdenComponent } from './detalle-orden/detalle-orden.component';
 import { UsuariosListarComponent } from './usuarios-listar/usuarios-listar.component';
 import { CarritoComponent } from './carrito/carrito.component';
 import { HomeComponent } from './home/home.component';
+import { ResetPassComponent } from './reset-pass/reset-pass.component';
 
 export const routes: Routes = [
     { path: 'productos', component: ProductosComponent },
@@ -31,5 +32,6 @@ export const routes: Routes = [
     { path: 'usuarios', component: UsuariosListarComponent },
     { path: 'carrito', component: CarritoComponent },
     { path: '', component: HomeComponent },
+    { path: 'reset-password', component: ResetPassComponent },
     //{ path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
