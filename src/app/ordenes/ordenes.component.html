@@ -115,6 +115,7 @@
 <div class="buttons is-centered" *ngIf="userRole === 'ADMIN'">
   <button class="button is-primary" (click)="showModalInsumosTotales()" >Calcular Insumos Totales</button>
 </div>
+
 <!-- Modal para mostrar insumos totales -->
 <div class="modal is-fullwidth-mobile is-desktop" [class.is-active]="showInsumosTotales">
   <div class="modal-background"></div>
@@ -143,9 +144,6 @@
   </div>
 </div>
 
-  <footer class="modal-card-foot">
-    <button class="button is-success is-centered" (click)="closeModalInsumosTotales()">Cerrar</button>
-  </footer>
 
 
 

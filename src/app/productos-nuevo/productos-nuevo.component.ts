@@ -25,6 +25,7 @@ export class ProductosNuevoComponent implements OnInit{
   selectedInsumos: any[] = [];
   availableInsumos: Insumo[] = [];
   allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+  searchInsumo: string = '';
 
   // Variables para los modales de éxito y error
   showSuccessModal: boolean = false;
@@ -119,7 +120,6 @@ export class ProductosNuevoComponent implements OnInit{
   }
 
   removeInsumo(index: number): void {
-    //(this.productoForm.get('insumos') as FormArray).removeAt(index);
     const insumosArray = this.productoForm.get('insumos') as FormArray;
     insumosArray.removeAt(index);
     this.updateAvailableInsumos();
@@ -138,15 +138,6 @@ export class ProductosNuevoComponent implements OnInit{
       formData.append('imagen', this.selectedFile);
       formData.append('precio', this.productoForm.get('precio')?.value);
       const insumos = this.productoForm.get('insumos')?.value || [];
-
-      // Verificar si cantidad es null y si cantidad es mayor a 0
-      /* insumos.forEach((insumo: any, index: number) => {
-        if (insumo.cantidad === null || insumo.cantidad <= 0) {
-          this.showErrorModal = true;
-          console.error('Error al añadir el producto', 'La cantidad no puede ser nula y debe ser un número mayor a 0');
-          return;
-        }
-      }); */
 
         insumos.forEach((insumo: any, index: number) => {
             formData.append(`insumos[${index}][insumoId]`, insumo.insumoId);
@@ -177,5 +168,20 @@ export class ProductosNuevoComponent implements OnInit{
 
   closeErrorModal() {
     this.showErrorModal = false;
+  }
+
+  onSearchChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input) {
+      this.searchInsumo = input.value;
+      this.updateAvailableInsumos();
+    }
+  }
+
+  filterAvailableInsumos(): Insumo[] {
+    if (this.searchInsumo) {
+      return this.availableInsumos.filter(insumo => insumo.nombre.toLowerCase().includes(this.searchInsumo.toLowerCase()));
+    }
+    return this.availableInsumos;
   }
 }

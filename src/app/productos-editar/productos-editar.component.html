@@ -67,12 +67,20 @@
         </div>
       </div>
 
+      <!-- Buscar Insumo -->
+      <div class="field">
+        <label class="label">Buscar Insumo:</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Buscar insumo" (input)="onSearchChange($event)">
+        </div>
+      </div>
+
       <div class="field">
         <label class="label">Añadir Insumo:</label>
         <div class="control">
           <div class="select is-fullwidth">
             <select #insumoSelect>
-              <option *ngFor="let insumo of availableInsumos" [value]="insumo.id">{{ insumo.nombre }}</option>
+              <option *ngFor="let insumo of filterAvailableInsumos()" [value]="insumo.id">{{ insumo.nombre }}</option>
             </select>
           </div>
         </div>

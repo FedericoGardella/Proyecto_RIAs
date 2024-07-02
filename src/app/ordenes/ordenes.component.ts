@@ -47,7 +47,6 @@ export class OrdenesComponent implements OnInit{
   ngOnInit(): void {
     this.loadOrdenes();
     this.userRole = this.authService.getRole();
-    console.log('rol: ', this.userRole);
   }
 
   loadOrdenes(): void {
@@ -156,7 +155,7 @@ export class OrdenesComponent implements OnInit{
     });
   }
 
-  // Calcular insumos totales, pero de las ordenes filtradas (no por pagina)
+  // Calcular insumos totales de las ordenes filtradas (no por pagina)
   calcularInsumosTotalesFiltrados(): void {
     this.insumosTotales = [];
 
@@ -176,10 +175,10 @@ export class OrdenesComponent implements OnInit{
             // Pasar id a number
             insumo.id = +insumo.id;
             const insumoExistente = this.insumosTotales.findIndex((i) => i.id === insumo.id);
-            const cantidadNueva = Math.round((insumo.cantidad * productoEnOrden.cantidad) * 100) / 100; // Redondear a dos decimales
+            const cantidadNueva = this.roundToTwoDecimals((insumo.cantidad * productoEnOrden.cantidad)); // Redondear a dos decimales
 
             if (insumoExistente !== -1) {
-              this.insumosTotales[insumoExistente].cantidad += cantidadNueva;
+              this.insumosTotales[insumoExistente].cantidad = this.roundToTwoDecimals(this.insumosTotales[insumoExistente].cantidad + cantidadNueva);
             } else {
               this.insumosTotales.push({ id: insumo.id, cantidad: cantidadNueva });
             }
@@ -190,6 +189,10 @@ export class OrdenesComponent implements OnInit{
     // Ver insumos totales
     console.log('Insumos totales:', this.insumosTotales);
   }
+
+  roundToTwoDecimals(value: number): number {
+    return Math.round(value * 100) / 100;
+  }  
 
   showModalInsumosTotales(): void {
     this.showInsumosTotales = true;

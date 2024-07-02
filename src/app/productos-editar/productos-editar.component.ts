@@ -24,6 +24,7 @@ export class ProductosEditarComponent implements OnInit{
   insumos: Insumo[] = [];
   availableInsumos: Insumo[] = [];
   allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+  searchInsumo: string = '';
 
   // Variables para los modales de éxito y error
   showSuccessModal: boolean = false;
@@ -124,12 +125,6 @@ export class ProductosEditarComponent implements OnInit{
 
     // Filtrar los insumos disponibles
     this.availableInsumos = this.insumos.filter(insumo => !selectedInsumoIds.includes(insumo.id));
-
-    //mostrar los insumos agregados en consola
-    //console.log('Insumos agregados:', selectedInsumoIds);
-
-    //mostrar los insumos disponibles en consola
-    //console.log('Insumos disponibles:', this.availableInsumos);
   }
 
   onFileSelected(event: any): void {
@@ -161,7 +156,6 @@ export class ProductosEditarComponent implements OnInit{
   }
 
   getInsumoNombre(insumoId: number): string {
-
     const insumo = this.insumos.find(i => i.id === insumoId);
     return insumo ? insumo.nombre : 'Insumo no encontrado';
   }
@@ -223,4 +217,20 @@ export class ProductosEditarComponent implements OnInit{
   closeErrorModal() {
     this.showErrorModal = false;
   }
+
+  onSearchChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input) {
+      this.searchInsumo = input.value;
+      this.updateAvailableInsumos();
+    }
+  }
+
+  filterAvailableInsumos(): Insumo[] {
+    if (this.searchInsumo) {
+      return this.availableInsumos.filter(insumo => insumo.nombre.toLowerCase().includes(this.searchInsumo.toLowerCase()));
+    }
+    return this.availableInsumos;
+  }
+
 }
