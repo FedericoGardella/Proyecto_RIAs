@@ -36,4 +36,8 @@ export class OrdenService {
   edit(orden: Orden): Observable<Orden> {
     return this.http.put<Orden>(`${this.apiUrl}/${orden.id}`, orden);
   }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }

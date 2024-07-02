@@ -87,8 +87,9 @@
                   </div>
                 </td>
                 <td>
-                  <button class="button is-small is-primary" *ngIf="userRole === 'ADMIN'" (click)="verOrden(orden)">Ver</button>
-                </td>        
+                  <button class="button is-small is-primary" *ngIf="userRole === 'ADMIN' || userRole === 'PANADERO' " (click)="verOrden(orden)">Ver</button>
+                  <button class="button is-small is-danger mt-2" *ngIf="userRole === 'ADMIN'" (click)="showDeleteConfirmationModal(orden)">X</button>
+                </td>  
               </tr>
             </tbody>
           </table>
@@ -123,11 +124,31 @@
       <pre>{{ insumosTotales | json | formatInsumos | async }}</pre>
     </div>
   </div>
+  <footer class="modal-card-foot">
+    <button class="button is-success is-centered" (click)="closeModalInsumosTotales()">Cerrar</button>
+  </footer>
+</div>
+
+<!-- Modal para confirmar eliminación de orden -->
+<div class="modal" [class.is-active]="showDeleteConfirmation">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      <h2 class="subtitle">¿Está seguro que desea eliminar la orden?</h2>
+      <p>ID: {{ ordenToDelete?.id }}</p>
+      <p>Productos: {{ ordenToDelete?.productos | formatProductos | async }}</p>
+      <div class="buttons">
+        <button class="button is-danger" (click)="eliminarOrden()">Eliminar</button>
+        <button class="button" (click)="closeDeleteConfirmation()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <footer class="modal-card-foot">
     <button class="button is-success is-centered" (click)="closeModalInsumosTotales()">Cerrar</button>
   </footer>
 
-</div>
+
 
   

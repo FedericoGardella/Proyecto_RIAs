@@ -34,6 +34,8 @@ export class OrdenesComponent implements OnInit{
   insumosTotales: { id: number, cantidad: number }[] = [];
   userRole: string | null = '';
   showInsumosTotales: boolean = false;
+  showDeleteConfirmation: boolean = false;
+  ordenToDelete: Orden | null = null;
 
   constructor(
     private ordenesService: OrdenService,
@@ -197,5 +199,31 @@ export class OrdenesComponent implements OnInit{
   closeModalInsumosTotales(): void {
     this.showInsumosTotales = false;
   }  
+
+
+  eliminarOrden(): void {
+    if (this.ordenToDelete) {
+      this.ordenesService.delete(this.ordenToDelete.id).subscribe({
+        next: () => {
+          this.loadOrdenes(); // Recargar la lista de órdenes
+          this.closeDeleteConfirmation(); // Cerrar el modal de confirmación
+        },
+        error: (error) => {
+          console.error('Error al eliminar la orden', error);
+          alert('Hubo un error al eliminar la orden');
+        }
+      });
+    }
+  }
+  
+  showDeleteConfirmationModal(orden: Orden): void {
+    this.ordenToDelete = orden;
+    this.showDeleteConfirmation = true;
+  }
+  
+  closeDeleteConfirmation(): void {
+    this.ordenToDelete = null;
+    this.showDeleteConfirmation = false;
+  }
 
 }
