@@ -115,10 +115,16 @@ export class OrdenesNuevoComponent implements OnInit {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
     }
+    this.srollToTop();
   }
 
   onPageNumberClick(event: Event, page: number): void {
     event.preventDefault();
     this.goToPage(page);
   }
+
+  srollToTop(): void {
+    window.scroll(0, 0);
+  }
+
 }

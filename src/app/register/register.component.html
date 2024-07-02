@@ -17,16 +17,29 @@
                 </div>
               </div>
               <div class="field">
-                <label class="label">Password</label>
+                <label class="label">Contraseña</label>
                 <div class="control">
                   <input class="input" type="password" formControlName="password" placeholder="Ingrese su contraseña">
                 </div>
                 <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="help is-danger">
-                  <div *ngIf="registerForm.get('password')?.errors?.['required']">Password es requerido.</div>
-                  <div *ngIf="registerForm.get('password')?.errors?.['minlength']">Password debe tener al menos 7 caracteres.</div>
-                  <div *ngIf="registerForm.get('password')?.errors?.['maxlength']">Password no puede exceder los 20 caracteres.</div>
+                  <div *ngIf="registerForm.get('password')?.errors?.['required']">Contraseña es requerido.</div>
+                  <div *ngIf="registerForm.get('password')?.errors?.['minlength']">Contraseña debe tener al menos 7 caracteres.</div>
+                  <div *ngIf="registerForm.get('password')?.errors?.['maxlength']">Contraseña no puede exceder los 20 caracteres.</div>
                 </div>
               </div>
+              <div class="field">
+                <label class="label">Confirmar contraseña</label>
+                <div class="control">
+                  <input class="input" type="password" formControlName="confirmPassword" placeholder="Confirme su contraseña">
+                </div>
+                <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="help is-danger">
+                  <div *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Confirmar contraseña es requerido.</div>
+                </div>
+                <div *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched" class="help is-danger">
+                  Contraseñas no coinciden.
+                </div>
+              </div>
+
               <div class="field">
                 <label class="label">Teléfono</label>
                 <div class="control">
@@ -39,9 +52,9 @@
                   <div *ngIf="registerForm.get('telefono')?.errors?.['maxlength']">Teléfono no puede exceder los 12 caracteres.</div>
                 </div>
               </div>
-              <div class="field is-grouped">
+              <div class="field is-grouped is-grouped-centered">
                 <div class="control">
-                  <button class="button is-link" type="submit" [disabled]="registerForm.invalid">Registrar</button>
+                  <button class="button is-primary" type="submit" [disabled]="registerForm.invalid">Registrar</button>
                 </div>
               </div>
             </form>
@@ -56,13 +69,13 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">Error</p>
+        <p class="modal-card-title has-text-centered">Error</p>
         <button class="delete" aria-label="close" (click)="closeModal()"></button>
       </header>
-      <section class="modal-card-body">
+      <section class="modal-card-body has-text-centered">
         <p>{{ errorMessage }}</p>
       </section>
-      <footer class="modal-card-foot">
+      <footer class="modal-card-foot buttons is-centered">
         <button class="button is-primary" (click)="closeModal()">Cerrar</button>
       </footer>
     </div>
@@ -72,14 +85,14 @@
   <div class="modal" [ngClass]="{'is-active': showSuccess}">
     <div class="modal-background"></div>
     <div class="modal-card">
-      <header class="modal-card-head">
+      <header class="modal-card-head has-text-centered">
         <p class="modal-card-title">Registrado!</p>
         <button class="delete" aria-label="close" (click)="closeSuccess()"></button>
       </header>
-      <section class="modal-card-body">
+      <section class="modal-card-body has-text-centered">
         <p>Usuario registrado con éxito.</p>
       </section>
-      <footer class="modal-card-foot">
+      <footer class="modal-card-foot buttons is-centered">
         <button class="button is-primary" (click)="closeSuccess()">Cerrar</button>
       </footer>
     </div>

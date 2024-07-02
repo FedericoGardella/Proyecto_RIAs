@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Usuario } from '../model/usuario';
@@ -29,10 +29,18 @@ export class RegisterComponent implements OnInit{
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email, Validators.maxLength(30)]],
       password: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(20)]],
+      confirmPassword: ['', [Validators.required]],
       role: ['USER', [Validators.required]],
       telefono: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(12), Validators.pattern('^[0-9]*$')]],
-    });
+    }, { validators: this.passwordMatchValidator });
   } 
+
+  passwordMatchValidator(form: FormGroup): ValidationErrors | null {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordMismatch: true };
+  }
+  
 
   ngOnInit(): void {
   }
