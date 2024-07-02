@@ -133,11 +133,9 @@
 <div class="modal" [class.is-active]="showDeleteConfirmation">
   <div class="modal-background"></div>
   <div class="modal-content">
-    <div class="box">
+    <div class="box has-text-centered">
       <h2 class="subtitle">¿Está seguro que desea eliminar la orden?</h2>
-      <p>ID: {{ ordenToDelete?.id }}</p>
-      <p>Productos: {{ ordenToDelete?.productos | formatProductos | async }}</p>
-      <div class="buttons">
+      <div class="buttons is-centered">
         <button class="button is-danger" (click)="eliminarOrden()">Eliminar</button>
         <button class="button" (click)="closeDeleteConfirmation()">Cancelar</button>
       </div>
