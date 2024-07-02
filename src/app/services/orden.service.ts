@@ -20,8 +20,8 @@ export class OrdenService {
     return this.http.get<Orden>(`${this.apiUrl}/${id}`);
   }
 
-  deleteProductoFromOrdenes(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/producto/${id}`);
+  deleteProductoFromOrdenes(idProd: number, costo : number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/producto/`, { body: { idProd: idProd.toString(), costo: costo.toString() }} );
   }
 
   // obtener ordenes por email del usuario

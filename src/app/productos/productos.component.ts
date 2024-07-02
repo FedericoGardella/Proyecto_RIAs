@@ -31,6 +31,7 @@ export class ProductosComponent implements OnInit {
 
   showConfirmModal: boolean = false;
   productoIdToDelete: number | null = null;
+  precioToDelete: number | null = null;
 
   constructor(
     private productosService: ProductoService, 
@@ -95,9 +96,10 @@ export class ProductosComponent implements OnInit {
 
   confirmDelete(): void {
     if (this.productoIdToDelete !== null) {
+      this.precioToDelete = this.productos.find(producto => producto.id == this.productoIdToDelete)!.precio;
       this.productosService.delete(this.productoIdToDelete).subscribe({
         next: () => {
-          this.ordenesService.deleteProductoFromOrdenes(this.productoIdToDelete!).subscribe({
+          this.ordenesService.deleteProductoFromOrdenes(this.productoIdToDelete!,this.precioToDelete!).subscribe({
             next: () => {
               console.log('Producto eliminado de las ordenes');
             },
