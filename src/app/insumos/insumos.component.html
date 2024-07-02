@@ -28,17 +28,19 @@
             <th>ID</th>
             <th>Nombre</th>
             <th>Unidad</th>
-            <th>Acciones</th>
+            <th class="has-text-centered">Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let insumo of paginatedInsumos">
             <td>{{ insumo.id }}</td>
             <td>{{ insumo.nombre }}</td>
-            <td>{{ insumo.unidad }}</td>
+            <td class="has-text-centered">{{ insumo.unidad }}</td>
             <td>
-              <a [routerLink]="['/insumos/update', insumo?.id]" class="button is-info mr-2">Editar</a>
-              <button (click)="deleteInsumo(insumo?.id!)" class="button is-danger">Eliminar</button>
+              <div class="buttons is-centered">
+                <a [routerLink]="['/insumos/update', insumo?.id]" class="button is-info mr-2">Editar</a>
+                <button (click)="deleteInsumo(insumo?.id!)" class="button is-danger">Eliminar</button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -60,8 +62,9 @@
       </ul>
     </nav>
 
-    <!-- Botón para ir a agregar insumo -->
-    <a [routerLink]="['add/']" class="button is-primary">Agregar Insumo</a>
+    <div class="buttons is-centered mt-5">
+      <a [routerLink]="['add/']" class="button is-primary is">Agregar Insumo</a>
+    </div>
   </div>
 </div>
 </div>
@@ -70,15 +73,17 @@
 <div class="modal" [ngClass]="{'is-active': showSuccessModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Éxito</p>
       <button class="delete" aria-label="close" (click)="closeSuccessModal()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>El insumo ha sido eliminado correctamente.</p>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-success" (click)="closeSuccessModal()">Cerrar</button>
+      <div class="has-text-centered" style="width: 100%;">
+        <button class="button is-success" (click)="closeSuccessModal()">Cerrar</button>
+      </div>
     </footer>
   </div>
 </div>
@@ -87,11 +92,11 @@
 <div class="modal" [ngClass]="{'is-active': showErrorModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Error</p>
       <button class="delete" aria-label="close" (click)="closeErrorModal()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>Hubo un error al eliminar el insumo. Por favor, inténtelo de nuevo.</p>
     </section>
     <footer class="modal-card-foot">
@@ -104,16 +109,18 @@
 <div class="modal" [ngClass]="{'is-active': showConfirmModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Confirmación</p>
       <button class="delete" aria-label="close" (click)="cancelDelete()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>¿Está seguro de que desea eliminar este insumo?</p>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-danger" (click)="confirmDelete()">Eliminar</button>
-      <button class="button" (click)="cancelDelete()">Cancelar</button>
+      <div class="has-text-centered" style="width: 100%;">
+        <button class="button is-danger" (click)="confirmDelete()">Eliminar</button>
+        <button class="button" (click)="cancelDelete()">Cancelar</button>
+      </div>
     </footer>
   </div>
 </div>

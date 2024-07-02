@@ -45,7 +45,7 @@
               <th>Imagen</th>
               <th>Precio</th>
               <th>Insumos</th>
-              <th>Acciones</th>
+              <th class="has-text-centered">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -62,7 +62,7 @@
                 </ul>
               </td>
               <td>
-                <div class="buttons">
+                <div class="buttons is-centered">
                   <a [routerLink]="['/productos/update', producto?.id]" class="button is-info">Editar</a>
                   <button (click)="deleteProducto(producto?.id!)" class="button is-danger">Eliminar</button>
                 </div>
@@ -95,14 +95,14 @@
 <div class="modal" [ngClass]="{'is-active': showSuccessModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Éxito</p>
       <button class="delete" aria-label="close" (click)="closeSuccessModal()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>El producto ha sido eliminado correctamente.</p>
     </section>
-    <footer class="modal-card-foot">
+    <footer class="modal-card-foot buttons is-centered">
       <button class="button is-success" (click)="closeSuccessModal()">Cerrar</button>
     </footer>
   </div>
@@ -112,14 +112,14 @@
 <div class="modal" [ngClass]="{'is-active': showErrorModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Error</p>
       <button class="delete" aria-label="close" (click)="closeErrorModal()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>Hubo un error al eliminar el producto. Por favor, inténtelo de nuevo.</p>
     </section>
-    <footer class="modal-card-foot">
+    <footer class="modal-card-foot buttons is-centered">
       <button class="button is-danger" (click)="closeErrorModal()">Cerrar</button>
     </footer>
   </div>
@@ -129,14 +129,14 @@
 <div class="modal" [ngClass]="{'is-active': showConfirmModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Confirmación</p>
       <button class="delete" aria-label="close" (click)="cancelDelete()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>¿Está seguro de que desea eliminar este producto?</p>
     </section>
-    <footer class="modal-card-foot">
+    <footer class="modal-card-foot buttons is-centered">
       <button class="button is-danger" (click)="confirmDelete()">Eliminar</button>
       <button class="button" (click)="cancelDelete()">Cancelar</button>
     </footer>

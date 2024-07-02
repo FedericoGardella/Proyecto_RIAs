@@ -64,7 +64,7 @@ export class ProductosEditarComponent implements OnInit{
       const file = control.value;
       
       if (file) {
-        console.log('Archivo:', file);
+        //console.log('Archivo:', file);
         const fileExtension = file.split('.').pop()?.toLowerCase();
         if (allowedExtensions.indexOf(fileExtension) === -1) {
           console.log('Extension no permitida:', fileExtension);
@@ -85,7 +85,7 @@ export class ProductosEditarComponent implements OnInit{
     return this.insumoService.get().pipe(map((insumos) => {
       this.insumos = insumos;
       //this.updateAvailableInsumos();
-      console.log('Insumos cargados', insumos);
+      //console.log('Insumos cargados', insumos);
       return insumos;
     }));
   }
@@ -95,7 +95,7 @@ export class ProductosEditarComponent implements OnInit{
       next: (data) => {
         this.productoForm.patchValue(data);
         this.setInsumos(data.insumos);
-        console.log('Producto cargado', data);
+        //console.log('Producto cargado', data);
         this.updateAvailableInsumos();
       },
       error: (error) => {
@@ -107,7 +107,7 @@ export class ProductosEditarComponent implements OnInit{
   setInsumos(insumos: any[]): void {
     const insumosFGs = insumos.map(insumo => this.fb.group({
       insumoId: [+insumo.id, Validators.required],
-      cantidad: [insumo.cantidad, Validators.required]
+      cantidad: [insumo.cantidad, [Validators.required, Validators.min(0.01)]]
     }));
     const insumoFormArray = this.fb.array(insumosFGs);
     this.productoForm.setControl('insumos', insumoFormArray);
@@ -126,10 +126,10 @@ export class ProductosEditarComponent implements OnInit{
     this.availableInsumos = this.insumos.filter(insumo => !selectedInsumoIds.includes(insumo.id));
 
     //mostrar los insumos agregados en consola
-    console.log('Insumos agregados:', selectedInsumoIds);
+    //console.log('Insumos agregados:', selectedInsumoIds);
 
     //mostrar los insumos disponibles en consola
-    console.log('Insumos disponibles:', this.availableInsumos);
+    //console.log('Insumos disponibles:', this.availableInsumos);
   }
 
   onFileSelected(event: any): void {
@@ -149,7 +149,7 @@ export class ProductosEditarComponent implements OnInit{
 
     insumosArray.push(this.fb.group({
       insumoId: [insumoId, Validators.required],
-      cantidad: ['', Validators.required]
+      cantidad: ['', [Validators.required, Validators.min(0.01)]]
     }));
     this.updateAvailableInsumos();
   }
@@ -197,15 +197,15 @@ export class ProductosEditarComponent implements OnInit{
 
         console.log('Formulario válido, enviando datos...');
         //mostrar datos en consola
-        console.log('Datos del producto:', formData);          
+        //console.log('Datos del producto:', formData);          
 
         this.productoService.update(this.productoId, formData).subscribe({
             next: (data) => {
-                console.log('Producto actualizado', data);
+                //console.log('Producto actualizado', data);
                 this.showSuccessModal = true;
             },
             error: (error) => {
-                console.error('Error al actualizar el producto', error);
+                //console.error('Error al actualizar el producto', error);
                 this.showErrorModal = true;
             }
         });

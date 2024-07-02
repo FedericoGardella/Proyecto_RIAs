@@ -6,7 +6,7 @@
           <div class="columns is-centered">
             
               <div class="column is-half-desktop">
-                <h1 class="title">Añadir Producto</h1>
+                <h1 class="title has-text-centered">Añadir Producto</h1>
                   <label for="nombre" class="label">Nombre</label>
                   <input id="nombre" formControlName="nombre" type="text" class="input" />
                   <div *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched">
@@ -31,10 +31,12 @@
                         <div *ngIf="productoForm.get('imagen')?.errors?.['invalidFile']" class="help is-danger">Imagen debe ser de tipo 'jpg', 'jpeg', 'png' o 'webp'.</div>
                   </div>
 
-                  <label for="precio" class="label">Precio</label>
-                  <input id="precio" formControlName="precio" type="number" class="input" />
-                  <div *ngIf="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched" class="help is-danger">
-                      Precio es requerido y debe ser un valor positivo.
+                  <div class="field">
+                    <label for="precio" class="label">Precio</label>
+                    <input id="precio" formControlName="precio" type="number" class="input" />
+                    <div *ngIf="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched" class="help is-danger">
+                        Precio es requerido y debe ser un valor positivo.
+                    </div>
                   </div>
 
                   <!-- Insumos del producto -->
@@ -43,38 +45,42 @@
                           <div>
                               <label class="label">Insumo</label>
                               <div class="control">
-                                  <div class="input">
+                                  <!-- <div class="input"> -->
                                       <div>{{ getInsumoNombre(insumo?.get('insumoId')?.value) }}</div>
                                       <input type="hidden" formControlName="insumoId">
-                                  </div>
+                                  <!-- </div> -->
                               </div>
                           </div>
                           <div class="field">
-                              <label class="label">Cantidad</label>
-                              <div class="cantidad-unidad-container">
+                              <label class="label mt-2">Cantidad</label>
+                              <div class="control is-flex is-align-items-center">
                                   <input class="input" type="number" formControlName="cantidad" placeholder="Cantidad del insumo">
-                                  <div>{{ getInsumoUnidad(insumo?.get('insumoId')?.value) }}</div>
+                                  <div class="ml-2">{{ getInsumoUnidad(insumo?.get('insumoId')?.value) }}</div>
                               </div>
                           </div>
-                          <button type="button" class="button is-danger" (click)="removeInsumo(i)">Eliminar Insumo</button>
-                      </div>
+                          <div class="field is-grouped is-grouped-centered">
+                            <button type="button" class="button is-danger is-small" (click)="removeInsumo(i)">Eliminar Insumo</button>
+                          </div>
+                        </div>
                   </div>
 
                   <!-- Añadir Insumo -->
-                  <div class="field">
-                      <label class="my-2 label">Añadir Insumo:</label>
+                  <div class="field mt-2">
+                      <label class="label">Añadir Insumo:</label>
                       <div class="control">
-                          <div class="my-2 select">
+                          <div class="select is-fullwidth">
                               <select #insumoSelect>
                                   <option *ngFor="let insumo of availableInsumos" [value]="insumo.id">{{ insumo.nombre }}</option>
                               </select>
                           </div>
                       </div>
-                      <button type="button" class="button is-success" (click)="addInsumo(+insumoSelect.value)">Añadir Insumo</button>
-                  </div>
+                      <div class="buttons is-centered mt-2">
+                        <button type="button" class="button is-info" (click)="addInsumo(+insumoSelect.value)">Añadir Insumo</button>
+                      </div>
+                    </div>
 
                   <div class="field">
-                      <div class="control">
+                      <div class="control buttons is-centered">
                           <button type="submit" class="button is-primary" [disabled]="productoForm.invalid">Añadir Producto</button>
                       </div>
                   </div>
@@ -88,14 +94,14 @@
 <div class="modal" [ngClass]="{'is-active': showSuccessModal}">
     <div class="modal-background"></div>
     <div class="modal-card">
-      <header class="modal-card-head">
+      <header class="modal-card-head has-text-centered">
         <p class="modal-card-title">Éxito</p>
         <button class="delete" aria-label="close" (click)="closeSuccessModal()"></button>
       </header>
-      <section class="modal-card-body">
+      <section class="modal-card-body has-text-centered">
         <p>El producto ha sido añadido correctamente.</p>
       </section>
-      <footer class="modal-card-foot">
+      <footer class="modal-card-foot buttons is-centered">
         <button class="button is-success" (click)="closeSuccessModal()">Cerrar</button>
       </footer>
     </div>
@@ -105,14 +111,14 @@
   <div class="modal" [ngClass]="{'is-active': showErrorModal}">
     <div class="modal-background"></div>
     <div class="modal-card">
-      <header class="modal-card-head">
+      <header class="modal-card-head has-text-centered">
         <p class="modal-card-title">Error</p>
         <button class="delete" aria-label="close" (click)="closeErrorModal()"></button>
       </header>
-      <section class="modal-card-body">
+      <section class="modal-card-body has-text-centered">
         <p>Hubo un error al añadir el producto. Por favor, inténtelo de nuevo.</p>
       </section>
-      <footer class="modal-card-foot">
+      <footer class="modal-card-foot buttons is-centered">
         <button class="button is-danger" (click)="closeErrorModal()">Cerrar</button>
       </footer>
     </div>

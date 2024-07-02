@@ -138,6 +138,16 @@ export class ProductosNuevoComponent implements OnInit{
       formData.append('imagen', this.selectedFile);
       formData.append('precio', this.productoForm.get('precio')?.value);
       const insumos = this.productoForm.get('insumos')?.value || [];
+
+      // Verificar si cantidad es null y si cantidad es mayor a 0
+      /* insumos.forEach((insumo: any, index: number) => {
+        if (insumo.cantidad === null || insumo.cantidad <= 0) {
+          this.showErrorModal = true;
+          console.error('Error al añadir el producto', 'La cantidad no puede ser nula y debe ser un número mayor a 0');
+          return;
+        }
+      }); */
+
         insumos.forEach((insumo: any, index: number) => {
             formData.append(`insumos[${index}][insumoId]`, insumo.insumoId);
             formData.append(`insumos[${index}][cantidad]`, insumo.cantidad);

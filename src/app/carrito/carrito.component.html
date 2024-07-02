@@ -3,7 +3,7 @@
   <div class="columns is-centered">
     <div class="column is-three-quarters-desktop is-full-mobile">
 <div class="container" *ngIf="productos.length > 0">
-  <h2 class="title is-4">Carrito de Compras</h2>
+  <h2 class="title is-4 has-text-centered">Carrito de Compras</h2>
   <div class="columns is-multiline">
     <div class="column is-one-quarter-desktop" *ngFor="let producto of productos; let i = index">
       <div *ngIf="prods && prods[i]" class="card m-5">
@@ -25,8 +25,10 @@
       </div>
     </div>
   </div>
-  <h3 class="title is-4">Total del Carrito: {{ total | currency }}</h3>
-  <button class="button is-primary" (click)="openPurchaseModal()">Confirmar Compra</button>
+  <h3 class="title is-4 has-text-centered">Total del Carrito: {{ total | currency }}</h3>
+  <div class="buttons is-centered">
+    <button class="button is-primary" (click)="openPurchaseModal()">Confirmar Compra</button>
+  </div>
 </div>
 <div class="container" *ngIf="productos.length === 0">
   <div class="columns  is-centered">
@@ -45,13 +47,13 @@
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Confirmación</p>
+      <p class="modal-card-title has-text-centered">Confirmación</p>
       <button class="delete" aria-label="close" (click)="cancelDelete()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>¿Estás seguro de que deseas eliminar este producto del carrito?</p>
     </section>
-    <footer class="modal-card-foot">
+    <footer class="modal-card-foot buttons is-centered">
       <button class="button is-danger" (click)="confirmDelete()">Eliminar</button>
       <button class="button" (click)="cancelDelete()">Cancelar</button>
     </footer>
@@ -62,7 +64,7 @@
 <div class="modal" [ngClass]="{'is-active': showPurchaseModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Confirmar Compra</p>
       <button class="delete" aria-label="close" (click)="cancelPurchase()"></button>
     </header>
@@ -71,7 +73,7 @@
       <input type="date" [(ngModel)]="purchaseDate" (change)="validateDate()" class="input" required>
       <p *ngIf="!isDateValid" class="help is-danger">La fecha debe ser posterior al día de hoy.</p>
     </section>
-    <footer class="modal-card-foot">
+    <footer class="modal-card-foot buttons is-centered">
       <button class="button is-success" [disabled]="!isDateValid" (click)="confirmPurchase()">Confirmar</button>
       <button class="button" (click)="cancelPurchase()">Cancelar</button>
     </footer>
@@ -82,14 +84,14 @@
 <div class="modal" [ngClass]="{'is-active': showSuccessModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Compra Exitosa</p>
       <button class="delete" aria-label="close" (click)="closeSuccessModal()"></button>
     </header>
-    <section class="modal-card-body">
-      <p>La compra ha sido confirmada. Puedes ver tus compras en tu perfil</p>
+    <section class="modal-card-body has-text-centered">
+      <p>La compra ha sido confirmada. Puedes ver tus compras en tu perfil.</p>
     </section>
-    <footer class="modal-card-foot">
+    <footer class="modal-card-foot buttons is-centered">
       <button class="button is-success" (click)="closeSuccessModal()">Cerrar</button>
     </footer>
   </div>
@@ -99,14 +101,14 @@
 <div class="modal" [ngClass]="{'is-active': showErrorModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Error</p>
       <button class="delete" aria-label="close" (click)="closeErrorModal()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>Hubo un error al confirmar la compra. Recuerda seleccionar la fecha.</p>
     </section>
-    <footer class="modal-card-foot">
+    <footer class="modal-card-foot buttons is-centered">
       <button class="button is-danger" (click)="closeErrorModal()">Cerrar</button>
     </footer>
   </div>

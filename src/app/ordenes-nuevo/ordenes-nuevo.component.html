@@ -46,12 +46,9 @@
                 <input class="input" type="number" [(ngModel)]="cantidades[producto.id]" min="1">
               </div>
             </div>
-            <button class="button is-success" (click)="agregarAlCarrito(producto, cantidades[producto.id])">
-              <span class="icon is-small">
-                <i class="fas fa-plus"></i>
-              </span>
-              <span>Agregar al Carrito</span>
-            </button>
+            <div class="buttons is-centered">
+              <button class="button is-success" (click)="agregarAlCarrito(producto, cantidades[producto.id])">Agregar al Carrito</button>
+            </div>
           </div>
         </div>
       </div>
@@ -62,7 +59,7 @@
 <!-- Modales -->
 <div class="modal" [class.is-active]="showErrorModal">
   <div class="modal-background"></div>
-  <div class="modal-content">
+  <div class="modal-content has-text-centered">
     <div class="box">
       <p class="has-text-danger">{{ mensajeError }}</p>
       <button class="button is-success" (click)="cerrarModalError()">Ok</button>
@@ -72,7 +69,7 @@
 
 <div class="modal" [class.is-active]="showSuccessModal">
   <div class="modal-background"></div>
-  <div class="modal-content">
+  <div class="modal-content has-text-centered">
     <div class="box">
       <p class="has-text-success">{{ mensajeExito }}</p>
       <button class="button is-success" (click)="cerrarModalExito()">Ok</button>

@@ -32,7 +32,7 @@
         </div>
   
         <div class="field">
-          <div class="control">
+          <div class="control buttons is-centered">
             <button type="submit" class="button is-primary" [disabled]="insumoForm.invalid">Actualizar Insumo</button>
           </div>
         </div>
@@ -45,14 +45,14 @@
 <div class="modal" [ngClass]="{'is-active': showSuccessModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Éxito</p>
       <button class="delete" aria-label="close" (click)="closeSuccessModal()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>El insumo ha sido editado correctamente.</p>
     </section>
-    <footer class="modal-card-foot">
+    <footer class="modal-card-foot buttons is-centered">
       <button class="button is-success" (click)="closeSuccessModal()">Cerrar</button>
     </footer>
   </div>
@@ -62,14 +62,14 @@
 <div class="modal" [ngClass]="{'is-active': showErrorModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Error</p>
       <button class="delete" aria-label="close" (click)="closeErrorModal()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>Hubo un error al editar el insumo. Por favor, inténtelo de nuevo.</p>
     </section>
-    <footer class="modal-card-foot">
+    <footer class="modal-card-foot buttons is-centered">
       <button class="button is-danger" (click)="closeErrorModal()">Cerrar</button>
     </footer>
   </div>

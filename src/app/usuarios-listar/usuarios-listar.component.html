@@ -51,15 +51,17 @@
 <div class="modal" [ngClass]="{'is-active': showSuccessModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Éxito</p>
       <button class="delete" aria-label="close" (click)="closeSuccessModal()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>El rol del usuario ha sido actualizado correctamente.</p>
     </section>
-    <footer class="modal-card-foot">
-      <button class="button is-success" (click)="closeSuccessModal()">Cerrar</button>
+    <footer class="modal-card-foot is-centered">
+      <div class="has-text-centered" style="width: 100%;">
+        <button class="button is-success" (click)="closeSuccessModal()">Cerrar</button>
+      </div>
     </footer>
   </div>
 </div>

@@ -56,12 +56,14 @@
           </div>
           <div class="field">
             <label class="label">Cantidad:</label>
-            <div class="control cantidad-unidad-container">
+            <div class="control is-flex is-align-items-center">
               <input formControlName="cantidad" class="input" type="number" placeholder="Cantidad del insumo" />
-              <div>{{ getInsumoUnidad(insumo.get('insumoId')?.value) }}</div>
+              <div class="ml-2">{{ getInsumoUnidad(insumo.get('insumoId')?.value) }}</div>
             </div>
           </div>
-          <button type="button" (click)="removeInsumo(i)" class="button is-danger is-small btn-remove">Eliminar Insumo</button>
+          <div class="field is-grouped is-grouped-centered">
+            <button type="button" (click)="removeInsumo(i)" class="button is-danger is-small">Eliminar Insumo</button>
+          </div>
         </div>
       </div>
 
@@ -74,11 +76,13 @@
             </select>
           </div>
         </div>
-        <button type="button" (click)="addInsumo(+insumoSelect.value)" class="button is-info btn-add">Añadir Insumo</button>
+        <div class="buttons is-centered mt-2">
+          <button type="button" (click)="addInsumo(+insumoSelect.value)" class="button is-info btn-add">Añadir Insumo</button>
+        </div>
       </div>
 
       <div class="field">
-        <div class="control">
+        <div class="control buttons is-centered">
           <button type="submit" class="button is-primary" [disabled]="productoForm.invalid">Actualizar Producto</button>
         </div>
       </div>
@@ -92,14 +96,14 @@
 <div class="modal" [ngClass]="{'is-active': showSuccessModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Éxito</p>
       <button class="delete" aria-label="close" (click)="closeSuccessModal()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>El producto ha sido actualizado correctamente.</p>
     </section>
-    <footer class="modal-card-foot">
+    <footer class="modal-card-foot buttons is-centered">
       <button class="button is-success" (click)="closeSuccessModal()">Cerrar</button>
     </footer>
   </div>
@@ -109,14 +113,14 @@
 <div class="modal" [ngClass]="{'is-active': showErrorModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Error</p>
       <button class="delete" aria-label="close" (click)="closeErrorModal()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p>Hubo un error al actualizar el producto. Por favor, inténtelo de nuevo.</p>
     </section>
-    <footer class="modal-card-foot">
+    <footer class="modal-card-foot buttons is-centered">
       <button class="button is-danger" (click)="closeErrorModal()">Cerrar</button>
     </footer>
   </div>
