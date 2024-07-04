@@ -19,8 +19,14 @@ interface UsuarioWithStartingRole extends Usuario {
 
 export class UsuariosListarComponent implements OnInit{
   usuarios: UsuarioWithStartingRole[] = [];
+  filteredUsuarios: UsuarioWithStartingRole[] = [];
+  paginatedUsuarios: UsuarioWithStartingRole[] = [];
   roles: string[] = ['ADMIN', 'PANADERO', 'USER'];
   emailUsuario: string | null = null;
+  searchTerm: string = '';
+  currentPage: number = 1;
+  itemsPerPage: number = 2;
+  totalPages: number = 1;
 
   // Variables para los modales de éxito y error
   showSuccessModal: boolean = false;
@@ -42,7 +48,16 @@ export class UsuariosListarComponent implements OnInit{
         ...usuario,
         startingRole: usuario.role
       }));
+      this.filterUsuarios();
     });
+  }
+
+  filterUsuarios(): void {
+    this.filteredUsuarios = this.usuarios.filter((usuario) =>
+      usuario.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+    this.totalPages = Math.ceil(this.filteredUsuarios.length / this.itemsPerPage);
+    this.goToPage(1);
   }
 
   updateRole(id: Number, role: string): void {
@@ -50,6 +65,24 @@ export class UsuariosListarComponent implements OnInit{
       console.log('Rol actualizado:', usuario);
       this.showSuccessModal = true;
     });
+  }
+
+  onSearchTermChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.searchTerm = inputElement.value || '';
+    this.filterUsuarios();
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedUsuarios();
+    }
+  }
+
+  updatePaginatedUsuarios(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    this.paginatedUsuarios = this.filteredUsuarios.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
   closeSuccessModal() {

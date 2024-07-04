@@ -3,6 +3,12 @@
   <div class="columns is-centered">
     <div class="column is-three-quarters-desktop is-full-mobile">
 <h1 class="title">Lista de Usuarios</h1>
+<div class="field">
+  <label class="label">Buscar por Email</label>
+  <div class="control">
+    <input class="input" type="text" placeholder="Buscar por Email" (input)="onSearchTermChange($event)">
+  </div>
+</div>
 <div class="table-container">
   <table class="table is-striped is-hoverable is-fullwidth">
     <thead>
@@ -15,7 +21,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let usuario of usuarios">
+      <tr *ngFor="let usuario of paginatedUsuarios">
         <td>{{ usuario.id }}</td>
         <td>{{ usuario.email }}</td>
         <td>{{ usuario.startingRole }}</td>        
@@ -43,6 +49,17 @@
     </tbody>
   </table>
 </div>
+
+<div class="pagination is-centered" role="navigation" aria-label="pagination">
+  <a class="pagination-previous" [class.is-disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)" [attr.disabled]="currentPage === 1 ? true : null">Anterior</a>
+  <a class="pagination-next" [class.is-disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)" [attr.disabled]="currentPage === totalPages ? true : null">Siguiente</a>
+  <ul class="pagination-list">
+    <li *ngFor="let page of [].constructor(totalPages); let i = index">
+      <a class="pagination-link" [class.is-current]="currentPage === i + 1" (click)="goToPage(i + 1)">{{ i + 1 }}</a>
+    </li>
+  </ul>
+</div>
+
 </div>
 </div>
 </div>
@@ -70,14 +87,14 @@
 <div class="modal" [ngClass]="{'is-active': showErrorModal}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
+    <header class="modal-card-head has-text-centered">
       <p class="modal-card-title">Error</p>
       <button class="delete" aria-label="close" (click)="closeErrorModal()"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body has-text-centered">
       <p> Ha ocurrido un error al actualizar el rol del usuario.</p>
     </section>
-    <footer class="modal-card-foot">
+    <footer class="modal-card-foot buttons is-centered">
       <button class="button is-danger" (click)="closeErrorModal()">Cerrar</button>
     </footer>
   </div>
